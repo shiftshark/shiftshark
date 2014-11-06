@@ -15,6 +15,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
 
+var User = require('./models/user').User;
+
 var connection_string = 'localhost/shiftshark';
 
 if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
@@ -27,9 +29,9 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 var db = mongoose.connect(connection_string);
 
 // User authentication with passport-local-mongoose
-// passport.use(new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 var app = express();
 
@@ -43,7 +45,11 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'der Zeithai, ja?' }));
+app.use(session({
+    secret: 'der Zeithai, ja?',
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));

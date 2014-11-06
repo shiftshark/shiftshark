@@ -15,6 +15,7 @@
     "ejs": "~0.8.5",
     "mongodb": "*",
     "mongoose": "*",
+    "mongoose-times": "*",
     "passport": "*",
     "passport-local": "*",
     "passport-local-mongoose": "*",
