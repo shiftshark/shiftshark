@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ShiftShark Login</title>
+        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
+        <link rel='stylesheet' href='stylesheets/style.css' />
+        <link rel='stylesheet' href='stylesheets/login.css' />
+        <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
+        <script src='/lib/semantic.min.js'></script>
+        <% if (authType == 'login') { %>
+        <script src='/js/login.js'></script>
+        <% } if(authType == 'employerSignup') { %>
+        <script src='/js/employerSignup.js'></script>
+        <% } if(authType == 'employeeSignup') { %>
+        <script src='/js/employeeSignup.js'></script>
+        <% } %>
+    </head>
+    <body>
+        <div class='abscentered'>
+            <div class='ctitle'>
+                ShiftShark
+            </div>
+            <div class='ui form'>
+                <% if (authType != 'login') { %>
+                <label>Name</label>
+                <div class='ui left labeled icon input'>
+                    <input type='text' placeholder='Name'>
+                    <i class='user icon'></i>
+                </div>
+                <% } %>
+                <% if(authType == 'employerSignup') { %>
+                <label>Company Name</label>
+                <div class='ui left labeled icon input'>
+                    <input type='text' placeholder='Name'>
+                    <i class='user icon'></i>
+                </div>
+                <% } %>
+                <label>Email</label>
+                <div class='ui left labeled icon input'>
+                    <input type='text' placeholder='Email'>
+                    <i class='mail icon'></i>
+                </div>
+                <label>Password</label>
+                <div class='ui left labeled icon input'>
+                    <input type='text' placeholder='Password'>
+                    <i class='lock icon'></i>
+                </div>
+                <% if(authType = 'login') { %>
+                <a class='ui submit button'>Login</a>
+                <a class='ui button' href='/signup'>Signup</a>
+                <% } else { %>
+                <label>Confirm Password</label>
+                <div class='ui left labeled icon input'>
+                    <input type='text' placeholder='Password'>
+                    <i class='lock icon'></i>
+                </div>
+                <a class='ui submit button'>Signup</a>
+                <% } %>
+            </div>
+        </div>
+    </body>
+</html>

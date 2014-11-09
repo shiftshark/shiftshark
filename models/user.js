@@ -20,7 +20,7 @@ var userSchema = mongoose.Schema({
   employer: {
     type: mongoose.Schema.ObjectId,
     ref: 'Employer'
-  },
+  }
 });
 
 userSchema.plugin(passportLocalMongoose);
