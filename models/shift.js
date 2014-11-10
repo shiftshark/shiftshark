@@ -19,7 +19,7 @@ var timestamps = require('mongoose-times');
  *
  * startDate:    the first day that this shift occurs
  *
- * endDate:      the last day that this shift occurs 
+ * endDate:      the last day that this shift occurs
  *               if null, this shift is indefinitely recurring
  *
  * trading:      true if this shift is offered for trading and can be claimed by another user
@@ -67,6 +67,7 @@ var shiftSchema = mongoose.Schema({
   },
   endDate: {
     type: Date,
+    default: null, // null = indefinitely recurring
     required: true
   },
   trading: {
@@ -80,9 +81,21 @@ shiftSchema.plugin(timestamps);
 var Shift = mongoose.model('Shift', shiftSchema);
 
 
-// validate that the end time is after the start time
+// validate that the end time/date is after the start time/date
 Shift.schema.path('endTime').validate(function (endTime) {
   return endTime > this.startTime;
+});
+
+Shift.schema.path('startTime').validate(function (startTime) {
+  return startTime < this.endTime;
+});
+
+Shift.schema.path('startDate').validate(function (startDate) {
+  return this.endDate === null || startDate < this.endDate;
+});
+
+Shift.schema.path('endDate').validate(function (endDate) {
+  return endDate === null || endDate > this.startDate;
 });
 
 module.exports = Shift;
