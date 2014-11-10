@@ -15,7 +15,15 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
 
+/////////////
+// Schemas //
+/////////////
+
 var User = require('./models/user').User;
+
+////////////////
+// CONNECT DB //
+////////////////
 
 var connection_string = 'localhost/shiftshark';
 
@@ -27,6 +35,15 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 }
 
 var db = mongoose.connect(connection_string);
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+
+db.once('open', function callback () {
+  app.listen(process.env.OPENSHIFT_NODEJS_PORT || 8080,
+    process.env.OPENSHIFT_NODEJS_IP);
+});
 
 // User authentication with passport-local-mongoose
 passport.use(new LocalStrategy(User.authenticate()));
@@ -87,11 +104,6 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
-var port = process.env.OPENSHIFT_NODEJS_PORT;
-var ip = process.env.OPENSHIFT_NODEJS_IP;
-
-app.listen(port || 8080, ip);
 
 module.exports = app;
 
