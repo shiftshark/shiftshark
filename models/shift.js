@@ -24,6 +24,8 @@ var timestamps = require('mongoose-times');
  *
  * trading:      true if this shift is offered for trading and can be claimed by another user
  *
+ * ---
+ *
  * created:      timestamp denoting when shift was initially created
  *
  * lastUpdated:  timestamp denoting when shift was last updated
@@ -41,6 +43,16 @@ var shiftSchema = mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Employee',
     default: null,
+    required: true
+  },
+  schedule: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Schedule',
+    required: true
+  },
+  position: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Position',
     required: true
   },
   day: {

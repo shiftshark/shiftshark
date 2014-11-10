@@ -19,7 +19,11 @@ var mongoose = require('mongoose');
 // Schemas //
 /////////////
 
-var User = require('./models/user').User;
+var User = require('./models/user');
+var Employee = require('./models/employee');
+var Position = require('./models/position');
+var Schedule = require('./models/schedule');
+var Shift = require('./models/shift');
 
 ////////////////
 // CONNECT DB //
