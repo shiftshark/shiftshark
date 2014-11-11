@@ -15,7 +15,7 @@ var timestamps = require('mongoose-times');
  *
  * position:     the position worked during this shift
  *
- * parent:       a common Shift ID for associated shifts
+ * next:         the next shift in a series of related shifts
  *
  * day:          the day of this shift, as an integer between 0 and 6 (0 -> Monday, etc)
  *
@@ -61,9 +61,10 @@ var shiftSchema = mongoose.Schema({
     ref: 'Position',
     required: true
   },
-  parent: {
+  next: {
     type: mongoose.Schema.ObjectId,
     ref: 'Shift',
+    default: null,
     required: true
   },
   day: {
@@ -97,14 +98,6 @@ var shiftSchema = mongoose.Schema({
     type: Boolean,
     default: false,
     required: true
-  }
-});
-
-
-shiftSchema.post('init', function (doc) {
-  // set parent to self if unspecified
-  if (!doc.parent) {
-    doc.parent = doc._id;
   }
 });
 
