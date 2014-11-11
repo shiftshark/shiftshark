@@ -2,7 +2,12 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
-// Schedule - A scheduling calendar, typically associated with a single organization.
+/**
+ * Schedule - A scheduling calendar, typically associated with a single organization.
+ *
+ * Author: aandre@mit.edu
+ */
+
 var scheduleSchema = mongoose.Schema({
   name: {
     type: String,

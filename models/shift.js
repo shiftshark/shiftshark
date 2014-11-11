@@ -3,13 +3,19 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-times');
 
-/*
- * SHIFT SCHEMA
+/**
+ * Shift - A recurring time block during which a particular employee works within a schedule.
  *
  * assignee:     the original employee that an employer assigned to the shift
  *               if null, this is an open shift
  *
  * claimant:     the current employee who has claimed this shift
+ *
+ * schedule:     the schedule within which the shift occurs
+ *
+ * position:     the position worked during this shift
+ *
+ * parent:       a common Shift ID for associated shifts
  *
  * day:          the day of this shift, as an integer between 0 and 6 (0 -> Monday, etc)
  *
@@ -30,10 +36,10 @@ var timestamps = require('mongoose-times');
  *
  * lastUpdated:  timestamp denoting when shift was last updated
  *
+ * Authors: gendron@mit.edu, aandre@mit.edu
  */
 
 var shiftSchema = mongoose.Schema({
-  // TODO: make assignee immutable
   assignee: {
     type: mongoose.Schema.ObjectId,
     ref: 'Employee',
@@ -55,6 +61,11 @@ var shiftSchema = mongoose.Schema({
     ref: 'Position',
     required: true
   },
+  parent: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Shift',
+    required: true
+  },
   day: {
     type: Number,
     min: 0,
@@ -64,13 +75,13 @@ var shiftSchema = mongoose.Schema({
   startTime: {
     type: Number,
     min: 0,
-    max: 60*24,
+    max: (60*24 - 1),
     required: true
   },
   endTime: {
     type: Number,
     min: 0,
-    max: 60*24,
+    max: (60*24 - 1),
     required: true
   },
   startDate: {
@@ -89,9 +100,16 @@ var shiftSchema = mongoose.Schema({
   }
 });
 
+
+shiftSchema.post('init', function (doc) {
+  // set parent to self if unspecified
+  if (!doc.parent) {
+    doc.parent = doc._id;
+  }
+});
+
 shiftSchema.plugin(timestamps);
 var Shift = mongoose.model('Shift', shiftSchema);
-
 
 // validate that the end time/date is after the start time/date
 Shift.schema.path('endTime').validate(function (endTime) {

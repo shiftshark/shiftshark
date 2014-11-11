@@ -2,6 +2,12 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
+/**
+ * Employee - A user working within a schedule.
+ *
+ * Author: aandre@mit.edu
+ */
+
 var employeeSchema = mongoose.Schema({
   firstName: {
     type: String,

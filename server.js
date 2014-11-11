@@ -24,6 +24,7 @@ var Employee = require('./models/employee');
 var Position = require('./models/position');
 var Schedule = require('./models/schedule');
 var Shift = require('./models/shift');
+var Availability = require('./models/availability');
 
 ////////////////
 // CONNECT DB //
