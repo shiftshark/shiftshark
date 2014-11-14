@@ -102,12 +102,4 @@ Shift.schema.path('startTime').validate(function (startTime) {
   return startTime < this.endTime;
 });
 
-Shift.schema.path('startDate').validate(function (startDate) {
-  return this.endDate === null || startDate < this.endDate;
-});
-
-Shift.schema.path('endDate').validate(function (endDate) {
-  return endDate === null || endDate > this.startDate;
-});
-
 module.exports = Shift;
