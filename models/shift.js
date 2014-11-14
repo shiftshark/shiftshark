@@ -57,7 +57,7 @@ var shiftSchema = mongoose.Schema({
     required: true
   },
   series: {
-    type: ObjectId,
+    type: mongoose.Schema.ObjectId,
     required: true
   },
   startTime: {
