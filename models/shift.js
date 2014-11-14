@@ -4,9 +4,7 @@ var mongoose = require('mongoose');
 var timestamps = require('mongoose-times');
 
 /**
- * TODO: Revise to fit schema
- *
- * Shift - A recurring time block during which a particular employee works within a schedule.
+ * Shift - A single time block during which a particular employee works within a schedule.
  *
  * assignee:     the original employee that an employer assigned to the shift
  *               if null, this is an open shift
@@ -17,18 +15,13 @@ var timestamps = require('mongoose-times');
  *
  * position:     the position worked during this shift
  *
- * next:         the next shift in a series of related shifts
+ * series:       an identifier linking instances of a recurring shift together
  *
- * day:          the day of this shift, as an integer between 0 and 6 (0 -> Monday, etc)
+ * date:         the date on which this shift occurs
  *
  * startTime:    the number of minutes from midnight (00:00) that this shift begins
  *
  * endTime:      the number of minutes from midnight (00:00) that this shift ends
- *
- * startDate:    the first day that this shift occurs
- *
- * endDate:      the last day that this shift occurs
- *               if null, this shift is indefinitely recurring
  *
  * trading:      true if this shift is offered for trading and can be claimed by another user
  *
@@ -64,8 +57,8 @@ var shiftSchema = mongoose.Schema({
     required: true
   },
   series: {
-    type: Number,
-    required: false
+    type: ObjectId,
+    required: true
   },
   startTime: {
     type: Number,
