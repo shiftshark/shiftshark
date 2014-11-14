@@ -10,7 +10,6 @@
  *   assignee: Employee,
  *   claimant: Employee || null,
  *   position: Position,
- *   series: seriesID,
  *   startTime: [0, 1439],
  *   endTime: [0, 1439],
  *   date: Date,
@@ -59,8 +58,7 @@
  * }
  *
  * Response: {
- *   shift: Shift,
- *   dates: Date[]
+ *   shifts: Shift[]
  * }
  *
  */
@@ -113,7 +111,7 @@
  * }
  *
  * Response: {
- *   shift: Shift
+ *   shifts: Shift[]
  * }
  *
  */
