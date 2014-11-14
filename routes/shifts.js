@@ -1,23 +1,6 @@
 /**
- * METHOD /u/r/i
- *
- * Description:
- *
- * Path Params:
- *
- * Query Args:
- *
- * Request: {
- *
- * }
- *
- * Response: {
- *
- * }
- *
+ * API Specification Authors: aandre@mit.edu, gendron@mit.edu
  */
-
- // -----------------------
 
 /**
  * Shift Object Specification
