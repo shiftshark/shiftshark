@@ -36,15 +36,6 @@ var availabilitySchema = mongoose.Schema({
     min: 0,
     max: (60*24 - 1),
     required: true
-  },
-  startDate: {
-    type: Date,
-    required: true
-  },
-  endDate: {
-    type: Date,
-    default: null, // null = indefinitely recurring
-    required: true
   }
 });
 
@@ -58,14 +49,6 @@ Availability.schema.path('endTime').validate(function (endTime) {
 
 Availability.schema.path('startTime').validate(function (startTime) {
   return startTime < this.endTime;
-});
-
-Availability.schema.path('startDate').validate(function (startDate) {
-  return this.endDate === null || startDate < this.endDate;
-});
-
-Availability.schema.path('endDate').validate(function (endDate) {
-  return endDate === null || endDate > this.startDate;
 });
 
 module.exports = Availability;
