@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ShiftShark Login</title>
+        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
+        <link rel='stylesheet' href='stylesheets/style.css' />
+        <link rel='stylesheet' href='stylesheets/auth.css' />
+        <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
+        <script src='/lib/semantic.min.js'></script>
+        <% if (formType == 'login') { %>
+        <script src='/js/login.js'></script>
+        <% } if(formType == 'employerSignup') { %>
+        <script src='/js/employerSignup.js'></script>
+        <% } if(formType == 'employeeSignup') { %>
+        <script src='/js/employeeSignup.js'></script>
+        <% } %>
+    </head>
+    <body>
+        <div class='abscentered' id='formWrapper'>
+            <div class='ctitle'>
+                ShiftShark
+            </div>
+            <div class='ui form'>
+                <% if (formType == 'login') { %>
+                <%= include authTemplates/login.ejs %>
+                <% } else if(formType == 'employerSignup') { %>
+                <%= include authTemplates/employerSignup.ejs %>
+                <% } else if(formType == 'employeeSignup') { %>
+                <%= include authTemplates/employeeSignup.ejs %>
+                <% } %>
+            </div>
+        </div>
+    </body>
+</html>
