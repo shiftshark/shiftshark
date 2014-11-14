@@ -5,3 +5,7 @@
 .form div {
     padding-bottom: 10px;
 }
+
+#formWrapper {
+    min-width: 560px;
+}
