@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <% if (formType == 'login') { %>
         <title>ShiftShark Login</title>
+        <% } if(formType == 'employerSignup') { %>
+        <title>ShiftShark Signup</title>
+        <% } if(formType == 'employeeSignup') { %>
+        <title>ShiftShark Signup</title>
+        <% } %>
         <link rel='stylesheet' href='stylesheets/semantic.min.css' />
         <link rel='stylesheet' href='stylesheets/style.css' />
         <link rel='stylesheet' href='stylesheets/auth.css' />
@@ -21,13 +27,15 @@
                 ShiftShark
             </div>
             <div class='ui form'>
-                <% if (formType == 'login') { %>
-                <%= include authTemplates/login.ejs %>
-                <% } else if(formType == 'employerSignup') { %>
-                <%= include authTemplates/employerSignup.ejs %>
-                <% } else if(formType == 'employeeSignup') { %>
-                <%= include authTemplates/employeeSignup.ejs %>
-                <% } %>
+                <div id="innerFormWrapper">
+                    <% if (formType == 'login') { %>
+                    <%= include authTemplates/login.ejs %>
+                    <% } else if(formType == 'employerSignup') { %>
+                    <%= include authTemplates/employerSignup.ejs %>
+                    <% } else if(formType == 'employeeSignup') { %>
+                    <%= include authTemplates/employeeSignup.ejs %>
+                    <% } %>
+                </div>
             </div>
         </div>
     </body>
