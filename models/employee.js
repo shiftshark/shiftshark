@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var relationship = require('mongoose-relationship');
 var passportLocalMongoose = require('passport-local-mongoose');
 
 /**
@@ -21,13 +20,11 @@ var employeeSchema = mongoose.Schema({
   },
   schedule: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Schedule',
-    childPath: 'owner'
+    ref: 'Schedule'
   }
 });
 
 employeeSchema.plugin(passportLocalMongoose);
-employeeSchema.plugin(relationship, { relationshipPathName: 'schedule' });
 var Employee = mongoose.model('Employee', employeeSchema);
 
 module.exports = Employee;
