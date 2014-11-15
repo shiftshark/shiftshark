@@ -75,6 +75,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'tests')));
 
 app.use('/', routes);
 app.use('/users', users);
@@ -110,5 +111,21 @@ app.use(function(err, req, res, next) {
     });
 });
 
-module.exports = app;
+/////////////
+// TESTING //
+/////////////
 
+// Clears all data for the current user. Used for testing.
+app.post('/clear', function(req, res){
+  if (req.user === undefined || req.user === null) return res.status(401);
+
+  Shift.remove({assignee: req.user._id}, function(err) {
+    if(err) return res.status(500);
+    Availability.remove({employee: req.user._id}, function(err) {
+      if(err) return res.status(500);
+      return res.status(200).json({});
+    });
+  });
+});
+
+module.exports = app;
