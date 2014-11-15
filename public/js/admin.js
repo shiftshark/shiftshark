@@ -29,6 +29,11 @@ $(document).ready(function() {
 
         }, 'xml');
 
-        $('.fancybox').fancybox();
+        $('.fancybox').fancybox({
+            maxWidth    : 600,
+            fitToView   : false,
+            width       : '70%',
+            height      : '70%',
+        });
     });
 });
