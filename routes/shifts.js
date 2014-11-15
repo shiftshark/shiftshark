@@ -112,7 +112,7 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
   // TEST ME
   // TODO: check permissions
-  var series = new Series({ schedule: req.user.employee.schedule._id });
+  var series = new Series({ schedule: req.user.schedule._id });
   series.save(function(err, _series) {
     if (err) {
       // handle error

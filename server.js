@@ -22,7 +22,6 @@ var mongoose = require('mongoose');
 // Schemas //
 /////////////
 
-var User = require('./models/user');
 var Employee = require('./models/employee');
 var Position = require('./models/position');
 var Schedule = require('./models/schedule');
@@ -57,9 +56,9 @@ db.once('open', function callback () {
 // USER AUTH //
 ///////////////
 
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.use(new LocalStrategy(Employee.authenticate()));
+passport.serializeUser(Employee.serializeUser());
+passport.deserializeUser(Employee.deserializeUser());
 
 var app = express();
 

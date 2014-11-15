@@ -34,7 +34,7 @@ var Position = require('../models/position');
  */
 
 router.get('/', function(req, res) {
-  var schedule = req.user.employee.schedule._id;
+  var schedule = req.user.schedule._id;
   Position.find({ "schedule._id": schedule }, function(err, positions) {
     if (err) {
       // handle error
@@ -90,7 +90,7 @@ router.post('/', function(req, res) {
  */
 
 router.get('/:id', function(req, res) {
-  var schedule = req.user.employee.schedule._id;
+  var schedule = req.user.schedule._id;
   Position.findById(req.params.id, function(err, position) {
     if (err) {
       // handle error

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var passportLocalMongoose = require('passport-local-mongoose');
 
 /**
  * Employee - A user working within a schedule.
@@ -24,7 +25,7 @@ var employeeSchema = mongoose.Schema({
   }
 });
 
-
+employeeSchema.plugin(passportLocalMongoose);
 var Employee = mongoose.model('Employee', employeeSchema);
 
 module.exports = Employee;
