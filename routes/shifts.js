@@ -1,3 +1,12 @@
+var express = require('express');
+var router = express.Router();
+var Shift = require('../models/shift');
+var Employee = require('../models/employee');
+var Avail = require('../models/availability');
+var Series = require('../models/series');
+var Position = require('../models/position');
+
+
 /**
  * API Specification Authors: aandre@mit.edu, gendron@mit.edu
  */
@@ -37,6 +46,42 @@
  *
  */
 
+router.get('/', function(req, res) {
+  // TEST ME
+  // TODO: check permissions
+  var filters = {};
+  var dateFilter = {};
+  if (req.query.trading != undefined) {
+    if (req.query.trading === '1' || req.query.trading === 'true') filters.trading = true;
+    if (req.query.trading === '0' || req.query.trading === 'false') filters.trading = false;
+    return res.status(400).send("Unable to parse 'trading' parameter value.")
+  }
+  if (req.query.assignee) {
+    filters.assignee = req.query.assignee;
+  }
+  if (req.query.claimant) {
+    filters.claimant = req.query.claimant;
+  }
+  if (req.query.startDate) {
+    dateFilter["$gte"] = req.query.startDate;
+  }
+  if (req.query.endDate) {
+    dateFilter["$lte"] = req.query.endDate;
+  }
+  if (req.query.startDate || req.query.endDate) {
+    filters.date = dateFilter;
+  }
+
+  Shift.find(filters, function(err, shifts) {
+    if (err) {
+      // handle error
+    } else {
+      res.json({ shifts: shifts });
+    }
+  });
+});
+
+
 /**
  * POST /shifts/
  *
@@ -62,6 +107,62 @@
  * }
  *
  */
+
+router.post('/', function(req, res) {
+  // TEST ME
+  // TODO: check permissions
+  var series = new Series({});
+  series.save(function(err, _series) {
+    if (err) {
+      // handle error
+    } else {
+      if (req.body.startDate || req.body.endDate) {
+        // TODO?: parse these dates.
+        var firstDate = req.body.startDate || req.body.shift.date;
+        var lastDate = req.body.endDate || req.body.shift.date;
+        var endDate = new Date(lastDate);
+
+        var shiftTemplate = req.body.shift;
+        var shiftTemplate.series = _series._id;
+        var allShifts = [];
+        var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
+
+        for (var currentDate = new Date(firstDate); currentDate < endDate; currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+          shiftTemplate.date = currentDate;
+          var newShift = new Shift(shiftTemplate);
+          newShift.save(function(err, _shift) {
+            if (err) {
+              // handle error
+            } else {
+              allShifts.push(_shift);
+              if(endDate - currentDate < 7 * 24 * 60 * 60 * 1000) {
+                res.json({ shifts: allShifts });
+              }
+            }
+          });
+        }
+
+      } else {
+        // create a single shift
+        var newShift = new Shift(req.body.shift);
+        newShift.save(function(err, shift) {
+          if (err) {
+            // handle error
+          } else {
+            shift.populate('assignee claimant schedule position').exec(function(err, _shift) {
+              if (err) {
+                // handle error
+              } else {
+                res.json({ shifts: [_shift] });
+              }
+            });
+          }
+        });
+      }
+    }
+  });
+});
+
 
 /**
  * GET /shifts/:id
@@ -137,3 +238,37 @@
  *   * startDate <= shift.date; endDate >= shift.date
  *
  */
+
+router.delete('/:id', function(req, res) {
+  // TEST ME
+  // TODO: check permissions
+  if (req.query.startDate || req.query.endDate) {
+    Shift.findById(req.params.id, function(err, shift) {
+      if (err) {
+        // handle error
+      } else {
+        var startDate = req.query.startDate || shift.date;
+        var endDate = req.query.endDate || shift.date;
+        var filters = {series: shift.series};
+        filters.date = {"$gte": startDate, "$lte": endDate};
+        Shift.remove(filters, function(err, shifts) {
+          if (err) {
+            // handle error
+          } else {
+            var shiftIds = shifts.map(function(obj) { return obj._id; });
+            res.json({ shiftIds: shiftIds });
+          }
+        });
+      }
+
+    });
+  } else {
+    Shift.remove({ _id: req.params.id }, function(err, shift) {
+      if (err) {
+        // handle error
+      } else {
+        res.json({ shiftIds: [shift._id] });
+      }
+    });
+  }
+});
