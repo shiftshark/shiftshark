@@ -1,3 +1,10 @@
+var express = require('express');
+var router = express.Router();
+var Shift = require('../models/shift');
+var Employee = require('../models/employee');
+var Avail = require('../models/availability');
+var Series = require('../models/series');
+var Position = require('../models/position');
 /**
  * API Specification Authors: aandre@mit.edu, gendron@mit.edu
  */
@@ -120,3 +127,5 @@
  * }
  *
  */
+
+ module.exports = router;

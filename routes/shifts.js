@@ -124,7 +124,7 @@ router.post('/', function(req, res) {
         var endDate = new Date(lastDate);
 
         var shiftTemplate = req.body.shift;
-        var shiftTemplate.series = _series._id;
+        shiftTemplate.series = _series._id;
         var allShifts = [];
         var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
 
@@ -344,3 +344,5 @@ router.delete('/:id', function(req, res) {
     });
   }
 });
+
+module.exports = router;
