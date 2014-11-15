@@ -1,5 +1,14 @@
+var express = require('express');
+var router = express.Router();
+var Shift = require('../models/shift');
+var Employee = require('../models/employee');
+var Avail = require('../models/availability');
+var Series = require('../models/series');
+var Position = require('../models/position');
+
 /**
  * API Specification Author: aandre@mit.edu
+ * API Implementation Author: gendron@mit.edu
  */
 
 /**
@@ -16,13 +25,24 @@
  *
  * Description: Retrieves all positions.
  *
- * Permissions: All users can retrieve positions.
+ * Permissions: All users can retrieve positions in their schedule.
  *
  * Response: {
  *   positions: Position[]
  * }
  *
  */
+
+router.go('/', function(req, res) {
+  var schedule = req.user.employee.schedule._id;
+  Position.find({ "schedule._id": schedule }, function(err, positions) {
+    if (err) {
+      // handle error
+    } else {
+      res.json({ positions: positions });
+    }
+  });
+});
 
  /**
  * POST /positions/
@@ -41,12 +61,24 @@
  *
  */
 
+router.post('/', function(req, res) {
+  //TODO: check permissions
+  var position = new Position(req.body.position);
+  position.save(function(err, _position) {
+    if (err) {
+      // handle error
+    } else {
+      res.json({ position: _position });
+    }
+  });
+});
+
  /**
  * GET /positions/:id
  *
  * Description: Retrieve the specific position.
  *
- * Permissions: All users can retrieve positions.
+ * Permissions: All users can retrieve positions in their schedule.
  *
  * Path Params:
  *   id - Availibility identifier
@@ -56,6 +88,21 @@
  * }
  *
  */
+
+router.get('/:id', function(req, res) {
+  var schedule = req.user.employee.schedule._id;
+  Position.findById(req.params.id, function(err, position) {
+    if (err) {
+      // handle error
+    } else {
+      if(position.schedule._id == schedule) {
+        res.json({ position: position });
+      } else {
+        res.status(403).send('Permission denied. This position is outside of your schedule.');
+      }
+    }
+  });
+});
 
  /**
  * PUT /positions/:id
@@ -77,6 +124,17 @@
  *
  */
 
+router.put('/:id', function(req, res) {
+  // TODO: check permissions
+  Position.findOneAndUpdate(req.params.id, req.body.position, function(err, position) {
+    if (err) {
+      // handle error
+    } else {
+      res.json({ position: position });
+    }
+  });
+});
+
  /**
  * DELETE /positions/:id
  *
@@ -88,7 +146,18 @@
  *   id - Availibility identifier
  *
  * Response: {
- *   PositionId: PositionID
+ *   positionId: PositionID
  * }
  *
  */
+
+router.delete('/:id', function(req, res) {
+  // TODO: check permissions
+  Position.remove({ _id: req.params.id }, function(err, position) {
+    if (err) {
+      // handle error
+    } else {
+      res.json({ positionId: req.params.id });
+    }
+  });
+});
