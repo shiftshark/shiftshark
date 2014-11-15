@@ -9,6 +9,7 @@ var Position = require('../models/position');
 
 /**
  * API Specification Authors: aandre@mit.edu, gendron@mit.edu
+ * API Implementation Author: gendron@mit.edu
  */
 
 /**
@@ -181,6 +182,21 @@ router.post('/', function(req, res) {
  * }
  *
  */
+
+router.get('/:id', function(req, res) {
+  // TEST ME
+  // TODO: check permissions
+  Shift.findById(req.params.id, function(err, shift) {
+    Shift.find({ series: shift.series }, function(err, shifts) {
+      var dates = shifts.map(function(obj) { return obj.date; });
+      res.json({
+        shift: shift,
+        startDate: Math.min(dates),
+        endDate: Math.max(dates)
+      });
+    });
+  });
+});
 
 /**
  * PUT /shifts/:id
