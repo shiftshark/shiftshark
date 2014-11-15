@@ -5,7 +5,7 @@
 /**
  * Position Object Specification
  *
- * Avail: {
+ * Position: {
  *   _id: PositionID,
  *   name: String
  * }
