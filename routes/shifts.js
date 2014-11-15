@@ -136,7 +136,7 @@ router.post('/', function(req, res) {
               // handle error
             } else {
               allShifts.push(_shift);
-              if(endDate - currentDate < 7 * 24 * 60 * 60 * 1000) {
+              if(endDate - currentDate < millisecsInWeek) {
                 res.json({ shifts: allShifts });
               }
             }
@@ -221,7 +221,8 @@ router.get('/:id', function(req, res) {
  *   * startTime must occur before endTime
  *   * all fields immutable (ingored) except claimant, startTime, endTime, trading
  *   * adjustStart <= startDate of series; adjustEnd >= startDate of series
- *   * request body ignored if query params specified
+ *   * adjustStart and adjustEnd ignored if trade specified
+ *   * request body ignored if any query params specified
  *
  * Request: {
  *   shift: (optional) Shift
@@ -232,6 +233,61 @@ router.get('/:id', function(req, res) {
  * }
  *
  */
+
+ router.put('/:id', function(req, res) {
+  // TEST ME
+  // TODO: check permissions
+  if (req.query.adjustStart || req.query.adjustEnd) {
+    // TODO?: parse these dates.
+    var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
+    var firstDate = req.body.startDate || req.body.shift.date + millisecsInWeek;
+    var lastDate = req.body.endDate || req.body.shift.date - millisecsInWeek;
+    var endDate = new Date(lastDate);
+    var allShifts = [];
+
+    Shift.findById(req.params.id, function(err, shiftTemplate) {
+
+      for (var currentDate = new Date(firstDate); currentDate <= endDate; currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+        shiftTemplate.date = currentDate;
+        var newShift = new Shift(shiftTemplate);
+        newShift.save(function(err, _shift) {
+          if (err) {
+            // handle error
+          } else {
+            allShifts.push(_shift);
+            if(endDate - currentDate < millisecsInWeek) {
+              res.json({ shifts: allShifts });
+            }
+          }
+        });
+      }
+    });
+
+  } else {
+    if (req.query.trade) {
+      if (req.query.trade == "offer") {
+        doc = { trading: true };
+      } else if (req.query.trade == "claim") {
+        doc = { trading: false, claimant: req.user._id };
+      }
+    } else {
+      var update = req.body.shift;
+      var doc = {
+        trading: update.trading,
+        claimant: update.claimant,
+        startTime: update.startTime,
+        endTime: update.endTime
+      };
+    }
+    Shift.findOneAndUpdate({ _id: req.params.id }, doc, function(err, shift) {
+      if (err) {
+        // handle error
+      } else {
+        res.json({ shifts: [shift] });
+      }
+    });
+  }
+ });
 
 /**
  * DELETE /shifts/:id
