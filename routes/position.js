@@ -33,7 +33,7 @@ var Position = require('../models/position');
  *
  */
 
-router.go('/', function(req, res) {
+router.get('/', function(req, res) {
   var schedule = req.user.employee.schedule._id;
   Position.find({ "schedule._id": schedule }, function(err, positions) {
     if (err) {
