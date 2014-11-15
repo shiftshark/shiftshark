@@ -6,6 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/routes');
+var avails = require('./routes/avails');
+var position = require('./routes/position');
+var shifts = require('./routes/shifts');
 var users = require('./routes/users');
 
 var session = require('express-session');
@@ -50,7 +53,10 @@ db.once('open', function callback () {
     process.env.OPENSHIFT_NODEJS_IP);
 });
 
-// User authentication with passport-local-mongoose
+///////////////
+// USER AUTH //
+///////////////
+
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -77,7 +83,14 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'tests')));
 
+/////////////
+// ROUTING //
+/////////////
+
 app.use('/', routes);
+app.use('/shifts', shifts);
+app.use('/avails', avails);
+app.use('/position', position);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
