@@ -82,7 +82,7 @@
  */
 
 /**
- * POST /shifts/:id
+ * PUT /shifts/:id
  *
  * Description: Modify specified shift or modify range over which shift series occurs.
  *

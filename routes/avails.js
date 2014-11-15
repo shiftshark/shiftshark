@@ -81,7 +81,7 @@
  */
 
  /**
- * POST /avails/:id
+ * PUT /avails/:id
  *
  * Description: Modify the specified availability.
  *
