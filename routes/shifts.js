@@ -219,7 +219,7 @@ router.get('/:id', function(req, res) {
  * Notes:
  *   * claimant: (optional) must not have conflicting shift
  *   * startTime must occur before endTime
- *   * all fields immutable (ingored) except claimant, startTime, endTime, trading
+ *   * all fields immutable (ingored) except claimant, trading
  *   * adjustStart <= startDate of series; adjustEnd >= startDate of series
  *   * adjustStart and adjustEnd ignored if trade specified
  *   * request body ignored if any query params specified
@@ -274,9 +274,7 @@ router.get('/:id', function(req, res) {
       var update = req.body.shift;
       var doc = {
         trading: update.trading,
-        claimant: update.claimant,
-        startTime: update.startTime,
-        endTime: update.endTime
+        claimant: update.claimant
       };
     }
     Shift.findOneAndUpdate({ _id: req.params.id }, doc, function(err, shift) {
