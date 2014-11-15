@@ -157,7 +157,13 @@ router.delete('/:id', function(req, res) {
     if (err) {
       // handle error
     } else {
-      res.json({ positionId: req.params.id });
+      Shift.remove({ "position._id": req.params.id }, function(err, shift) {
+        if (err) {
+          // handle error
+        } else {
+          res.json({ positionId: req.params.id });
+        }
+      });
     }
   });
 });
