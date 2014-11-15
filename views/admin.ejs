@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ShiftShark</title>
+        <link rel='shortcut icon' href='/images/favicon.ico'>
+        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
+        <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
+        <link rel='stylesheet' href='stylesheets/style.css' />
+        <link rel='stylesheet' href='stylesheets/main.css' />
+        <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
+        <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
+        <script src='/lib/semantic.min.js'></script>
+        <script src='/js/admin.js'></script>
+    </head>
+    <body>
+        <div class='ui centered inverted black menu navbar'>
+            <div class='left item'>
+                <div class='fleft'>
+                    <img src='images/icon.svg' class='svg' id='mainIcon'>
+                </div>
+                <div class='fright ntitle'>ShiftShark</div>
+            </div>
+            <div class='right item'>
+                <a class='left item' id='logout'>LOGOUT</a>
+                <a class='right fancybox item' href='#profileSettings' id='profile'>MY PROFILE</a>
+            </div>
+        </div>
+        <div class='ui adminOptions menu'>
+            <div class='right item'>
+                <div class='ui inverted black button'>
+                    Employee Settings
+                </div>
+                <div class='ui inverted black button'>
+                    + Role
+                </div>
+            </div>
+        </div>
+        <div id='profileSettings' style='display:none;'>
+            <%= include modals/profileSettings.ejs %>
+        </div>
+    </body>
+</html>

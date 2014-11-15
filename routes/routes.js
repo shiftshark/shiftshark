@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    res.render('auth', {formType:"login"});
+    res.render('admin', {isAdmin:true});
 });
 
 router.get('/signup', function(req, res) {

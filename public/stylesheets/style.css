@@ -5,6 +5,10 @@ body {
     min-width: 650px;
 }
 
+.centered {
+    margin: 0px auto !important;
+}
+
 .ctitle {
     font-family: "HelveticaNeue-UltraLight", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Lucida Grande", sans-serif;
     font-size: 70px !important;
