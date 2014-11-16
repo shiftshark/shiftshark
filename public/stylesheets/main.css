@@ -103,3 +103,13 @@ label.colon {
 .time.fields {
     margin-left: 10px !important;
 }
+
+.vcentered {
+    -webkit-transform: translateY(50%);
+}
+
+@-moz-document url-prefix() { 
+    .abscentered {
+        transform: translateY(50%);
+    }
+}
