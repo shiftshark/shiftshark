@@ -84,3 +84,5 @@ var Schedule = require('../models/schedule');
  * }
  *
  */
+
+ module.exports = router;
