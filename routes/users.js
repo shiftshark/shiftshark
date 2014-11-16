@@ -52,41 +52,18 @@ router.post('/employers', function(req, res) {
       // handle error
     } else {
       var newSchedule = new Schedule({ name: req.body.schedule_name, owner: user._id });
-      newSchedule.save(function(err) {
+      newSchedule.save(function(err, schedule) {
         if (err) {
           // handle error
         } else {
-          res.status(200);
-        }
-      });
-    }
-  });
-});
-
-router.get('/test', function(req, res) {
-  // TEST ME
-  // TODO: validate
-  var userAttributes = {
-    firstName: "first",
-    lastName: "last",
-    username: req.query.username
-  };
-  Employee.register(new Employee(userAttributes), "password", function(err, user) {
-    if (err) {
-      // handle error
-    } else {
-      var newSchedule = new Schedule({ name: "workplace", owner: user._id });
-      newSchedule.save(function(err, schedule) {
-        if (err) {
-          res.send(err);
-        } else {
-          Employee.findById(user._id, function(err, employee) {
+          user.schedule = schedule;
+          user.save(function(err) {
             if (err) {
-              res.send(err);
-            } else {
-              res.send({ user: employee, schedule: schedule });
+              // handle err
+            } else{
+              res.status(200);
             }
-          })
+          });
         }
       });
     }
@@ -136,7 +113,7 @@ router.post('/employees', function(req, res) {
         replyTo: 'shiftshark@mit.edu',
         subject: 'ShiftShark Employee Account',
         text: body
-      })
+      });
       res.send(200);
     }
   });
@@ -158,11 +135,11 @@ router.post('/employees', function(req, res) {
 router.get('/employees', function(req, res) {
   // TEST ME
   // check permissions
-  Employee.find({ "schedule._id": req.user.schedule._id }, function(err, employees) {
+  Employee.find({ schedule: req.user.schedule._id }, function(err, employees) {
     if (err) {
       // handle error
     } else {
-      req.json({ employees: employees });
+      return res.json({ employees: employees });
     }
   });
 });
@@ -190,7 +167,7 @@ router.get('/:id', function(req, res) {
     if (err) {
       // handle error
     } else {
-      res.json({ employee: employee });
+      return res.json({ employee: employee });
     }
   });
 });
