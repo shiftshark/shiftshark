@@ -41,28 +41,30 @@ var words = require('random-words');
  */
 
 router.post('/employers', function(req, res) {
-  // TEST ME
   // TODO: validate
   var userAttributes = {
     firstName: req.body.first_name,
     lastName: req.body.last_name,
     username: req.body.email
   };
+  // create Employee
   Employee.register(new Employee(userAttributes), req.body.password, function(err, user) {
     if (err) {
-      // handle error
+      res.status(400).send('USER_EXISTS');
     } else {
+      // create Schedule owner by this employee
       var newSchedule = new Schedule({ name: req.body.schedule_name, owner: user._id });
       newSchedule.save(function(err, schedule) {
         if (err) {
-          // handle error
+          res.status(500).end();
         } else {
+          // link employee back to schedule
           user.schedule = schedule;
           user.save(function(err) {
             if (err) {
-              // handle err
-            } else{
-              res.status(200);
+              res.status(500).end();
+            } else {
+              res.status(200).end();
             }
           });
         }
