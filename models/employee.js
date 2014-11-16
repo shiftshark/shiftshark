@@ -27,4 +27,8 @@ var employeeSchema = mongoose.Schema({
 employeeSchema.plugin(passportLocalMongoose);
 var Employee = mongoose.model('Employee', employeeSchema);
 
+Employee.schema.path('username').validate(function(username) {
+  return /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/.test(username);
+}, 'malformed email');
+
 module.exports = Employee;
