@@ -35,7 +35,7 @@ var Position = require('../models/position');
 
 router.get('/', function(req, res) {
   var schedule = req.user.schedule._id;
-  Position.find({ "schedule._id": schedule }, function(err, positions) {
+  Position.find({ schedule: schedule }, function(err, positions) {
     if (err) {
       // handle error
     } else {
@@ -157,7 +157,7 @@ router.delete('/:id', function(req, res) {
     if (err) {
       // handle error
     } else {
-      Shift.remove({ "position._id": req.params.id }, function(err, shift) {
+      Shift.remove({ position: req.params.id }, function(err, shift) {
         if (err) {
           // handle error
         } else {
