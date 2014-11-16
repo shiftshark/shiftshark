@@ -63,30 +63,6 @@ router.post('/employers', function(req, res) {
   });
 });
 
-router.get('/test', function(req, res) {
-  // TEST ME
-  // TODO: validate
-  var userAttributes = {
-    firstName: "first",
-    lastName: "last",
-    username: "email@ex.com"
-  };
-  Employee.register(new Employee(userAttributes), "password", function(err, user) {
-    if (err) {
-      // handle error
-    } else {
-      var newSchedule = new Schedule({ name: "workplace", owner: user._id });
-      newSchedule.save(function(err) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.send(user);
-        }
-      });
-    }
-  });
-});
-
  /**
  * POST /users/employees/
  *
