@@ -13,11 +13,13 @@ router.get('/signup', function(req, res) {
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
-      res.send(err);
+      res.status(500).end();
+    } if (!user) {
+      res.status(401).send(info.message);
     } else {
-      req.logIn(user, function(err) {
+      req.login(user, function(err) {
         if (err) {
-          res.send(err);
+          res.status(500).end();
         } else {
           res.status(200).end();
         }
