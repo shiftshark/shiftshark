@@ -4,9 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
 
 var session = require('express-session');
-var passport = require('passport')
+var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var mongodb = require('mongodb');
@@ -46,12 +47,6 @@ db.once('open', function callback () {
     process.env.OPENSHIFT_NODEJS_IP);
 });
 
-///////////
-// EMAIL //
-///////////
-
-
-
 ///////////////
 // USER AUTH //
 ///////////////
@@ -59,6 +54,10 @@ db.once('open', function callback () {
 passport.use(new LocalStrategy(Employee.authenticate()));
 passport.serializeUser(Employee.serializeUser());
 passport.deserializeUser(Employee.deserializeUser());
+
+/////////////
+// EXPRESS //
+/////////////
 
 var app = express();
 
@@ -92,6 +91,27 @@ app.use('/avails', require('./routes/avails'));
 app.use('/position', require('./routes/position'));
 app.use('/users', require('./routes/users'));
 
+///////////
+// EMAIL //
+///////////
+
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'shiftsharknoreply@gmail.com',
+      pass: 'fjfjfjfjsharkFj'
+    }
+});
+
+app.use(function (req, res, next) {
+  res.mailer = transporter;
+  next();
+});
+
+////////////////////
+// ERROR HANDLING //
+////////////////////
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -122,6 +142,7 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
+
 
 /////////////
 // TESTING //
