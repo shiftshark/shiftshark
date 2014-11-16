@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Manual Tests</title>
+    </head>
+    <body>
+        <script src="/lib/jquery-2.1.1.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                // Employer Signup
+                $.ajax({
+                    url : '/users/employers',
+                    type: 'POST',
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                      first_name: "Andre",
+                      last_name: "Aboulian",
+                      email: "aandre@mit.edu",
+                      schedule_name: "My Schedule",
+                      password: "thisPasswd"
+                    }),
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // Employer Login
+                $.ajax({
+                    url : '/login',
+                    type: 'POST',
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                      username: "aandre@mit.edu",
+                      password: "thisPasswd"
+                    }),
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // Employee Creation (1)
+                $.ajax({
+                    url : '/users/employees',
+                    type: 'POST',
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                      first_name: "Employee",
+                      last_name: "Uno",
+                      email: "boolean@mit.edu",
+                    }),
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // Employee Creation (2)
+                $.ajax({
+                    url : '/users/employees',
+                    type: 'POST',
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                      first_name: "Employee",
+                      last_name: "Dos",
+                      email: "aboulian@mit.edu",
+                    }),
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // Get all Employees (as employer)
+                $.ajax({
+                    url : '/users/employees/',
+                    type: 'GET',
+                    async: false,
+                    contentType: "application/json",
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // Get specific employee (as employer)
+                $.ajax({
+                    url : '/users/54685fbea726c97aedfc74eb',
+                    type: 'GET',
+                    async: false,
+                    contentType: "application/json",
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // logout
+                $.ajax({
+                    url : '/logout',
+                    type: 'POST',
+                    async: false,
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // login as employee
+                $.ajax({
+                    url : '/login',
+                    type: 'POST',
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                      username: "boolean@mit.edu",
+                      password: "belowslavebuildingwenthand"
+                    }),
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // Get all Employees (as employee, unauth)
+                $.ajax({
+                    url : '/users/employees/',
+                    type: 'GET',
+                    async: false,
+                    contentType: "application/json",
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // Get self (as employee, authorized)
+                $.ajax({
+                    url : '/users/54685fbea726c97aedfc74eb',
+                    type: 'GET',
+                    async: false,
+                    contentType: "application/json",
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+                // Get specific Employee (as employee, unauth)
+                $.ajax({
+                    url : '/users/54685fbda726c97aedfc74e9',
+                    type: 'GET',
+                    async: false,
+                    contentType: "application/json",
+                    success: function (result, status, xhr) {
+                        console.log(result);
+                    }
+                });
+
+            });
+        </script>
+    </body>
+</html>

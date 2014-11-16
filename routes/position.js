@@ -34,8 +34,8 @@ var Position = require('../models/position');
  */
 
 router.get('/', function(req, res) {
-  var schedule = req.user.employee.schedule._id;
-  Position.find({ "schedule._id": schedule }, function(err, positions) {
+  var schedule = req.user.schedule._id;
+  Position.find({ schedule: schedule }, function(err, positions) {
     if (err) {
       // handle error
     } else {
@@ -90,7 +90,7 @@ router.post('/', function(req, res) {
  */
 
 router.get('/:id', function(req, res) {
-  var schedule = req.user.employee.schedule._id;
+  var schedule = req.user.schedule._id;
   Position.findById(req.params.id, function(err, position) {
     if (err) {
       // handle error
@@ -157,7 +157,13 @@ router.delete('/:id', function(req, res) {
     if (err) {
       // handle error
     } else {
-      res.json({ positionId: req.params.id });
+      Shift.remove({ position: req.params.id }, function(err, shift) {
+        if (err) {
+          // handle error
+        } else {
+          res.json({ positionId: req.params.id });
+        }
+      });
     }
   });
 });

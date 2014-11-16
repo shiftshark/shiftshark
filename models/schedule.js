@@ -15,7 +15,7 @@ var scheduleSchema = mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User',
+    ref: 'Employee',
     required: true
   }
 });

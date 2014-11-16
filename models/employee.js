@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var passportLocalMongoose = require('passport-local-mongoose');
 
 /**
  * Employee - A user working within a schedule.
@@ -19,12 +20,15 @@ var employeeSchema = mongoose.Schema({
   },
   schedule: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Schedule',
-    required: true
+    ref: 'Schedule'
   }
 });
 
-
+employeeSchema.plugin(passportLocalMongoose);
 var Employee = mongoose.model('Employee', employeeSchema);
+
+Employee.schema.path('username').validate(function(username) {
+  return /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/.test(username);
+}, 'malformed email');
 
 module.exports = Employee;
