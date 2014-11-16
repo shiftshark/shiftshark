@@ -6,6 +6,7 @@ var words = require('random-words');
 
 /**
  * API Specification Authors: aandre@mit.edu, gendron@mit.edu
+ * Authors: gendron@mit.edu, aandre@mit.edu
  */
 
 /**
