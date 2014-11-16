@@ -63,6 +63,30 @@ router.post('/employers', function(req, res) {
   });
 });
 
+router.get('/test', function(req, res) {
+  // TEST ME
+  // TODO: validate
+  var userAttributes = {
+    firstName: "first",
+    lastName: "last",
+    username: "email@ex.com"
+  };
+  Employee.register(new Employee(userAttributes), "password", function(err, user) {
+    if (err) {
+      // handle error
+    } else {
+      var newSchedule = new Schedule({ name: "workplace", owner: user._id });
+      newSchedule.save(function(err) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(user);
+        }
+      });
+    }
+  });
+});
+
  /**
  * POST /users/employees/
  *
@@ -88,8 +112,8 @@ router.post('/employees', function(req, res) {
   var userAttributes = {
     firstName: req.body.first_name,
     lastName: req.body.last_name,
-    username: req.body.email
-    schedule: req.user.schedule._id; // use employer's schedule
+    username: req.body.email,
+    schedule: req.user.schedule._id // use employer's schedule
   };
   var generatedPassword = words({ min: 3, max: 5, join: '' });
   Employee.register(new Employee(userAttributes), generatedPassword, function(err, user) {
