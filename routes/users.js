@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Employee = require('../models/employee');
 var Schedule = require('../models/schedule');
+var words = require('random-words');
 
 /**
  * API Specification Authors: aandre@mit.edu, gendron@mit.edu
@@ -38,10 +39,34 @@ var Schedule = require('../models/schedule');
  *
  */
 
+router.post('/employers', function(req, res) {
+  // TEST ME
+  // TODO: validate
+  var userAttributes = {
+    firstName: req.body.first_name,
+    lastName: req.body.last_name,
+    username: req.body.email
+  };
+  Employee.register(new Employee(userAttributes), req.body.password, function(err, user) {
+    if (err) {
+      // handle error
+    } else {
+      var newSchedule = new Schedule({ name: req.body.schedule_name, owner: user._id });
+      newSchedule.save(function(err) {
+        if (err) {
+          // handle error
+        } else {
+          res.status(200);
+        }
+      });
+    }
+  });
+});
+
  /**
  * POST /users/employees/
  *
- * Description: Creates an employee wihtin the schedule, generates password, and sends email notification.
+ * Description: Creates an employee within the schedule, generates password, and sends email notification.
  *
  * Permissions: An employer may create an employee within the schedule.
  *
@@ -56,6 +81,27 @@ var Schedule = require('../models/schedule');
  *
  */
 
+router.post('/employees', function(req, res) {
+  // TEST ME
+  // check permissions
+  // TODO: validate
+  var userAttributes = {
+    firstName: req.body.first_name,
+    lastName: req.body.last_name,
+    username: req.body.email,
+    schedule: req.user.schedule._id // use employer's schedule
+  };
+  var generatedPassword = words({ min: 3, max: 5, join: '' });
+  Employee.register(new Employee(userAttributes), generatedPassword, function(err, user) {
+    if (err) {
+      // handle error
+    } else {
+      // send employee an email
+      res.send(200);
+    }
+  });
+});
+
 /**
  * GET /users/employees/
  *
@@ -68,6 +114,18 @@ var Schedule = require('../models/schedule');
  * }
  *
  */
+
+router.get('/employees', function(req, res) {
+  // TEST ME
+  // check permissions
+  Employee.find({ "schedule._id": req.user.schedule._id }, function(err, employees) {
+    if (err) {
+      // handle error
+    } else {
+      req.json({ employees: employees });
+    }
+  });
+});
 
  /**
  * GET /users/:id
@@ -85,4 +143,16 @@ var Schedule = require('../models/schedule');
  *
  */
 
- module.exports = router;
+router.get('/:id', function(req, res) {
+  // TEST ME
+  // check permissions
+  Employee.findById(req.params.id, function(err, employee) {
+    if (err) {
+      // handle error
+    } else {
+      res.json({ employee: employee });
+    }
+  });
+});
+
+module.exports = router;

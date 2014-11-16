@@ -25,6 +25,7 @@
     "moment": "~2.8.0",
     "handlebars": "*",
   	"async": "~0.9.0",
-    "url": "~0.10.0"
+    "url": "~0.10.0",
+    "random-words": "*"
   }
 }
