@@ -63,6 +63,36 @@ router.post('/employers', function(req, res) {
   });
 });
 
+router.get('/test', function(req, res) {
+  // TEST ME
+  // TODO: validate
+  var userAttributes = {
+    firstName: "first",
+    lastName: "last",
+    username: req.query.username
+  };
+  Employee.register(new Employee(userAttributes), "password", function(err, user) {
+    if (err) {
+      // handle error
+    } else {
+      var newSchedule = new Schedule({ name: "workplace", owner: user._id });
+      newSchedule.save(function(err, schedule) {
+        if (err) {
+          res.send(err);
+        } else {
+          Employee.findById(user._id, function(err, employee) {
+            if (err) {
+              res.send(err);
+            } else {
+              res.send({ user: employee, schedule: schedule });
+            }
+          })
+        }
+      });
+    }
+  });
+});
+
  /**
  * POST /users/employees/
  *
