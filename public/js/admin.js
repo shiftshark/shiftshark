@@ -28,12 +28,16 @@ $(document).ready(function() {
             $img.replaceWith($svg);
 
         }, 'xml');
-
-        $('.fancybox').fancybox({
-            maxWidth    : 600,
-            fitToView   : false,
-            width       : '70%',
-            height      : '70%',
-        });
     });
+
+    $('.fancybox').fancybox({
+        maxWidth    : 700,
+        minWidth    : 700,
+        fitToView   : false,
+        autoSize    : true,
+        scrolling   : 'no'
+    });
+
+    $('.ui.radio.checkbox').checkbox();
+    $('.ui.dropdown').dropdown();
 });

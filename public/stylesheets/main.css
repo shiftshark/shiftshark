@@ -7,6 +7,10 @@ body {
     text-align: center;
 }
 
+.right-justified {
+    text-align: right !important;
+}
+
 .navbar {
     top: 0;
     left: 0;
@@ -42,4 +46,60 @@ body {
 
 .fright {
     float: right;
+}
+
+.modalContent {
+    display: none;
+}
+
+.wrap {
+    display: inline-block;
+}
+
+.forceCenter {
+    display: inline-block;
+      position: relative !important;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+}
+
+@-moz-document url-prefix() { 
+    .abscentered {
+        transform: translateX(-50%);
+    }
+}
+
+.field label {
+    padding-left: 20px !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+label.colon {
+    padding-left: 4px !important;
+    margin-right: 7px !important;
+}
+
+.createInputs {
+    margin-bottom: 0px !important;
+}
+
+.modifyInputs {
+    margin-bottom: 0px !important;
+    height: 50px !important;
+    margin-top: 5px !important;
+}
+
+.createFields {
+    height: 55px !important;
+}
+
+.submitButtons {
+    padding-top: 50px;
+}
+
+.time.fields {
+    margin-left: 10px !important;
 }

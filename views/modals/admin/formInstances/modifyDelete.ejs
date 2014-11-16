@@ -1,0 +1,126 @@
+<div class='ui  delete shift form'>
+    <div class="ui grid">
+        <div class="four wide column">
+            <div class="grouped time fields">
+                <div class="disabled field">
+                    <div class='ui radio checkbox'>
+                        <input type='radio' name='modify-delete-action' checked='checked'>
+                        <label>Entire Shift</label>
+                    </div>
+                </div>
+                <div class="disabled field">
+                    <div class='ui radio checkbox'>
+                        <input type='radio' name='modify-delete-action'>
+                        <label>Specific Times</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui twelve wide column grid">
+            <label class="three wide column right-justified">
+                Start Date:
+            </label>
+
+            <div class="twelve wide column modifyInputs">
+                <div class="field">
+                    <div class="inline fields">
+                        <div class="field">
+                            <div class='ui selection dropdown'>
+                                <div class='default text'>MM</div>
+                                <i class="dropdown icon"></i>
+                                <div class='menu' style='overflow:auto;max-height:100px;'>
+                                    <% for (var i = 1; i < 13; i++) { %>
+                                    <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class='ui selection dropdown'>
+                                <div class='default text'>DD</div>
+                                <i class="dropdown icon"></i>
+                                <div class='menu' style='overflow:auto;max-height:100px;'>
+                                    <% for (var i = 1; i < 32; i++) { %>
+                                    <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class='ui selection dropdown'>
+                                <div class='default text'>YYYY</div>
+                                <i class="dropdown icon"></i>
+                                <div class='menu' style='overflow:auto;max-height:100px;'>
+                                    <% for (var i = 2014; i < 2030; i++) { %>
+                                    <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <label class="three wide column right-justified">
+                Occurence:
+            </label>
+
+            <div class="twelve wide column modifyInputs">
+                <div class="field">
+                    <div class="ui inverted black button">Once</div>
+                    <div class="ui inverted black button">Previous</div>
+                </div>
+            </div>
+
+
+            <label class="three wide column right-justified">
+                End Date:
+            </label>
+
+            <div class="twelve wide column modifyInputs">
+                <div class="field">
+                    <div class="inline fields">
+                        <div class="field">
+                            <div class='ui selection dropdown'>
+                                <div class='default text'>MM</div>
+                                <i class="dropdown icon"></i>
+                                <div class='menu' style='overflow:auto;max-height:100px;'>
+                                    <% for (var i = 1; i < 13; i++) { %>
+                                    <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class='ui selection dropdown'>
+                                <div class='default text'>DD</div>
+                                <i class="dropdown icon"></i>
+                                <div class='menu' style='overflow:auto;max-height:100px;'>
+                                    <% for (var i = 1; i < 32; i++) { %>
+                                    <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class='ui selection dropdown'>
+                                <div class='default text'>YYYY</div>
+                                <i class="dropdown icon"></i>
+                                <div class='menu' style='overflow:auto;max-height:100px;'>
+                                    <% for (var i = 2014; i < 2030; i++) { %>
+                                    <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='fright submitButtons'>
+        <div class='ui red button'>Cancel</div>
+        <div class='ui black submit button'>Delete</div>
+    </div>
+</div>

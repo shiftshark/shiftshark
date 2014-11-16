@@ -1,0 +1,34 @@
+<div class='ui hidden edit employee form'>
+    <label>Employee:</label>
+    <div class='ui selection dropdown'>
+        <div class='default text'>Select Employee</div>
+        <i class='dropdown icon'></i>
+        <div class='menu' style='overflow:auto;max-height:100px;'>
+            <%= include ../../../util/employeesDropdown.ejs %>
+        </div>
+    </div>
+    <label></br></br>Name:</label>
+    <div class='ui left labeled icon input field'>
+        <input type='text' name='username' placeholder='Name'>
+        <i class='user icon'></i>
+    </div>
+    <div class='inline fields'>
+        <div class='field'>Admin:</div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='adminPrivileges'>
+                <label>Yes</label>
+            </div>
+        </div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='adminPrivileges' checked='checked'>
+                <label>No</label>
+            </div>
+        </div>
+    </div>
+    <div class='fright submitButtons'>
+        <div class='ui red button'>Cancel</div>
+        <div class='ui black submit button'>Edit</div>
+    </div>
+</div>

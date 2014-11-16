@@ -1,0 +1,30 @@
+<div class='centered-text ctitle'>Modify Shift</div>
+<div class='forceCenter ui form modify action' style='margin-top:5px;'>
+    <div class='inline fields wrap'>
+        <div class='field'>Action:</div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='modify-action' checked='checked'>
+                <label>Edit</label>
+            </div>
+        </div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='modify-action'>
+                <label>Trade</label>
+            </div>
+        </div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='modify-action'>
+                <label>Delete</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%= include formInstances/modifyEdit.ejs %>
+
+<%= include formInstances/modifyTrade.ejs %>
+
+<%= include formInstances/modifyDelete.ejs %>

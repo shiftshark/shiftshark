@@ -11,6 +11,7 @@
         <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
         <script src='/lib/semantic.min.js'></script>
         <script src='/js/admin.js'></script>
+        <script src='/js/admin/modify.js'></script>
     </head>
     <body>
         <div class='ui centered inverted black menu navbar'>
@@ -22,21 +23,36 @@
             </div>
             <div class='right item'>
                 <a class='left item' id='logout'>LOGOUT</a>
-                <a class='right fancybox item' href='#profileSettings' id='profile'>MY PROFILE</a>
+                <a class='right hidden fancybox item' href='#profileSettings' id='profile'>MY PROFILE</a>
             </div>
         </div>
         <div class='ui adminOptions menu'>
             <div class='right item'>
-                <div class='ui inverted black button'>
+                <a href="#employeeSettings" class='ui inverted black fancybox button'>
                     Employee Settings
-                </div>
+                </a>
                 <div class='ui inverted black button'>
                     + Role
                 </div>
+                <a href="#createShift" class='ui inverted black fancybox button'>
+                    Create Shift
+                </a>
+                <a href="#modifyShift" class='ui inverted black fancybox button'>
+                    Modfiy Shift
+                </a>
             </div>
         </div>
-        <div id='profileSettings' class="modalContent" style='display:none;'>
+        <div id='profileSettings' class="modalContent">
             <%= include modals/profileSettings.ejs %>
+        </div>
+        <div id='employeeSettings' class="modalContent">
+            <%= include modals/admin/employeeSettings.ejs %>
+        </div>
+        <div id='createShift' class="modalContent">
+            <%= include modals/admin/createShift.ejs %>
+        </div>
+        <div id='modifyShift' class="modalContent">
+            <%= include modals/admin/modifyShift.ejs %>
         </div>
     </body>
 </html>

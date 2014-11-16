@@ -1,0 +1,30 @@
+<div class='centered-text ctitle'>Employee Settings</div>
+<div class='forceCenter ui form employee Action' style='margin-top:5px;'>
+    <div class='inline fields wrap'>
+        <div class='field'>Action:</div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='employee-action' checked='checked'>
+                <label>Add Employee</label>
+            </div>
+        </div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='employee-action'>
+                <label>Edit Employee</label>
+            </div>
+        </div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='employee-action'>
+                <label>Remove Employee</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%= include forminstances/employeeAdd.ejs %>
+
+<%= include forminstances/employeeEdit.ejs %>
+
+<%= include forminstances/employeeDelete.ejs %>

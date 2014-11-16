@@ -34,3 +34,13 @@ body {
      transform: translate(-50%, -50%);
   }
 }
+
+::selection {
+    color: white;
+    background: rgba(0,0,0,.7); /* WebKit/Blink Browsers */
+}
+
+::-moz-selection {
+    color: white;
+    background: rgba(0,0,0,.7); /* Gecko Browsers */
+}
