@@ -10,4 +10,20 @@ router.get('/signup', function(req, res) {
     res.render('auth', {authType:"employerSignup"});
 });
 
+router.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
+      res.send(err);
+    } else {
+      req.logIn(user, function(err) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.status(200).end();
+        }
+      });
+    }
+  })(req, res, next);
+});
+
 module.exports = router;
