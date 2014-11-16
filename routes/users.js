@@ -97,6 +97,16 @@ router.post('/employees', function(req, res) {
       // handle error
     } else {
       // send employee an email
+      var body = "Welcome to ShiftShark. An employee account has been \
+        created on your behalf. Please login with the following credentials: \n\n\
+        email: " + req.body.email +
+        "\npassword: " + generatedPassword;
+      res.mail.sendMail({
+        to: req.body.email,
+        replyTo: 'shiftshark@mit.edu',
+        subject: 'ShiftShark Employee Account',
+        text: body
+      })
       res.send(200);
     }
   });
