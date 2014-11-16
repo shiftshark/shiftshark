@@ -7,52 +7,49 @@
         <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
         <link rel='stylesheet' href='stylesheets/style.css' />
         <link rel='stylesheet' href='stylesheets/main.css' />
-        <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
+        <script src='/lib/jquery-2.1.1.min.js'></script>
         <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
         <script src='/lib/semantic.min.js'></script>
         <script src='/js/admin.js'></script>
         <script src='/js/admin/modify.js'></script>
     </head>
+
     <body>
-        <div class='ui centered inverted black menu navbar'>
-            <div class='left item'>
-                <div class='fleft'>
-                    <img src='images/icon.svg' class='svg' id='mainIcon'>
-                </div>
-                <div class='fright ntitle'>ShiftShark</div>
-            </div>
-            <div class='right item'>
-                <a class='left item' id='logout'>LOGOUT</a>
-                <a class='right hidden fancybox item' href='#profileSettings' id='profile'>MY PROFILE</a>
-            </div>
-        </div>
+        <%= include util/navbar.ejs %>
         <div class='ui adminOptions menu'>
+            
             <div class='right item'>
-                <a href="#employeeSettings" class='ui inverted black fancybox button'>
+                <a href='#employeeSettings' class='ui inverted black fancybox button'>
                     Employee Settings
                 </a>
-                <div class='ui inverted black button'>
+                <div class='ui inverted black button' id='roleButton'>
                     + Role
                 </div>
-                <a href="#createShift" class='ui inverted black fancybox button'>
+                <a href='#createShift' class='ui inverted black fancybox button'>
                     Create Shift
                 </a>
-                <a href="#modifyShift" class='ui inverted black fancybox button'>
+                <a href='#modifyShift' class='ui inverted black fancybox button'>
                     Modfiy Shift
+                </a>
+                <a href='#assignOffered' class='ui inverted black fancybox button'>
+                    Assign Offered
                 </a>
             </div>
         </div>
-        <div id='profileSettings' class="modalContent">
+        <div id='profileSettings' class='modalContent'>
             <%= include modals/profileSettings.ejs %>
         </div>
-        <div id='employeeSettings' class="modalContent">
+        <div id='employeeSettings' class='modalContent'>
             <%= include modals/admin/employeeSettings.ejs %>
         </div>
-        <div id='createShift' class="modalContent">
+        <div id='createShift' class='modalContent'>
             <%= include modals/admin/createShift.ejs %>
         </div>
-        <div id='modifyShift' class="modalContent">
+        <div id='modifyShift' class='modalContent'>
             <%= include modals/admin/modifyShift.ejs %>
+        </div>
+        <div id='assignOffered' class='modalContent'>
+            <%= include modals/admin/assignOffered.ejs %>
         </div>
     </body>
 </html>

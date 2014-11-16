@@ -3,6 +3,10 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
+    res.render('employee', {employees:['Elliott','Andre','Cathleen','Michael']});
+});
+
+router.get('/admin', function(req, res) {
     res.render('admin', {employees:['Elliott','Andre','Cathleen','Michael']});
 });
 

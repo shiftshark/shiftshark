@@ -1,14 +1,14 @@
 <div class='ui hidden trade shift form'>
-    <div class="ui grid">
-        <div class="four wide column">
-            <div class="grouped time fields">
-                <div class="disabled field">
+    <div class='ui grid'>
+        <div class='four wide column'>
+            <div class='grouped time fields'>
+                <div class='disabled field'>
                     <div class='ui radio checkbox'>
                         <input type='radio' name='modify-trade-action'>
                         <label>Entire Shift</label>
                     </div>
                 </div>
-                <div class="disabled field">
+                <div class='disabled field'>
                     <div class='ui radio checkbox'>
                         <input type='radio' name='modify-trade-action' checked='checked'>
                         <label>Specific Times</label>
@@ -16,18 +16,18 @@
                 </div>
             </div>
         </div>
-        <div class="ui twelve wide column grid">
-            <label class="three wide column right-justified">
+        <div class='ui twelve wide column grid'>
+            <label class='three wide column right-justified'>
                 Start Time:
             </label>
 
-            <div class="twelve wide column modifyInputs">
-                <div class="field">
-                    <div class="inline fields startTime">
-                        <div class="field">
+            <div class='twelve wide column modifyInputs'>
+                <div class='field'>
+                    <div class='inline fields startTime'>
+                        <div class='field'>
                             <div class='ui selection dropdown'>
                                 <div class='default text'>HH</div>
-                                <i class="dropdown icon"></i>
+                                <i class='dropdown icon'></i>
                                 <div class='menu' style='overflow:auto;max-height:100px;'>
                                     <% for (var i = 1; i < 13; i++) { %>
                                     <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
@@ -35,11 +35,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="field">
-                            <label class="colon">:</label>
+                        <div class='field'>
+                            <label class='colon'>:</label>
                             <div class='ui selection dropdown'>
                                 <div class='default text'>MM</div>
-                                <i class="dropdown icon"></i>
+                                <i class='dropdown icon'></i>
                                 <div class='menu' style='overflow:auto;max-height:100px;'>
                                     <% for (var i = 0; i < 60; i++) { %>
                                     <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
@@ -47,10 +47,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="field">
+                        <div class='field'>
                             <div class='ui selection dropdown'>
                                 <div class='default text'>AM</div>
-                                <i class="dropdown icon"></i>
+                                <i class='dropdown icon'></i>
                                 <div class='menu' style='overflow:auto;max-height:100px;'>
                                     <div class='item'>AM</div>
                                     <div class='item'>PM</div>
@@ -62,17 +62,17 @@
             </div>
 
 
-            <label class="three wide column right-justified">
+            <label class='three wide column right-justified'>
                 End Time:
             </label>
 
-            <div class="twelve wide column modifyInputs">
-                <div class="field">
-                    <div class="inline fields endTime">
-                        <div class="field">
+            <div class='twelve wide column modifyInputs'>
+                <div class='field'>
+                    <div class='inline fields endTime'>
+                        <div class='field'>
                             <div class='ui selection dropdown'>
                                 <div class='default text'>HH</div>
-                                <i class="dropdown icon"></i>
+                                <i class='dropdown icon'></i>
                                 <div class='menu' style='overflow:auto;max-height:100px;'>
                                     <% for (var i = 1; i < 13; i++) { %>
                                     <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
@@ -80,11 +80,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="field">
-                            <label class="colon">:</label>
+                        <div class='field'>
+                            <label class='colon'>:</label>
                             <div class='ui selection dropdown'>
                                 <div class='default text'>MM</div>
-                                <i class="dropdown icon"></i>
+                                <i class='dropdown icon'></i>
                                 <div class='menu' style='overflow:auto;max-height:100px;'>
                                     <% for (var i = 0; i < 60; i++) { %>
                                     <div class='item'><%= include ../../../util/twoDigit.ejs %></div>
@@ -92,10 +92,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="field">
+                        <div class='field'>
                             <div class='ui selection dropdown'>
                                 <div class='default text'>AM</div>
-                                <i class="dropdown icon"></i>
+                                <i class='dropdown icon'></i>
                                 <div class='menu' style='overflow:auto;max-height:100px;'>
                                     <div class='item'>AM</div>
                                     <div class='item'>PM</div>

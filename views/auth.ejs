@@ -8,7 +8,7 @@
         <% } if(formType == 'employeeSignup') { %>
         <title>ShiftShark Signup</title>
         <% } %>
-        <link rel="shortcut icon" href='/images/favicon.ico'>
+        <link rel='shortcut icon' href='/images/favicon.ico'>
         <link rel='stylesheet' href='stylesheets/semantic.min.css' />
         <link rel='stylesheet' href='stylesheets/style.css' />
         <link rel='stylesheet' href='stylesheets/auth.css' />
@@ -28,7 +28,7 @@
                 ShiftShark
             </div>
             <div class='ui form'>
-                <div id="innerFormWrapper">
+                <div id='innerFormWrapper'>
                     <% if (formType == 'login') { %>
                     <%= include authTemplates/login.ejs %>
                     <% } else if(formType == 'employerSignup') { %>

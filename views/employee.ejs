@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ShiftShark</title>
+        <link rel='shortcut icon' href='/images/favicon.ico'>
+        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
+        <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
+        <link rel='stylesheet' href='stylesheets/style.css' />
+        <link rel='stylesheet' href='stylesheets/main.css' />
+        <script src='/lib/jquery-2.1.1.min.js'></script>
+        <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
+        <script src='/lib/semantic.min.js'></script>
+        <script src='/js/admin.js'></script>
+        <script src='/js/admin/modify.js'></script>
+    </head>
+    <body>
+        <%= include util/navbar.ejs %>
+        <div class='ui adminOptions menu'>
+            <div class='right item'>
+                <a href='#claimShift' class='ui inverted black fancybox button'>
+                    Claim Shift
+                </a>
+                <a href='#tradeShift' class='ui inverted black fancybox button'>
+                    Trade Shift
+                </a>
+            </div>
+        </div>
+        <div id='claimShift' class='modalContent'>
+            <%= include modals/employee/claimShift.ejs %>
+        </div>
+        <div id='tradeShift' class='modalContent'>
+            <%= include modals/employee/tradeShift.ejs %>
+        </div>
+    </body>
+</html>
