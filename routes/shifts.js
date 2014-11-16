@@ -49,8 +49,7 @@ var Position = require('../models/position');
 
 router.get('/', function(req, res) {
   // TEST ME
-  // TODO: check permissions
-  var filters = {};
+  var filters = { schedule: req.user.schedule };
   var dateFilter = {};
   if (req.query.trading != undefined) {
     if (req.query.trading === '1' || req.query.trading === 'true') filters.trading = true;
