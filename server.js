@@ -27,7 +27,7 @@ var Availability = require('./models/availability');
 // CONNECT DB //
 ////////////////
 
-var connection_string = 'localhost/shiftshark';
+var connection_string = 'localhost:27017/shiftshark';
 
 if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
   connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ':' +
@@ -35,6 +35,8 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
     process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
     process.env.OPENSHIFT_MONGODB_DB_PORT + '/openshiftappname'; // CHANGE LATER!
 }
+
+console.log(connection_string);
 
 var db = mongoose.connect(connection_string);
 
