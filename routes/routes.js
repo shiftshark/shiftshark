@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -15,7 +16,7 @@ router.post('/login', function(req, res, next) {
     if (err) {
       res.status(500).end();
     } if (!user) {
-      res.status(401).send(info.message);
+      res.status(401).send(info.message).end();
     } else {
       req.login(user, function(err) {
         if (err) {

@@ -83,16 +83,6 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'tests')));
 
-/////////////
-// ROUTING //
-/////////////
-
-app.use('/', require('./routes/routes'));
-app.use('/shifts', require('./routes/shifts'));
-app.use('/avails', require('./routes/avails'));
-app.use('/position', require('./routes/position'));
-app.use('/users', require('./routes/users'));
-
 ///////////
 // EMAIL //
 ///////////
@@ -109,6 +99,17 @@ app.use(function (req, res, next) {
   res.mailer = transporter;
   next();
 });
+
+/////////////
+// ROUTING //
+/////////////
+
+app.use('/', require('./routes/routes'));
+app.use('/shifts', require('./routes/shifts'));
+app.use('/avails', require('./routes/avails'));
+app.use('/position', require('./routes/position'));
+app.use('/users', require('./routes/users'));
+
 
 ////////////////////
 // ERROR HANDLING //
