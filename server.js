@@ -5,12 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/routes');
-var avails = require('./routes/avails');
-var position = require('./routes/position');
-var shifts = require('./routes/shifts');
-var users = require('./routes/users');
-
 var session = require('express-session');
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
@@ -52,6 +46,12 @@ db.once('open', function callback () {
     process.env.OPENSHIFT_NODEJS_IP);
 });
 
+///////////
+// EMAIL //
+///////////
+
+
+
 ///////////////
 // USER AUTH //
 ///////////////
@@ -86,11 +86,11 @@ app.use(express.static(path.join(__dirname, 'tests')));
 // ROUTING //
 /////////////
 
-app.use('/', routes);
-app.use('/shifts', shifts);
-app.use('/avails', avails);
-app.use('/position', position);
-app.use('/users', users);
+app.use('/', require('./routes/routes'));
+app.use('/shifts', require('./routes/shifts'));
+app.use('/avails', require('./routes/avails'));
+app.use('/position', require('./routes/position'));
+app.use('/users', require('./routes/users'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
