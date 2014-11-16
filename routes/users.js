@@ -45,7 +45,8 @@ router.post('/employers', function(req, res) {
   var userAttributes = {
     firstName: String(req.body.first_name),
     lastName: String(req.body.last_name),
-    username: String(req.body.email)
+    username: String(req.body.email),
+    employer: true
   };
   // create Employee
   Employee.register(new Employee(userAttributes), String(req.body.password), function(err, user) {
@@ -92,43 +93,37 @@ router.post('/employers', function(req, res) {
  */
 
 router.post('/employees', function(req, res) {
-  Employee.findById(req.user._id).populate('schedule').exec(function(err, employer) {
-    if (err) {
-      res.status(500).end();
-    // check permissions
-    } else {
-      if (String(employer.schedule.owner) !== String(req.user._id)) {
-        // not authorized employer
-        return res.status(401).end();
-      }
+  // check permissions
+  if (! req.user.employer) {
+    // not authorized employer
+    return res.status(401).end();
+  }
 
-      // TODO: validate
-      var userAttributes = {
-        firstName: req.body.first_name,
-        lastName: req.body.last_name,
-        username: req.body.email,
-        schedule: req.user.schedule // use employer's schedule
-      };
-      var generatedPassword = words({ min: 3, max: 5 }).join("");
-      Employee.register(new Employee(userAttributes), generatedPassword, function(err, user) {
-        if (err) {
-          return res.status(400).send('USER_EXISTS');
-        } else {
-          // send employee an email
-          var body = "Welcome to ShiftShark. An employee account has been \
-            created on your behalf. Please login with the following credentials: \n\n\n" +
-            "email: " + req.body.email +
-            "\npassword: " + generatedPassword;
-          res.mailer.sendMail({
-            to: req.body.email,
-            replyTo: 'shiftshark@mit.edu',
-            subject: 'ShiftShark Employee Account',
-            text: body
-          });
-          return res.status(200).end();
-        }
-      });
+  // TODO: validate
+  var userAttributes = {
+    firstName: req.body.first_name,
+    lastName: req.body.last_name,
+    username: req.body.email,
+    schedule: req.user.schedule // use employer's schedule
+  };
+  var generatedPassword = words({ min: 3, max: 5 }).join("");
+  Employee.register(new Employee(userAttributes), generatedPassword, function(err, user) {
+    if (err) {
+      return res.status(400).send('USER_EXISTS');
     }
+
+    // send employee an email
+    var body = "Welcome to ShiftShark. An employee account has been \
+      created on your behalf. Please login with the following credentials: \n\n\n" +
+      "email: " + req.body.email +
+      "\npassword: " + generatedPassword;
+    res.mailer.sendMail({
+      to: req.body.email,
+      replyTo: 'shiftshark@mit.edu',
+      subject: 'ShiftShark Employee Account',
+      text: body
+    });
+    return res.status(200).end();
   });
 });
 
@@ -146,24 +141,15 @@ router.post('/employees', function(req, res) {
  */
 
 router.get('/employees', function(req, res) {
-  Employee.findById(req.user._id).populate('schedule').exec(function(err, self) {
-    if (err) {
-      res.status(500).end();
-    // check permissions
-    } else {
-      if (String(self.schedule.owner) !== String(req.user._id)) {
-        // not authorized employer
-        console.log("unauth", self.username);
-        return res.status(401).end();
-      }
-      Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
-        if (err) {
-          return res.status(500).end();
-        } else {
-          return res.json({ employees: employees });
-        }
-      });
-    }
+  // check permissions
+  if (! req.user.employer) {
+    // not authorized employer
+    return res.status(401).end();
+  }
+
+  Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
+    if (err) return res.status(500).end();
+    return res.json({ employees: employees });
   });
 });
 
@@ -184,24 +170,17 @@ router.get('/employees', function(req, res) {
  */
 
 router.get('/:id', function(req, res) {
-  Employee.findById(req.user._id).populate('schedule').exec(function(err, self) {
+  // check permissions
+  if (! req.user.employer) {
+    // not authorized employer
+    return res.status(401).end();
+  }
+
+  Employee.findOne({ _id: req.params.id, schedule: req.user.schedule }, 'firstName lastName username', function(err, employee) {
     if (err) {
-      res.status(500).end();
-    // check permissions
+      return res.status(500).end();
     } else {
-      if (String(req.user._id) !== String(req.params.id) &&
-        String(self.schedule.owner) !== String(req.user._id)) {
-        // not authorized employer
-        console.log("unauth", self.username);
-        return res.status(401).end();
-      }
-      Employee.findOne({ _id: req.params.id, schedule: req.user.schedule }, 'firstName lastName username', function(err, employee) {
-        if (err) {
-          return res.status(500).end();
-        } else {
-          return res.json({ employee: employee });
-        }
-      });
+      return res.json({ employee: employee });
     }
   });
 });
