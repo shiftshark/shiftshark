@@ -21,6 +21,11 @@ var employeeSchema = mongoose.Schema({
   schedule: {
     type: mongoose.Schema.ObjectId,
     ref: 'Schedule'
+  },
+  employer: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });
 

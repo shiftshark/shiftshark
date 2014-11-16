@@ -36,8 +36,6 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
     process.env.OPENSHIFT_MONGODB_DB_PORT + '/openshiftappname'; // CHANGE LATER!
 }
 
-console.log(connection_string);
-
 var db = mongoose.connect(connection_string);
 
 var db = mongoose.connection;
