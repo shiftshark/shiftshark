@@ -49,8 +49,7 @@ var Position = require('../models/position');
 
 router.get('/', function(req, res) {
   // TEST ME
-  // TODO: check permissions
-  var filters = {};
+  var filters = { schedule: req.user.schedule };
   var dateFilter = {};
   if (req.query.trading != undefined) {
     if (req.query.trading === '1' || req.query.trading === 'true') filters.trading = true;
@@ -111,8 +110,10 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
   // TEST ME
-  // TODO: check permissions
-  var series = new Series({ schedule: req.user.schedule._id });
+  // check permissions
+  if (! req.user.employer) return res.status(401).end();
+
+  var series = new Series({ schedule: req.user.schedule });
   series.save(function(err, _series) {
     if (err) {
       // handle error
@@ -186,7 +187,7 @@ router.post('/', function(req, res) {
 router.get('/:id', function(req, res) {
   // TEST ME
   // TODO: check permissions
-  Shift.findById(req.params.id, function(err, shift) {
+  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }, function(err, shift) {
     Shift.find({ series: shift.series }, function(err, shifts) {
       var dates = shifts.map(function(obj) { return obj.date; });
       res.json({
@@ -204,8 +205,8 @@ router.get('/:id', function(req, res) {
  * Description: Modify specified shift or modify range over which shift series occurs.
  *
  * Permissions:
- *   * Employer will be able to modify entire shift and use all query params.
- *   * Assignee will be able to trade shift (change 'trading' if no 'claimant').
+ *   * Employer will be able to use query params adjustStart and adjustEnd, and claim a trade for someone else through the request body.
+ *   * Assignee will be able to trade shift (change 'trading' if no 'claimant') using 'trade' query param.
  *   * Any Employee will be able to claim offered ('trading') shift.
  *
  * Path Params:
@@ -223,6 +224,7 @@ router.get('/:id', function(req, res) {
  *   * adjustStart <= startDate of series; adjustEnd >= startDate of series
  *   * adjustStart and adjustEnd ignored if trade specified
  *   * request body ignored if any query params specified
+ *   * employer sends 
  *
  * Request: {
  *   shift: (optional) Shift
@@ -238,8 +240,11 @@ router.get('/:id', function(req, res) {
   // TEST ME
   // TODO: check permissions
   if (req.query.adjustStart || req.query.adjustEnd) {
-    // TODO?: parse these dates.
+    // check permissions - only employer can adjust start/end dates
+    if (! req.user.employer) return res.status(401).end();
+
     var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
+    // TODO?: parse these dates.
     var firstDate = req.body.startDate || req.body.shift.date + millisecsInWeek;
     var lastDate = req.body.endDate || req.body.shift.date - millisecsInWeek;
     var endDate = new Date(lastDate);
@@ -263,29 +268,51 @@ router.get('/:id', function(req, res) {
       }
     });
 
-  } else {
-    if (req.query.trade) {
+  } else if (req.query.trade) {
+    Shift.findById(req.params.id, function(err, shift) {
       if (req.query.trade == "offer") {
-        doc = { trading: true };
+        if ((shift.assignee === req.user._id && !shift.claimant) || shift.claimant === req.user._id) {
+          doc = { trading: true };
+          shift.trading = true;
+        } else {
+          return res.status(401).end();
+        } 
       } else if (req.query.trade == "claim") {
-        doc = { trading: false, claimant: req.user._id };
+        if (!shift.claimant && shift.trading) {
+          shift.trading = false;
+          shift.claimant = req.user._id;
+        } else {
+          return res.status(403).send('ALREADY_CLAIMED');
+        }
       }
-    } else {
-      var update = req.body.shift;
-      var doc = {
-        trading: update.trading,
-        claimant: update.claimant
-      };
-    }
+      shift.save(function(err, _shift) {
+        if (err) {
+          res.status(500).end();
+        } else {
+          return res.json({ shifts: [_shift] });
+        }
+      });
+    });
+  } else {
+    // no query params - look at body, but only if employer sent request
+    if (! req.user.employer) return res.status(401).end();
+
+    var update = req.body.shift;
+    var doc = {
+      trading: update.trading,
+      claimant: update.claimant
+    };
+
     Shift.findOneAndUpdate({ _id: req.params.id }, doc, function(err, shift) {
       if (err) {
-        // handle error
+        res.status(500).end();
       } else {
         res.json({ shifts: [shift] });
       }
     });
+
   }
- });
+});
 
 /**
  * DELETE /shifts/:id
@@ -311,7 +338,9 @@ router.get('/:id', function(req, res) {
 
 router.delete('/:id', function(req, res) {
   // TEST ME
-  // TODO: check permissions
+  // check permissions
+  if (! req.user.employer) return res.status(401).end();
+
   if (req.query.startDate || req.query.endDate) {
     Shift.findById(req.params.id, function(err, shift) {
       if (err) {

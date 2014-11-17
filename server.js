@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 
 var session = require('express-session');
 var passport = require('passport');
@@ -35,8 +36,6 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
     process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
     process.env.OPENSHIFT_MONGODB_DB_PORT + '/openshiftappname'; // CHANGE LATER!
 }
-
-console.log(connection_string);
 
 var db = mongoose.connect(connection_string);
 
@@ -87,13 +86,13 @@ app.use(express.static(path.join(__dirname, 'tests')));
 // EMAIL //
 ///////////
 
-var transporter = nodemailer.createTransport({
+var transporter = nodemailer.createTransport(smtpTransport({
     service: 'Gmail',
     auth: {
       user: 'shiftsharknoreply@gmail.com',
       pass: 'fjfjfjfjsharkFj'
     }
-});
+}));
 
 app.use(function (req, res, next) {
   res.mailer = transporter;
