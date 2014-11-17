@@ -101,10 +101,7 @@ router.post('/employers/', function(req, res) {
 
 router.post('/employees/', function(req, res) {
   // check permissions
-  if (! req.user.employer) {
-    // not authorized employer
-    return res.status(401).end();
-  }
+  if (! req.user.employer) return res.status(401).end();
 
   // TODO: validate
   var userAttributes = {
@@ -149,10 +146,7 @@ router.post('/employees/', function(req, res) {
 
 router.get('/employees/', function(req, res) {
   // check permissions
-  if (! req.user.employer) {
-    // not authorized employer
-    return res.status(401).end();
-  }
+  if (! req.user.employer) return res.status(401).end();
 
   Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
     if (err) return res.status(500).end();
