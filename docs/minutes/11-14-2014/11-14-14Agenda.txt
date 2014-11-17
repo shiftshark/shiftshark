@@ -1,0 +1,21 @@
+-Schedule Weekly or biweekly meeting depending on what must be done
+-After MVP, work pace can slow down a little (but still work on code during week 3!)
+
+Data Model has been updated!  It's alright if our Schema alone is updated, but updating the concrete data model (design doc) isn't a bad idea.
+
+MVP is concept 1, 2, 3 -- no concept of availability
+permissions -- one employer per workplace, and employees belong to only one workplace (this is as opposed to a more complex system that could allow, among other things, employer-to-employer interactions)
+
+New concept?  Abstracted away "Series"
+With one POST request we can create one or many  objects (shifts, by creating a series)
+Comparisons to OWA (Outlook Web App) were discussed -- however, our implementation should allow an employer to (for example) create a four week shift and then in one action delete a range of the middle two shifts.  SeriesID still exists for the remaining shifts in a series.
+
+Discussion about why we decided to abstract series -- if we didn't, we could trade series
+What makes a shift special?  Can I change a shift in the middle of a series and have that different shift still belong to the same series?
+
+Filtering on a collection of shifts
+Post to collection to create shifts (not RESTful, because one POST request causes multiple POST requests to individual objects -- to my understanding at least)  Should be OK as long as we don't violate RESTful principles elsewhere
+
+Again discussed the pros and cons of exposing series - exposing not ideal for UI, but ensures that we can make a backend that allows the user to do whatever action they might want.  Hiding is ok, but implementing functionality may be difficult.
+
+CONCLUSION:  As a team we're relatively confident in our design, but the TAs are understandably concerned that we may not be able to implement the design correctly.  We drafted some ideas for fallbacks in case if our implementation proves too difficult, and we realized that spending more time thinking about complex design decisions in the beginning phase of the project would have been beneficial -- we did have meetings to discuss design, but our TAs raised valid points that our team hadn't collectively considered and thought through.

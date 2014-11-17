@@ -17,6 +17,10 @@ router.get('/signup', function(req, res) {
     res.render('auth', {authType:"employerSignup"});
 });
 
+router.get('/scheduleTest', function(req, res) {
+    res.render('schedule', {title:"schedule", authType:"local"});
+});
+
 //////////
 // AUTH //
 //////////

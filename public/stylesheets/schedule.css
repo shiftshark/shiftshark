@@ -1,0 +1,66 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+/*div{
+  border: 1px solid white;
+}*/
+
+.scheduleWrapper{
+  height: 400px;
+  min-width: 600px;
+  overflow: scroll;
+  background: lime;
+  width: 100%;
+}
+
+.timesRow{
+  width:100%;
+  background-color: red;
+  min-height: 20px;
+}
+
+.contentRow{
+  width: 100%;
+  min-height:30px;
+  background-color: blue;
+  display: table;
+}
+
+.contentRow > * {
+  vertical-align: top;
+}
+
+.day{
+  margin-top: 0;
+  width: 100px;
+  padding: 0;
+  background-color: #FFCCCC;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.roleWrapper{
+  /*margin-left: 110px;
+  width:100%;*/
+  background-color: black;
+  display: table-cell;
+}
+
+.role{
+  min-width: 20px;
+  min-height: 20px;
+  background-color: gray;
+}
+
+.cell{
+  min-width: 75px;
+  max-width: 75px;
+  display: inline-block;
+}
