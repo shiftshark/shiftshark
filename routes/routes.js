@@ -9,24 +9,28 @@ var Shift = require('../models/shift');
 var Availability = require('../models/availability');
 
 /* GET home page. */
-router.get('/', function(req, res) {
-    res.render('employee', {employees:['Elliott','Andre','Cathleen','Michael']});
+router.get('/', function(req, next) {
+  res.render('auth', {formType:'login'});
 });
 
 router.get('/admin', function(req, res) {
     res.render('admin', {employees:['Elliott','Andre','Cathleen','Michael']});
 });
 
+router.get('/employee', function(req, res) {
+    res.render('employee', {employees:['Elliott','Andre','Cathleen','Michael']});
+});
+
 router.get('/signup', function(req, res) {
-    res.render('auth', {formType:"employerSignup"});
+    res.render('auth', {formType:'employerSignup'});
 });
 
 router.get('/signupee', function(req, res) {
-    res.render('auth', {formType:"employeeSignup"});
+    res.render('auth', {formType:'employeeSignup'});
 });
 
 router.get('/scheduleTest', function(req, res) {
-    res.render('schedule', {title:"schedule", authType:"local"});
+    res.render('schedule', {title:'schedule', authType:'local'});
 });
 
 //////////
@@ -78,7 +82,7 @@ router.delete('/clear_all', function(req, res){
         // remove employees if specified
         if ( req.query.employees !== undefined &&
             (req.query.employees === '1' || req.query.employees === 'true') ) {
-          var empl_id_sel = { "$ne": req.user._id }; // all employees except self
+          var empl_id_sel = { '$ne': req.user._id }; // all employees except self
           Employee.remove({ _id: empl_id_sel, schedule: req.user.schedule }, function(err) {
             if(err) return res.status(500);
             return res.status(200).end();

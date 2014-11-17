@@ -28,8 +28,7 @@ $(document).ready(function() {
   };
 
   var settings = {
-    inline  : true,
-    on      : 'blur'
+    inline  : false
   };
 
   loginForm.form(rules, settings);
@@ -38,13 +37,38 @@ $(document).ready(function() {
   $('.submit.button').click(function() {
     // attempts a form validation
     var validForm = loginForm.form('validate form');
-    $.fancybox.update();
 
     if (validForm) {
-      var email = $('[name='email']').val();
-      var password = $('[name='password']').val();
+      var email = $('[name="email"]').val();
+      var password = $('[name="password"]').val();
 
-    // PERFORM AJAX CHECK
+      $.ajax({
+        url : '/login',
+        type: 'POST',
+        async: true,
+        timeout: 10000,
+        contentType: "application/json",
+        data: JSON.stringify({
+          username : email,
+          password : password
+        }),
+        beforeSend: function () {
+          loginForm.addClass('loading');
+        },
+        error: function(xhr, status, err) {
+          loginForm.removeClass('loading');
+          loginForm.removeClass('success');
+          $('.ui.error.message').html('<ul class="list"><li>Error logging in. Please try again</li></ul>');
+          loginForm.addClass('error');
+          console.log(xhr,status,err);
+
+        },
+        success: function (result, status, xhr) {
+            $('.ui.error.message').html('');
+            data = result;
+            loginForm.removeClass('loading');
+        }
+      });
     }
   });
 });
