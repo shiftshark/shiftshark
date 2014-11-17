@@ -60,6 +60,7 @@ html, body {
 }
 
 .cell{
-  width: 100px;
+  min-width: 75px;
+  max-width: 75px;
   display: inline-block;
 }

@@ -12,7 +12,7 @@ router.get('/signup', function(req, res) {
 });
 
 router.get('/scheduleTest', function(req, res) {
-    res.render('schedule', {title:"schedule"});
+    res.render('schedule', {title:"schedule", authType:"local"});
 });
 
 router.post('/login', function(req, res, next) {

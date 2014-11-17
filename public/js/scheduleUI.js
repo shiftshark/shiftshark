@@ -22,15 +22,23 @@ $(document).ready(function(){
 	$.ajax({
 	    type: "POST",
 	    url: "shifts/",
-	    data: { new Shift({_id: ShiftID,
-			assignee: Employee,
-			claimant: Employee || null,
-			position: Position,
+	    data: { shift: {_id: 1,
+			assignee: {
+				_id: 2,
+		    	firstName: "Hello",
+		    	lastName: "Kitty",
+		    	email: "hkitty@mit.edu",
+			},
+			claimant: null,
+			position: {
+				_id: 3,
+			    name: "Mascot"
+			},
 			startTime: 8*60,
 			endTime: 9*60,
 			date: Date,
 			trading: Boolean
-		})},
+		}},
 	    success: function(data){
 	    	console.log(data);
 	    },
