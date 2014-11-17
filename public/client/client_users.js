@@ -3,8 +3,6 @@
  * Author: aandre@mit.edu
  */
 
-// function ajax_call (method, url, data, callback_success, callback_error)
-
 /**
  * Function: client_login
  *

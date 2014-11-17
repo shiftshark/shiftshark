@@ -8,7 +8,7 @@ var Position = require('../models/position');
 
 /**
  * API Specification Author: aandre@mit.edu
- * API Implementation Author: gendron@mit.edu
+ * API Implementation Author: gendron@mit.edu, aandre@mit.edu
  */
 
 /**
@@ -34,12 +34,11 @@ var Position = require('../models/position');
  */
 
 router.get('/', function(req, res) {
-  var schedule = req.user.schedule._id;
-  Position.find({ schedule: schedule }, function(err, positions) {
+  Position.find({ schedule: req.user.schedule }, "_id name", function(err, positions) {
     if (err) {
-      // handle error
+      return res.status(500).end();
     } else {
-      res.json({ positions: positions });
+      return res.json({ positions: positions });
     }
   });
 });
@@ -63,12 +62,15 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
   //TODO: check permissions
-  var position = new Position(req.body.position);
+  var position = new Position({
+    name: req.body.position.name,
+    schedule: req.user.schedule
+  });
   position.save(function(err, _position) {
     if (err) {
-      // handle error
+      return res.status(500).end();
     } else {
-      res.json({ position: _position });
+      return res.json({ position: { _id: _position._id, name: _position.name } });
     }
   });
 });
@@ -81,7 +83,7 @@ router.post('/', function(req, res) {
  * Permissions: All users can retrieve positions in their schedule.
  *
  * Path Params:
- *   id - Availibility identifier
+ *   id - Position identifier
  *
  * Response: {
  *   position: Position
@@ -90,13 +92,13 @@ router.post('/', function(req, res) {
  */
 
 router.get('/:id', function(req, res) {
-  var schedule = req.user.schedule._id;
   Position.findById(req.params.id, function(err, position) {
     if (err) {
-      // handle error
+      return res.status(500).end();
     } else {
-      if(position.schedule._id == schedule) {
-        res.json({ position: position });
+      if (!position) return res.status(400).end();
+      if(String(position.schedule) === String(req.user.schedule)) {
+        return res.json({ position: { _id: position._id, name: position.name } });
       } else {
         res.status(403).send('Permission denied. This position is outside of your schedule.');
       }
@@ -112,7 +114,7 @@ router.get('/:id', function(req, res) {
  * Permissions: Employers only.
  *
  * Path Params:
- *   id - Availibility identifier
+ *   id - Position identifier
  *
  * Request: {
  *   position: Position
@@ -128,7 +130,7 @@ router.put('/:id', function(req, res) {
   // TODO: check permissions
   Position.findOneAndUpdate(req.params.id, req.body.position, function(err, position) {
     if (err) {
-      // handle error
+      return res.status(500).end();
     } else {
       res.json({ position: position });
     }
@@ -143,7 +145,7 @@ router.put('/:id', function(req, res) {
  * Permissions: Employers only.
  *
  * Path Params:
- *   id - Availibility identifier
+ *   id - Position identifier
  *
  * Response: {
  *   positionId: PositionID
@@ -155,11 +157,11 @@ router.delete('/:id', function(req, res) {
   // TODO: check permissions
   Position.remove({ _id: req.params.id }, function(err, position) {
     if (err) {
-      // handle error
+      return res.status(500).end();
     } else {
       Shift.remove({ position: req.params.id }, function(err, shift) {
         if (err) {
-          // handle error
+          return res.status(500).end();
         } else {
           res.json({ positionId: req.params.id });
         }
