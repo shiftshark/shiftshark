@@ -4,7 +4,40 @@ $(document).on('click', '.cell', function(evt) {
 });
 
 $(document).ready(function(){
-	console.log("shifts/");
+	$.ajax({
+	    type: "POST",
+	    url: "users/employers/",
+	    data: { schedule_name: "Test",
+	    	first_name: "Hello",
+	    	last_name: "Kitty",
+	    	email: "hkitty@mit.edu",
+	    	password: "sanrio"
+		},
+	    success: function(data){
+	    },
+	    failure: function(data){
+	    	console.log("API call failed, probably because an incorrect URL was queried");}
+	});
+	    
+	$.ajax({
+	    type: "POST",
+	    url: "shifts/",
+	    data: { new Shift({_id: ShiftID,
+			assignee: Employee,
+			claimant: Employee || null,
+			position: Position,
+			startTime: 8*60,
+			endTime: 9*60,
+			date: Date,
+			trading: Boolean
+		})},
+	    success: function(data){
+	    	console.log(data);
+	    },
+	    failure: function(data){
+	    	console.log("API call failed, probably because an incorrect URL was queried");
+	    }
+	});
 	$.ajax({
 	    type: "GET",
 	    url: "shifts/",
