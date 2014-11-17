@@ -1,61 +1,42 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <% if (formType == 'login') { %>
         <title>ShiftShark Login</title>
+        <% } if(formType == 'employerSignup') { %>
+        <title>ShiftShark Signup</title>
+        <% } if(formType == 'employeeSignup') { %>
+        <title>ShiftShark Signup</title>
+        <% } %>
+        <link rel='shortcut icon' href='/images/favicon.ico'>
         <link rel='stylesheet' href='stylesheets/semantic.min.css' />
         <link rel='stylesheet' href='stylesheets/style.css' />
-        <link rel='stylesheet' href='stylesheets/login.css' />
+        <link rel='stylesheet' href='stylesheets/auth.css' />
         <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
         <script src='/lib/semantic.min.js'></script>
-        <% if (authType == 'login') { %>
+        <% if (formType == 'login') { %>
         <script src='/js/login.js'></script>
-        <% } if(authType == 'employerSignup') { %>
+        <% } if(formType == 'employerSignup') { %>
         <script src='/js/employerSignup.js'></script>
-        <% } if(authType == 'employeeSignup') { %>
+        <% } if(formType == 'employeeSignup') { %>
         <script src='/js/employeeSignup.js'></script>
         <% } %>
     </head>
     <body>
-        <div class='abscentered'>
+        <div class='abscentered' id='formWrapper'>
             <div class='ctitle'>
                 ShiftShark
             </div>
             <div class='ui form'>
-                <% if (authType != 'login') { %>
-                <label>Name</label>
-                <div class='ui left labeled icon input'>
-                    <input type='text' placeholder='Name'>
-                    <i class='user icon'></i>
+                <div id='innerFormWrapper'>
+                    <% if (formType == 'login') { %>
+                    <%= include authTemplates/login.ejs %>
+                    <% } else if(formType == 'employerSignup') { %>
+                    <%= include authTemplates/employerSignup.ejs %>
+                    <% } else if(formType == 'employeeSignup') { %>
+                    <%= include authTemplates/employeeSignup.ejs %>
+                    <% } %>
                 </div>
-                <% } %>
-                <% if(authType == 'employerSignup') { %>
-                <label>Company Name</label>
-                <div class='ui left labeled icon input'>
-                    <input type='text' placeholder='Name'>
-                    <i class='user icon'></i>
-                </div>
-                <% } %>
-                <label>Email</label>
-                <div class='ui left labeled icon input'>
-                    <input type='text' placeholder='Email'>
-                    <i class='mail icon'></i>
-                </div>
-                <label>Password</label>
-                <div class='ui left labeled icon input'>
-                    <input type='text' placeholder='Password'>
-                    <i class='lock icon'></i>
-                </div>
-                <% if(authType = 'login') { %>
-                <a class='ui submit button'>Login</a>
-                <a class='ui button' href='/signup'>Signup</a>
-                <% } else { %>
-                <label>Confirm Password</label>
-                <div class='ui left labeled icon input'>
-                    <input type='text' placeholder='Password'>
-                    <i class='lock icon'></i>
-                </div>
-                <a class='ui submit button'>Signup</a>
-                <% } %>
             </div>
         </div>
     </body>

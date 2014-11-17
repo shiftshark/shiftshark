@@ -1,8 +1,11 @@
 body {
     padding: 50px;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Lucida Grande", sans-serif;
-    background-image:url("/images/bg2b.png");
     min-width: 650px;
+}
+
+.centered {
+    margin: 0px auto !important;
 }
 
 .ctitle {
@@ -29,4 +32,14 @@ body {
   .abscentered {
      transform: translate(-50%, -50%);
   }
+}
+
+::selection {
+    color: white;
+    background: rgba(0,0,0,.7); /* WebKit/Blink Browsers */
+}
+
+::-moz-selection {
+    color: white;
+    background: rgba(0,0,0,.7); /* Gecko Browsers */
 }
