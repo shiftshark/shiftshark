@@ -170,13 +170,12 @@ router.get('/employees', function(req, res) {
  */
 
 router.get('/:id', function(req, res) {
-  // check permissions
-  if (! req.user.employer) {
-    // not authorized employer
+  // check permissions -- employer or self
+  if (! req.user.employer && String(req.user._id) !== String(req.params.id)) {
     return res.status(401).end();
   }
 
-  Employee.findOne({ _id: req.params.id, schedule: req.user.schedule }, 'firstName lastName username', function(err, employee) {
+  Employee.findOne({ _id: String(req.params.id), schedule: req.user.schedule }, 'firstName lastName username', function(err, employee) {
     if (err) {
       return res.status(500).end();
     } else {
