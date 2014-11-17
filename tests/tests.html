@@ -8,13 +8,21 @@
         <link rel="stylesheet" href="/lib/qunit-1.12.0.css">
     </head>
     <body>
+        <!-- JS IMPORTS - PRESERVE ORDERING -->
         <div id="qunit"></div>
         <div id="qunit-fixture"></div>
         <script src="/lib/qunit-1.12.0.js"></script>
         <script src="/lib/jquery-2.1.1.js"></script>
-        <script src="tests_helpers.js"></script>
+        <!-- API Client Functions -->
+        <script src="/client/client_basic.js"></script>
+        <script src="/client/client_users.js"></script>
+        <script src="/client/client_shifts.js"></script>
+        <script src="/client/client_positions.js"></script>
+        <script src="/client/client_avails.js"></script>
+        <!-- Helpers -->
+        <script src="test_helpers.js"></script>
+        <!-- Test Suite -->
         <script src="tests_user.js"></script>
-        <script src="tests_authentication.js"></script>
         <script src="tests_position.js"></script>
         <script src="tests_shift.js"></script>
         <script src="tests_availability.js"></script>

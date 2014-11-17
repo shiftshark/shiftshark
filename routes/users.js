@@ -23,7 +23,7 @@ var words = require('random-words');
 /**
  * POST /users/employers/
  *
- * Description: Create a new employer account with a schedule.
+ * Description: Create a new employer account with a schedule, and login this account.
  *
  * Permissions: Any unauthenticated user.
  *
@@ -40,7 +40,7 @@ var words = require('random-words');
  *
  */
 
-router.post('/employers', function(req, res) {
+router.post('/employers/', function(req, res) {
   // TODO: validate
   var userAttributes = {
     firstName: String(req.body.first_name),
@@ -65,7 +65,14 @@ router.post('/employers', function(req, res) {
             if (err) {
               res.status(500).end();
             } else {
-              res.status(200).end();
+              // login employer
+              req.login(user, function(err) {
+                if (err) {
+                  res.status(500).end();
+                } else {
+                  res.status(200).end();
+                }
+              });
             }
           });
         }
@@ -92,7 +99,7 @@ router.post('/employers', function(req, res) {
  *
  */
 
-router.post('/employees', function(req, res) {
+router.post('/employees/', function(req, res) {
   // check permissions
   if (! req.user.employer) return res.status(401).end();
 
@@ -137,7 +144,7 @@ router.post('/employees', function(req, res) {
  *
  */
 
-router.get('/employees', function(req, res) {
+router.get('/employees/', function(req, res) {
   // check permissions
   if (! req.user.employer) return res.status(401).end();
 

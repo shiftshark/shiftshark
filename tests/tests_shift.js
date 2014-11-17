@@ -9,17 +9,16 @@
 ///////////////
 
 test('Shift - GET /shifts/', function () {
-    // login('test1', 'test1');
-    // clear(); // clear user
+  // Employer Test Account LOGIN
+  test_employer_login();
 
-    // data = some_helper({});
-
-    // deepEqual(data, {'shifts': shifts}, 'All Shifts retrieved correctly.');
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 test('Shift - GET /shifts/:id', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 ////////////////
@@ -27,7 +26,8 @@ test('Shift - GET /shifts/:id', function () {
 ////////////////
 
 test('Shift - POST /shifts/', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 ///////////////
@@ -35,7 +35,8 @@ test('Shift - POST /shifts/', function () {
 ///////////////
 
 test('Shift - PUT /shifts/:id', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 //////////////////
@@ -43,5 +44,9 @@ test('Shift - PUT /shifts/:id', function () {
 //////////////////
 
 test('Shift - DELETE /shifts/:id', function() {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
+
+  // Employer Test Account LOGOUT
+  client_logout();
 });

@@ -106,9 +106,8 @@ app.use(function (req, res, next) {
 app.use('/', require('./routes/routes'));
 app.use('/shifts', require('./routes/shifts'));
 app.use('/avails', require('./routes/avails'));
-app.use('/position', require('./routes/position'));
+app.use('/positions', require('./routes/positions'));
 app.use('/users', require('./routes/users'));
-
 
 ////////////////////
 // ERROR HANDLING //
@@ -143,24 +142,6 @@ app.use(function(err, req, res, next) {
         message: err.message,
         error: {}
     });
-});
-
-
-/////////////
-// TESTING //
-/////////////
-
-// Clears all data for the current user. Used for testing.
-app.post('/clear', function(req, res){
-  if (req.user === undefined || req.user === null) return res.status(401);
-
-  Shift.remove({assignee: req.user._id}, function(err) {
-    if(err) return res.status(500);
-    Availability.remove({employee: req.user._id}, function(err) {
-      if(err) return res.status(500);
-      return res.status(200).json({});
-    });
-  });
 });
 
 module.exports = app;

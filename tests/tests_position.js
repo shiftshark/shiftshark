@@ -8,17 +8,17 @@
 //////////////////
 
 test('Position - GET /positions/', function () {
-    // login('test1', 'test1');
-    // clear(); // clear user
+  // Employer Test Account LOGIN
+  test_employer_login();
 
-    // data = some_helper({});
+  clear_employer();
+  ok(true);
 
-    // deepEqual(data, {'shifts': shifts}, 'All Shifts retrieved correctly.');
-    ok(true); // placeholder
 });
 
 test('Position - GET /positions/:id', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 ///////////////////
@@ -26,7 +26,8 @@ test('Position - GET /positions/:id', function () {
 ///////////////////
 
 test('Position - POST /positions/', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 //////////////////
@@ -34,7 +35,8 @@ test('Position - POST /positions/', function () {
 //////////////////
 
 test('Position - PUT /positions/:id', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 /////////////////////
@@ -42,5 +44,9 @@ test('Position - PUT /positions/:id', function () {
 /////////////////////
 
 test('Position - DELETE /positions/:id', function() {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
+
+  // Employer Test Account LOGOUT
+  client_logout();
 });

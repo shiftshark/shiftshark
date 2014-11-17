@@ -9,9 +9,9 @@
         <script type="text/javascript">
             $(document).ready(function() {
 
-                // Employer Signup
+                // Employer Signup and Login
                 $.ajax({
-                    url : '/users/employers',
+                    url : '/users/employers/',
                     type: 'POST',
                     async: false,
                     contentType: "application/json",
@@ -44,7 +44,7 @@
 
                 // Employee Creation (1)
                 $.ajax({
-                    url : '/users/employees',
+                    url : '/users/employees/',
                     type: 'POST',
                     async: false,
                     contentType: "application/json",
@@ -60,7 +60,7 @@
 
                 // Employee Creation (2)
                 $.ajax({
-                    url : '/users/employees',
+                    url : '/users/employees/',
                     type: 'POST',
                     async: false,
                     contentType: "application/json",

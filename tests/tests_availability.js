@@ -8,17 +8,16 @@
 //////////////////////
 
 test('Availability - GET /avails/', function () {
-    // login('test1', 'test1');
-    // clear(); // clear user
+  // Employer Test Account LOGIN
+  test_employer_login();
 
-    // data = some_helper({});
-
-    // deepEqual(data, {'shifts': shifts}, 'All Shifts retrieved correctly.');
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 test('Availability - GET /avails/:id', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 ///////////////////////
@@ -26,7 +25,8 @@ test('Availability - GET /avails/:id', function () {
 ///////////////////////
 
 test('Availability - POST /avails/', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 //////////////////////
@@ -34,7 +34,8 @@ test('Availability - POST /avails/', function () {
 //////////////////////
 
 test('Availability - PUT /avails/:id', function () {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
 });
 
 /////////////////////////
@@ -42,5 +43,9 @@ test('Availability - PUT /avails/:id', function () {
 /////////////////////////
 
 test('Availability - DELETE /avails/:id', function() {
-    ok(true); // placeholder
+  clear_employer();
+  ok(true);
+
+  // Employer Test Account LOGOUT
+  client_logout();
 });
