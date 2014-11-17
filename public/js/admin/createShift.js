@@ -2,6 +2,25 @@ $(document).ready(function() {
   var createShiftForm = $('.ui.createShift.form');
   var recurring = false;
 
+  var employeeDropdown = $('.createShift.form [name="select-employee"]').parent();
+
+  var startHourDropdown     = $('.createShift.form [name="start-hour"]').parent();
+  var startMinuteDropdown   = $('.createShift.form [name="start-minute"]').parent();
+  var startMeridianDropdown = $('.createShift.form [name="start-meridian"]').parent();
+
+  var endHourDropdown     = $('.createShift.form [name="end-hour"]').parent();
+  var endMinuteDropdown   = $('.createShift.form [name="end-minute"]').parent();
+  var endMeridianDropdown = $('.createShift.form [name="end-meridian"]').parent();
+
+  var startMonthDropdown = $('.createShift.form [name="start-month"]').parent();
+  var startDayDropdown   = $('.createShift.form [name="start-day"]').parent();
+  var startYearDropdown  = $('.createShift.form [name="start-year"]').parent();
+
+  var endMonthDropdown   = $('.createShift.form [name="end-month"]').parent();
+  var endDayDropdown     = $('.createShift.form [name="end-day"]').parent();
+  var endYearDropdown    = $('.createShift.form [name="end-year"]').parent();
+
+
   $('.ui.createShift.form .meridian').dropdown('set value', 'am')
   $('.ui.createShift.form .meridian').dropdown('set selected', 'AM')
 
@@ -201,7 +220,7 @@ $(document).ready(function() {
   $('.createShift.form .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
     recurring = true;
     updateRules();
-    var $recurring = $('.recurring');
+    var $recurring = $('.ui.createShift.form .recurring');
     $recurring.removeClass('hidden');
     $.fancybox.update();
   });
@@ -209,8 +228,38 @@ $(document).ready(function() {
   $('.createShift.form .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
     recurring = false;
     updateRules();
-    var $recurring = $('.recurring');
+    var $recurring = $('.ui.createShift.form .recurring');
     $recurring.addClass('hidden');
     $.fancybox.update();
+  });
+
+  $('.createShift.form .submit.button').on('click', function() {
+    var validForm = createShiftForm.form('validate form');
+
+    if (validForm) {
+      var employee = startHourDropdown.dropdown('get value');
+
+      var startHour     = startHourDropdown.dropdown('get value');
+      var startMinute   = startMinuteDropdown.dropdown('get value');
+      var startMeridian = startMeridianDropdown.dropdown('get value');
+
+      var endHour     = endHourDropdown.dropdown('get value');
+      var endMinute   = endMinuteDropdown.dropdown('get value');
+      var endMeridian = endMeridianDropdown.dropdown('get value');
+
+      var startMonth = startMonthDropdown.dropdown('get value');
+      var startDay   = startDayDropdown.dropdown('get value');
+      var startYear  = startYearDropdown.dropdown('get value');
+
+      var endMonth   = endMonthDropdown.dropdown('get value');
+      var endDay     = endDayDropdown.dropdown('get value');
+      var endYear    = endYearDropdown.dropdown('get value');
+
+      if (recurring) {
+        lastMonth = endMonth;
+        lastDay   = endDay;
+        lastYear  = endYear;
+      }
+    }
   });
 });

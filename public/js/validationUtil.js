@@ -1,3 +1,7 @@
+var lastMonth = "";
+var lastDay   = "";
+var lastYear  = "";
+
 var timeToMinutes = function(hour, minute, meridian) {
     hour = hour == 12 ? 0 : hour;
     minute = parseInt(minute);
