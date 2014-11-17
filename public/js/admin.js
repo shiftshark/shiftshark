@@ -92,4 +92,23 @@ $(document).ready(function() {
     $('.cancel.button').on('click', function() {
         $('.fancybox-close').trigger('click');
     })
+
+    $('#logout').on('click', function() {
+        $.ajax({
+            url : '/logout',
+            type: 'POST',
+            async: true,
+            timeout: 10000,
+            contentType: "application/json",
+            data: JSON.stringify({}),
+            beforeSend: function () {
+            },
+            error: function(xhr, status, err) {
+                alert('Error logging out; please clear cookies and reload page.');
+            },
+            success: function (result, status, xhr) {
+                window.location.reload();
+            }
+        });
+    });
 });
