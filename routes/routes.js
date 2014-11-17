@@ -10,7 +10,12 @@ var Availability = require('../models/availability');
 
 /* GET home page. */
 router.get('/', function(req, next) {
-  res.render('auth', {formType:'login'});
+  if (req.user === undefined || req.user === null) // unauthorized
+    res.render('auth', {formType:'login'});
+  else if (req.user.employer === true) // employer
+    res.render('admin', {employees:['Elliott','Andre','Cathleen','Michael']});
+  else // employee
+    res.render('employee', {employees:['Elliott','Andre','Cathleen','Michael']});
 });
 
 router.get('/admin', function(req, res) {
