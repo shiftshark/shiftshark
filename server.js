@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 
 var session = require('express-session');
 var passport = require('passport');
@@ -85,13 +86,13 @@ app.use(express.static(path.join(__dirname, 'tests')));
 // EMAIL //
 ///////////
 
-var transporter = nodemailer.createTransport("SMTP", {
+var transporter = nodemailer.createTransport(smtpTransport({
     service: 'Gmail',
     auth: {
       user: 'shiftsharknoreply@gmail.com',
       pass: 'fjfjfjfjsharkFj'
     }
-});
+}));
 
 app.use(function (req, res, next) {
   res.mailer = transporter;
