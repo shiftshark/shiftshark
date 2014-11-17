@@ -10,8 +10,11 @@
         <script src='/lib/jquery-2.1.1.min.js'></script>
         <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
         <script src='/lib/semantic.min.js'></script>
+        <script src='/js/validationUtil.js'></script>
         <script src='/js/admin.js'></script>
+        <script src='/js/admin/employeeSettings.js'></script>
         <script src='/js/admin/modify.js'></script>
+        <script src='/js/admin/createShift.js'></script>
     </head>
 
     <body>
@@ -19,21 +22,31 @@
         <div class='ui adminOptions menu'>
             
             <div class='right item'>
-                <a href='#employeeSettings' class='ui inverted black fancybox button'>
-                    Employee Settings
-                </a>
-                <div class='ui inverted black button' id='roleButton'>
-                    + Role
+                <div class='item wrap'>
+                    <a href='#employeeSettings' class='ui inverted black fancybox button'>
+                        + Employee
+                    </a>
                 </div>
-                <a href='#createShift' class='ui inverted black fancybox button'>
-                    Create Shift
-                </a>
-                <a href='#modifyShift' class='ui inverted black fancybox button'>
-                    Modfiy Shift
-                </a>
-                <a href='#assignOffered' class='ui inverted black fancybox button'>
-                    Assign Offered
-                </a>
+                <div id='roleButton' class='item wrap'>
+                    <div class='ui inverted black button'>
+                        + Role
+                    </div>
+                </div>
+                <div class='item wrap'>
+                    <a href='#createShift' class='ui inverted black fancybox button'>
+                        Create Shift
+                    </a>
+                </div>
+                <div class='item wrap'>
+                    <a href='#modifyShift' class='ui inverted black fancybox button'>
+                        Modfiy Shift
+                    </a>
+                </div>
+                <div class='item wrap'>
+                    <a href='#assignOffered' class='ui inverted black fancybox button'>
+                        Assign Offered
+                    </a>
+                </div>
             </div>
         </div>
         <div id='profileSettings' class='modalContent'>

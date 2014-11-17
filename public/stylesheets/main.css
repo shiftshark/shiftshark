@@ -18,10 +18,11 @@ body {
     -moz-border-radius: 0 !important;
 }
 
-.adminOptions {
+.adminOptions, .formButtons {
     margin: 0 !important;
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
+    background-color: transparent !important;
 }
 
 .ntitle {
@@ -96,7 +97,7 @@ label.colon {
     height: 55px !important;
 }
 
-.submitButtons {
+.formButtons {
     padding-top: 50px;
 }
 
@@ -112,4 +113,34 @@ label.colon {
     .vcentered {
         transform: translateY(50%);
     }
+}
+
+.roleInput input, .roleInput input:focus {
+    background-color: #4C4C4C !important;
+    color: white !important;
+}
+
+.roleInput input::selection {
+    color: black;
+    background: rgba(255,255,255,.7); /* WebKit/Blink Browsers */
+}
+
+.roleInput input::-moz-selection {
+    color: black;
+    background: rgba(255,255,255,.7); /* Gecko Browsers */
+}
+
+.roleInput i {
+    opacity: .5 !important;
+    color:white !important;
+}
+
+.roleInput i:hover {
+    opacity: 1 !important;
+    cursor: pointer !important;
+    cursor: hand !important;
+}
+
+.fancybox-inner {
+    overflow-x: hidden !important;
 }

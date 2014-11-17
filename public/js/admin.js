@@ -34,10 +34,62 @@ $(document).ready(function() {
         maxWidth    : 700,
         minWidth    : 700,
         fitToView   : false,
-        autoSize    : true,
+        autoHeight  : true,
+        autoResize  : true,
         scrolling   : 'no'
     });
 
-    $('.ui.radio.checkbox').checkbox();
+    $('.ui.checkbox').checkbox();
     $('.ui.dropdown').dropdown();
+
+    var roleInput = "<div class='ui icon roleInput input'>\
+                        <input type='text'>\
+                        <i class='right icon'></i>\
+                    </div>"
+
+    var roleButton = $('#roleButton').html();
+
+    $('#roleButton').on('click', function() {
+        var isText = $($(this).children()[0]).hasClass('roleInput');
+
+        if (!isText) {
+            $that = $(this);
+            $(this).children().animate({height:'31px',width:'214px'}, function() {
+                $that.html(roleInput);
+                $('#roleButton input').focus();
+            });
+        }
+    });
+
+    var submitAndDestroyRoleInput = function(that) {
+        var roleName = $('.roleInput input').val();
+
+        if (roleName.length != 0) {
+            // TODO: Submit that Role Name to server
+        }
+
+        $that = $('#roleButton');
+
+        $('#roleButton .input').children().animate({height:'29px',width:'93px'}, function() {
+            $that.html(roleButton);
+        });
+    }
+
+    $('#roleButton').on('keypress', function(evt) {
+        var isText = $($(this).children()[0]).hasClass('roleInput');
+        if (evt.charCode == 13 && isText) {
+            submitAndDestroyRoleInput();
+        }
+    });
+
+    $('#roleButton').on('focusout', function(evt) {
+        var isText = $($(this).children()[0]).hasClass('roleInput');
+        if (isText) {
+            submitAndDestroyRoleInput();
+        }
+    });
+
+    $('.cancel.button').on('click', function() {
+        $('.fancybox-close').trigger('click');
+    })
 });

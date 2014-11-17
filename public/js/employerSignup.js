@@ -66,15 +66,15 @@ $(document).ready(function() {
     loginForm.form(rules, settings);
 
     // adds a listener to the form submit button
-    $(".submit.button").click(function() {
+    $('.submit.button').click(function() {
         // attempts a form validation
         var validForm = loginForm.form('validate form');
 
         if (validForm) {
-            var name = $("[name='username']").val();
-            var scheduleName = $("[name='schedule-name']").val();
-            var email = $("[name='email']").val();
-            var password = $("[name='password']").val();
+            var name = $('[name='username']').val();
+            var scheduleName = $('[name='schedule-name']').val();
+            var email = $('[name='email']').val();
+            var password = $('[name='password']').val();
 
             // PERFORM AJAX CHECK
         }
