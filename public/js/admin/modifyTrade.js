@@ -81,6 +81,7 @@ $(document).ready(function() {
 
   $('.ui.modify.trade.form .submit.button').on('click', function() {
     var validForm = tradeShiftForm.form('validate form');
+    $.fancybox.update();
 
     if (validForm) {
       var startHour     = startHourDropdown.dropdown('get value');

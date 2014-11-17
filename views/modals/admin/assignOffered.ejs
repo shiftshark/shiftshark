@@ -1,10 +1,13 @@
 <div class='centered-text ctitle' style='padding-bottom:10px;'>Assign Offered Shift</div>
 
-<div class='ui createShift form'>
+<div class='ui assignOffered form'>
+    <div class="ui error message"></div>
+
     <div class='fields createFields'>
         <label class='five wide field right-justified vcentered'>Assign to:</label>
         <div class='eleven wide field createInputs'>
             <div class='ui selection dropdown'>
+                <input type='hidden' name='select-employee'>
                 <div class='default text'>Select Employee</div>
                 <i class='dropdown icon'></i>
                 <div class='menu' style='overflow:auto;max-height:100px;'>
@@ -21,6 +24,7 @@
             <div class='inline fields createFields'>
                 <div class='field'>
                     <div class='ui selection dropdown'>
+                        <input type='hidden' name='start-hour'>
                         <div class='default text'>HH</div>
                         <i class='dropdown icon'></i>
                         <div class='menu' style='overflow:auto;max-height:100px;'>
@@ -33,6 +37,7 @@
                 <div class='field'>
                     <label class='colon'>:</label>
                     <div class='ui selection dropdown'>
+                        <input type='hidden' name='start-minute'>
                         <div class='default text'>MM</div>
                         <i class='dropdown icon'></i>
                         <div class='menu' style='overflow:auto;max-height:100px;'>
@@ -43,7 +48,8 @@
                     </div>
                 </div>
                 <div class='field'>
-                    <div class='ui selection dropdown'>
+                    <div class='ui selection meridian dropdown'>
+                        <input type='hidden' name='start-meridian'>
                         <div class='default text'>AM</div>
                         <i class='dropdown icon'></i>
                         <div class='menu' style='overflow:auto;max-height:100px;'>
@@ -63,6 +69,7 @@
             <div class='inline fields createFields'>
                 <div class='field'>
                     <div class='ui selection dropdown'>
+                        <input type='hidden' name='end-hour'>
                         <div class='default text'>HH</div>
                         <i class='dropdown icon'></i>
                         <div class='menu' style='overflow:auto;max-height:100px;'>
@@ -75,6 +82,7 @@
                 <div class='field'>
                     <label class='colon'>:</label>
                     <div class='ui selection dropdown'>
+                        <input type='hidden' name='end-minute'>
                         <div class='default text'>MM</div>
                         <i class='dropdown icon'></i>
                         <div class='menu' style='overflow:auto;max-height:100px;'>
@@ -85,7 +93,8 @@
                     </div>
                 </div>
                 <div class='field'>
-                    <div class='ui selection dropdown'>
+                    <div class='ui selection meridian dropdown'>
+                        <input type='hidden' name='end-meridian'>
                         <div class='default text'>AM</div>
                         <i class='dropdown icon'></i>
                         <div class='menu' style='overflow:auto;max-height:100px;'>
@@ -97,9 +106,10 @@
             </div>
         </div>
     </div>
-
-    <div class='fright submitButtons'>
-        <div class='ui red cancel button'>Cancel</div>
-        <div class='ui black submit button'>Assign</div>
+    <div class='ui formButtons menu'>
+        <div class='right item'>
+            <div class='ui red cancel button'>Cancel</div>
+            <div class='ui black submit button'>Assign</div>
+        </div>
     </div>
 </div>

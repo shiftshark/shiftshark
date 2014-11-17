@@ -36,6 +36,7 @@ $(document).ready(function() {
 
   $('.add.employee.form .submit.button').on('click', function() {
     var isValid = addForm.form('validate form');
+    $.fancybox.update();
 
     if (isValid) {
       // Ajax Call

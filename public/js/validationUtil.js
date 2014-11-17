@@ -1,6 +1,9 @@
-var lastMonth = "";
-var lastDay   = "";
-var lastYear  = "";
+var lastSMonth = "";
+var lastSDay   = "";
+var lastSYear  = "";
+var lastEMonth = "";
+var lastEDay   = "";
+var lastEYear  = "";
 
 var timeToMinutes = function(hour, minute, meridian) {
     hour = hour == 12 ? 0 : hour;
@@ -175,6 +178,16 @@ $.fn.form.settings.rules.emptyRecurring = function(value, recurring) {
   recurring = recurring == "true" || recurring == true ? true : false;
 
   if (recurring) {
+    return !(value === undefined || value === "");
+  }
+
+  return true;
+};
+
+$.fn.form.settings.rules.emptyEntireShift = function(value, entireShift) {
+  entireShift = entireShift == "true" || entireShift == true ? true : false;
+
+  if (!entireShift) {
     return !(value === undefined || value === "");
   }
 

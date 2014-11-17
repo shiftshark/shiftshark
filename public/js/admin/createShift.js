@@ -21,8 +21,8 @@ $(document).ready(function() {
   var endYearDropdown    = $('.createShift.form [name="end-year"]').parent();
 
 
-  $('.ui.createShift.form .meridian').dropdown('set value', 'am')
-  $('.ui.createShift.form .meridian').dropdown('set selected', 'AM')
+  $('.ui.createShift.form .meridian').dropdown('set value', 'am');
+  $('.ui.createShift.form .meridian').dropdown('set selected', 'AM');
 
   // form validation rules
   var rules = {
@@ -233,8 +233,32 @@ $(document).ready(function() {
     $.fancybox.update();
   });
 
+  $('#createShiftPrevious').on('click', function(){
+    if (lastSMonth != "" && lastSDay   != "" && lastSYear  != "" && lastEMonth != "" && lastEDay   != "" && lastEYear  != "") {
+      startMonthDropdown.dropdown('set value', lastSMonth);
+      startMonthDropdown.dropdown('set selected', lastSMonth);
+
+      startDayDropdown.dropdown('set value', lastSDay);
+      startDayDropdown.dropdown('set selected', lastSDay);
+
+      startYearDropdown.dropdown('set value', lastSYear);
+      startYearDropdown.dropdown('set selected', lastSYear);
+
+
+      endMonthDropdown.dropdown('set value', lastEMonth);
+      endMonthDropdown.dropdown('set selected', lastEMonth);
+
+      endDayDropdown.dropdown('set value', lastEDay);
+      endDayDropdown.dropdown('set selected', lastEDay);
+
+      endYearDropdown.dropdown('set value', lastEYear);
+      endYearDropdown.dropdown('set selected', lastEYear);
+    }
+  });
+
   $('.createShift.form .submit.button').on('click', function() {
     var validForm = createShiftForm.form('validate form');
+    $.fancybox.update();
 
     if (validForm) {
       var employee = startHourDropdown.dropdown('get value');
@@ -256,9 +280,12 @@ $(document).ready(function() {
       var endYear    = endYearDropdown.dropdown('get value');
 
       if (recurring) {
-        lastMonth = endMonth;
-        lastDay   = endDay;
-        lastYear  = endYear;
+        lastSMonth = startMonth;
+        lastSDay   = startDay;
+        lastSYear  = startYear;
+        lastEMonth = endMonth;
+        lastEDay   = endDay;
+        lastEYear  = endYear;
       }
     }
   });

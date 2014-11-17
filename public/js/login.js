@@ -38,6 +38,7 @@ $(document).ready(function() {
   $('.submit.button').click(function() {
     // attempts a form validation
     var validForm = loginForm.form('validate form');
+    $.fancybox.update();
 
     if (validForm) {
       var email = $('[name='email']').val();

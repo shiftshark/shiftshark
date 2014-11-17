@@ -1,18 +1,27 @@
 $(document).ready(function() {
-  var editShiftForm = $('.ui.modify.edit.form');
-  
-  var employeeDropdown = $('.ui.modify.edit.form [name="select-employee"]').parent();
+  var assignOfferForm = $('.ui.assignOffered.form');
 
-  var startHourDropdown     = $('.ui.modify.edit.form [name="start-hour"]').parent();
-  var startMinuteDropdown   = $('.ui.modify.edit.form [name="start-minute"]').parent();
-  var startMeridianDropdown = $('.ui.modify.edit.form [name="start-meridian"]').parent();
+  var employeeDropdown = $('.ui.assignOffered.form [name="select-employee"]').parent();
 
-  var endHourDropdown     = $('.ui.modify.edit.form [name="end-hour"]').parent();
-  var endMinuteDropdown   = $('.ui.modify.edit.form [name="end-minute"]').parent();
-  var endMeridianDropdown = $('.ui.modify.edit.form [name="end-meridian"]').parent();
+  var startHourDropdown     = $('.ui.assignOffered.form [name="start-hour"]').parent();
+  var startMinuteDropdown   = $('.ui.assignOffered.form [name="start-minute"]').parent();
+  var startMeridianDropdown = $('.ui.assignOffered.form [name="start-meridian"]').parent();
 
-  $('.ui.modify.edit.form .meridian').dropdown('set value', 'am')
-  $('.ui.modify.edit.form .meridian').dropdown('set selected', 'AM')
+  var endHourDropdown     = $('.ui.assignOffered.form [name="end-hour"]').parent();
+  var endMinuteDropdown   = $('.ui.assignOffered.form [name="end-minute"]').parent();
+  var endMeridianDropdown = $('.ui.assignOffered.form [name="end-meridian"]').parent();
+
+  var startMonthDropdown = $('.ui.assignOffered.form [name="start-month"]').parent();
+  var startDayDropdown   = $('.ui.assignOffered.form [name="start-day"]').parent();
+  var startYearDropdown  = $('.ui.assignOffered.form [name="start-year"]').parent();
+
+  var endMonthDropdown   = $('.ui.assignOffered.form [name="end-month"]').parent();
+  var endDayDropdown     = $('.ui.assignOffered.form [name="end-day"]').parent();
+  var endYearDropdown    = $('.ui.assignOffered.form [name="end-year"]').parent();
+
+
+  $('.ui.assignOffered.form .meridian').dropdown('set value', 'am');
+  $('.ui.assignOffered.form .meridian').dropdown('set selected', 'AM');
 
   // form validation rules
   var rules = {
@@ -33,7 +42,7 @@ $(document).ready(function() {
           prompt  : 'Please enter a start hour'
         },
         {
-          type    : 'startTimeBeforeEnd[.ui.modify.edit.form]',
+          type    : 'startTimeBeforeEnd[.ui.assignOffered.form]',
           prompt  : 'Start time is before or same as end time'
         }
       ]
@@ -78,18 +87,18 @@ $(document).ready(function() {
     on      : 'blur'
   };
 
-  editShiftForm.form(rules, settings);
+  assignOfferForm.form(rules, settings);
 
-  editShiftForm.form('setting', 'onFailure', function(){
+  assignOfferForm.form('setting', 'onFailure', function(){
     $.fancybox.update();
   });
 
-  editShiftForm.form('setting', 'onSuccess', function(){
+  assignOfferForm.form('setting', 'onSuccess', function(){
     $.fancybox.update();
   });
 
-  $('.ui.modify.edit.form .submit.button').on('click', function() {
-    var validForm = editShiftForm.form('validate form');
+  $('.ui.assignOffered.form .submit.button').on('click', function() {
+    var validForm = assignOfferForm.form('validate form');
     $.fancybox.update();
 
     if (validForm) {

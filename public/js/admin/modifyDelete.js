@@ -165,8 +165,33 @@ $(document).ready(function() {
     $.fancybox.update();
   });
 
+  $('#deleteShiftPrevious').on('click', function(){
+    console.log(lastSMonth, lastSDay, lastSYear, lastEMonth, lastEDay, lastEYear);
+    if (lastSMonth != "" && lastSDay   != "" && lastSYear  != "" && lastEMonth != "" && lastEDay   != "" && lastEYear  != "") {
+      startMonthDropdown.dropdown('set value', lastSMonth);
+      startMonthDropdown.dropdown('set selected', lastSMonth);
+
+      startDayDropdown.dropdown('set value', lastSDay);
+      startDayDropdown.dropdown('set selected', lastSDay);
+
+      startYearDropdown.dropdown('set value', lastSYear);
+      startYearDropdown.dropdown('set selected', lastSYear);
+
+
+      endMonthDropdown.dropdown('set value', lastEMonth);
+      endMonthDropdown.dropdown('set selected', lastEMonth);
+
+      endDayDropdown.dropdown('set value', lastEDay);
+      endDayDropdown.dropdown('set selected', lastEDay);
+
+      endYearDropdown.dropdown('set value', lastEYear);
+      endYearDropdown.dropdown('set selected', lastEYear);
+    }
+  });
+
   $('.modify.delete.form .submit.button').on('click', function() {
     var validForm = deleteShiftForm.form('validate form');
+    $.fancybox.update();
 
     if (validForm) {
       var startMonth = startMonthDropdown.dropdown('get value');
@@ -178,9 +203,12 @@ $(document).ready(function() {
       var endYear    = endYearDropdown.dropdown('get value');
 
       if (recurring) {
-        lastMonth = endMonth;
-        lastDay   = endDay;
-        lastYear  = endYear;
+        lastSMonth = startMonth;
+        lastSDay   = startDay;
+        lastSYear  = startYear;
+        lastEMonth = endMonth;
+        lastEDay   = endDay;
+        lastEYear  = endYear;
       }
     }
   });
