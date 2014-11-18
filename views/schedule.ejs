@@ -17,11 +17,9 @@
 			  	        <% if(schedule[shift].date === dateToCheck){ %>
 			        		<div class="role <%= schedule[shift]._id %>">
 				     		    <div class="cell"><%= schedule[shift].position %></div>
-				     		    
-				    			<div class="cell">8am</div>
-				    			<div class="cell">8:30am</div>
-				    			<div class="cell">9am</div>
-				   				<div class="cell">9:30am</div>
+				     		    <% for(i=8*60/15; i<18*60/15; i++){ %>
+				     		    	<div class="cell"><%= Math.floor((i*15)/60) %>:<%= (i*15)%60 %>am</div>
+				     		    <% } %>
 				   		    </div>
 						<% } %>
 	    			<% } %>
