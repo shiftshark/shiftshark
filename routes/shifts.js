@@ -76,10 +76,10 @@ router.get('/', function(req, res) {
     if (err) {
       return res.status(500).end();
     } else {
-      res.json({ shifts: shifts });
+      return res.json({ shifts: shifts });
     }
   });
-
+});
 
 /**
  * POST /shifts/
@@ -143,7 +143,7 @@ router.post('/', function(req, res) {
         var millisecsInWeek = 7 * millisecsInDay;
 
         var specifiedShiftObject;
-        for (var currentDate = startDate; currentDate.getTime() < endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+        for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
           shiftTemplate.date = currentDate;
           var newShift = new Shift(shiftTemplate);
           newShift.save(function(err, _shift) {
@@ -162,7 +162,7 @@ router.post('/', function(req, res) {
           if (err) {
             return res.status(500).end();
           } else {
-            res.json({ shift: shift });
+            return res.json({ shift: shift });
           }
         });
 
@@ -181,7 +181,7 @@ router.post('/', function(req, res) {
               if (err) {
                 return res.status(500).end();
               } else {
-                res.json({ shift: _shift });
+                return res.json({ shift: _shift });
               }
             });
           }
@@ -216,7 +216,7 @@ router.get('/:id', function(req, res) {
   Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }).populate('assignee claimant').exec(function(err, shift) {
     Shift.find({ series: shift.series }, function(err, shifts) {
       var dates = shifts.map(function(obj) { return obj.date; });
-      res.json({
+      return res.json({
         shift: shift,
         startDate: Math.min(dates),
         endDate: Math.max(dates)
@@ -270,24 +270,38 @@ router.get('/:id', function(req, res) {
     if (! req.user.employer) return res.status(401).end();
 
     var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
-    // TODO?: parse these dates.
-    var firstDate = req.body.startDate || req.body.shift.date + millisecsInWeek;
-    var lastDate = req.body.endDate || req.body.shift.date - millisecsInWeek;
-    var endDate = new Date(lastDate);
-    var allShifts = [];
+    var startDate = new Date(req.query.adjustStart || req.body.shift.date + millisecsInWeek);
+    var endDate = new Date(req.query.adjustEnd || req.body.shift.date - millisecsInWeek);
+
+    // strip dates down to only year, month, day
+    // NOTE: sometimes setting to UTC changes what day of the week it is - using setHours instead
+    startDate.setHours(0,0,0,0);
+    endDate.setHours(0,0,0,0);
+
 
     Shift.findById(req.params.id, function(err, shiftTemplate) {
+      var specifiedDay = new Date(shiftTemplate.date).getDay();
+      if (startDate.getDay() != specifiedDay) {
+        startDate = new Date(abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
+      }
 
-      for (var currentDate = new Date(firstDate); currentDate <= endDate; currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+      for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
         shiftTemplate.date = currentDate;
         var newShift = new Shift(shiftTemplate);
         newShift.save(function(err, _shift) {
           if (err) {
-            // handle error
+            return res.status(500).end();
           } else {
             allShifts.push(_shift);
+            // we've created all objects, so populate and return them
             if(endDate - currentDate < millisecsInWeek) {
-              res.json({ shifts: allShifts });
+              Shift.find({}).or(allShifts).populate('assignee claimant').exec(function(err, shifts) {
+                if (err) {
+                  return res.status(500).end();
+                } else {
+                  return res.json({ shifts: shifts })
+                }
+              });
             }
           }
         });
@@ -333,7 +347,7 @@ router.get('/:id', function(req, res) {
       if (err) {
         res.status(500).end();
       } else {
-        res.json({ shifts: [shift] });
+        return res.json({ shifts: [shift] });
       }
     });
 
@@ -370,7 +384,7 @@ router.delete('/:id', function(req, res) {
   if (req.query.startDate || req.query.endDate) {
     Shift.findById(req.params.id, function(err, shift) {
       if (err) {
-        // handle error
+        return res.status(500).end();
       } else {
         var startDate = req.query.startDate || shift.date;
         var endDate = req.query.endDate || shift.date;
@@ -381,7 +395,7 @@ router.delete('/:id', function(req, res) {
             // handle error
           } else {
             var shiftIds = shifts.map(function(obj) { return obj._id; });
-            res.json({ shiftIds: shiftIds });
+            return res.json({ shiftIds: shiftIds });
           }
         });
       }
@@ -390,9 +404,9 @@ router.delete('/:id', function(req, res) {
   } else {
     Shift.remove({ _id: req.params.id }, function(err, shift) {
       if (err) {
-        // handle error
+        return res.status(500).end();
       } else {
-        res.json({ shiftIds: [shift._id] });
+        return res.json({ shiftIds: [shift._id] });
       }
     });
   }
