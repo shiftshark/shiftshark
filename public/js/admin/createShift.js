@@ -256,11 +256,12 @@ $(document).ready(function() {
   });
 
   $('.createShift.form .submit.button').on('click', function() {
-    var validForm = createShiftForm.form('validate form');
+    createShiftForm.form('validate form');
+    var validForm = !createShiftForm.hasClass('error');
     $.fancybox.update();
 
     if (validForm) {
-      var employee = startHourDropdown.dropdown('get value');
+      var employee = $('.createShift.form .employeeList .active').attr('employeeId');
 
       var startHour     = startHourDropdown.dropdown('get value');
       var startMinute   = startMinuteDropdown.dropdown('get value');
@@ -278,6 +279,37 @@ $(document).ready(function() {
       var endDay     = endDayDropdown.dropdown('get value');
       var endYear    = endYearDropdown.dropdown('get value');
 
+      //TODO: Get the current position
+      var position  = "546ad010dc5362fa0a02c135";
+      var startTime = Time(startHour, startMinute, startMeridian).totalMinutes;
+      var endTime   = Time(endHour, endMinute, endMeridian).totalMinutes;
+      //TODO: Get date of creation
+      var date = new Date();
+      var trading = false;
+
+      var data = {
+        assignee  : employee,
+        claimant  : null,
+        position  : position,
+        startTime : startTime,
+        endTime   : endTime,
+        date      : date,
+        trading   : trading
+      }
+
+      var success = function(result, status, xhr) {
+        $('.ui.error.message').html('');
+        createShiftForm.removeClass('loading');
+        $('.fancybox-close').trigger('click');
+        var shift = result.shift;
+        $('.createShift.form .dropdown').dropdown('restore defaults');
+        //TODO: Interact with Michael's calendar
+      };
+
+      var failure = function(xhr, status, err) {
+        $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        createShiftForm.removeClass('loading');
+      };
       if (recurring) {
         lastSMonth = startMonth;
         lastSDay   = startDay;
@@ -285,6 +317,17 @@ $(document).ready(function() {
         lastEMonth = endMonth;
         lastEDay   = endDay;
         lastEYear  = endYear;
+
+        var startDate = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay));
+        var endDate = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay));
+
+        console.log(startDate,endDate);
+        console.log(startYear, startMonth, startDay);
+        console.log(endYear, endMonth, endDay);
+
+        client_shifts_create(data, startDate, endDate, success, failure);
+      } else {
+        client_shifts_create (data, null, null, success, failure);
       }
     }
   });

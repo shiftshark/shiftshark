@@ -90,7 +90,7 @@ function client_shifts_change (id, query, shift, callback_success, callback_erro
   if (typeof query === "object" && query !== null && ! $.isEmptyObject(query))
     url += '?' + $.param(query);
 
-  return ajax_call('PUT', url, { position: position }, callback_success, callback_error);
+  return ajax_call('PUT', url, { shift: shift }, callback_success, callback_error);
 }
 
 /**
@@ -100,13 +100,13 @@ function client_shifts_change (id, query, shift, callback_success, callback_erro
  *
  * Parameters:
  *   id               - ShiftID
- *   query            - Object: any of { startDate, endDate }
+ *   query            - Object   (optional): any of { startDate, endDate }
  *   callback_success - function (optional): success callback
  *   callback_error   - function (optional): failure callback
  *
  * Returns: Only returns when used synchronously; see definition for ajax_call(...).
  */
-function client_shifts_remove (id, position, callback_success, callback_error) {
+function client_shifts_remove (id, query, callback_success, callback_error) {
   // form url string with (optional) query paramters
   var url = '/shifts/' + String(id);
   if (typeof query === "object" && query !== null && ! $.isEmptyObject(query))
