@@ -1,9 +1,9 @@
 <%
-    timeBlocksInRange = function(shift){
-    var firstTime = Math.floor(shift.startTime/15);
-    var lastTime = Math.floor((shift.endTime)/15);
+    timeBlocksInRange = function(inputShift){
+    var firstTime = Math.floor(inputShift.startTime/15);
+    var lastTime = Math.floor((inputShift.endTime)/15);
     console.log("start");
-    if(shift.startTime === shift.endTime){
+    if(inputShift.startTime === inputShift.endTime){
         lastTime === firstTime;
     }
     return function(time){
@@ -14,4 +14,26 @@
         return firstTime<=time&&time<lastTime;
     };
 }
+%>
+
+<% 
+	properRef = function(inputShift){
+		if( timeBlocksInRange(inputShift)(i) ){
+		    if(inputShift.trading && isAdmin){
+		    	return "#assignOffered"
+		    }
+		    else if(inputShift.trading){
+		    	return "#claimShift"
+		    }
+		    else if(isAdmin){
+		    	return "#modifyShift"
+		    }
+		    else if(inputShift.claimant === req.user.employee._id || (inputShift.claimant === null && inputShift.employee === req.user.employee._id)){
+		        return "#tradeShift"
+		    }
+		}
+		else{
+		        return "#createShift"
+		}
+	}
 %>

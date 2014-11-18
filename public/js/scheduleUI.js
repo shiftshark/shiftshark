@@ -5,14 +5,14 @@
  */
 
 $(document).on('click', '.cell', function(evt) {
-	console.log(evt.target);
-	evt.preventDefault();
-	alert("hello");
+	//console.log(evt.target);
+	//evt.preventDefault();
+	//alert("hello");
 });
 
 var changeColor = function(shift, color){
     //$(shiftId)
-    
+
 }
 
 var addShift = function(shiftId){

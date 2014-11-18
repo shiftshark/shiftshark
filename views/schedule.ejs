@@ -1,3 +1,4 @@
+<%= include helperSchUI %>
 <div class="scheduleWrapper">
 	<div class="timesRow">
 		Times of shifts go here
@@ -10,8 +11,7 @@
 	        		<div class="role <%= schedule[shift]._id %>">
 		     		    <div class="cell"><%= schedule[shift].position %></div>
 		     		    <% for(var i=8*60/15; i<18*60/15; i++){ %>
-		     		    	<div class="cell <%= i %>">
-								<%= include helperSchUI %>
+		     		    	<div class="cell fancybox <%= i %>" href=<%= properRef(schedule[shift]) %>>
 		     		    		<% if( timeBlocksInRange(schedule[shift])(i) ){ %>
 		     		    			<%= Math.floor(i*15/60) %>:<%= (i*15%60) %>
 		     		    		<% } %>

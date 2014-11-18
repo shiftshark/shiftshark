@@ -61,6 +61,7 @@ html, body {
 .cell{
   min-width: 75px;
   max-width: 75px;
+  min-height: 20px;
   display: inline-block;
   cursor: pointer !important;
   cursor: hand !important;
