@@ -51,13 +51,17 @@ var userFieldsToHide = '-hash -salt -schedule';
  */
 
 router.get('/', function(req, res) {
-  // TEST ME
   var filters = { schedule: req.user.schedule };
   var dateFilter = {};
   if (req.query.trading != undefined) {
-    if (req.query.trading === '1' || req.query.trading === 'true') filters.trading = true;
-    if (req.query.trading === '0' || req.query.trading === 'false') filters.trading = false;
-    return res.status(400).send("Unable to parse 'trading' parameter value.");
+    console.log(req.query.trading, typeof req.query.trading);
+    if (req.query.trading === '1' || req.query.trading === 'true') {
+      filters.trading = true;
+    } else if (req.query.trading === '0' || req.query.trading === 'false') {
+      filters.trading = false;
+    } else {
+      return res.status(400).send("Unable to parse 'trading' parameter value.");
+    }
   }
   if (req.query.assignee) {
     filters.assignee = req.query.assignee;
@@ -113,7 +117,6 @@ router.get('/', function(req, res) {
  */
 
 router.post('/', function(req, res) {
-  // TEST ME
   // check permissions
   if (! req.user.employer) return res.status(401).end();
 
