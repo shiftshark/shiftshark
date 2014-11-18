@@ -93,9 +93,11 @@ $(document).ready(function() {
         $('#roleButton .input').children().animate({height:'29px',width:'93px'}, function() {
             $that.html(roleButton);
             $that.removeClass('animating');
+            window.setTimeout(window.location.reload(), 1000);
         });
 
         // TODO: Add to displayed schedule
+        
     }
 
     $('#roleButton').on('keypress', function(evt) {
