@@ -74,8 +74,7 @@ $(document).ready(function() {
   };
 
   var settings = {
-    inline  : false,
-    on      : 'blur'
+    inline  : false
   };
 
   editShiftForm.form(rules, settings);

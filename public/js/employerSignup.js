@@ -83,59 +83,45 @@ $(document).ready(function() {
       var scheduleName = $('[name="schedule-name"]').val();
       var email        = $('[name="email"]').val();
       var password     = $('[name="password"]').val();
+      var data = {
+        first_name    : firstName,
+        last_name     : lastName,
+        email         : email,
+        schedule_name : scheduleName,
+        password      : password
+      };
 
-      $.ajax({
-        url : '/users/employers/',
-        type: 'POST',
-        async: false,
-        timeout: 10000,
-        contentType: "application/json",
-        data: JSON.stringify({
-          first_name    : firstName,
-          last_name     : lastName,
-          email         : email,
-          schedule_name : scheduleName,
-          password      : password
-        }),
-        beforeSend: function () {
-          loginForm.addClass('loading');
-        },
-        error: function(xhr, status, err) {
-          loginForm.removeClass('loading');
-          loginForm.removeClass('success');
-          $('.ui.error.message').html('<ul class="list"><li>Error signing up. Please try again</li></ul>');
-          loginForm.addClass('error');
-          console.log(xhr,status,err);
+      var loginSuccess = function (result, status, xhr) {
+        $('.ui.error.message').html('');
+        window.location.replace('/');
+      };
 
-        },
-        success: function (result, status, xhr) {
-          $('.ui.error.message').html('');
-          console.log(result);
-          loginForm.removeClass('loading');
-        }
-      });
+      var loginFailure = function(xhr, status, err) {
+        loginForm.removeClass('success');
+        $('.ui.error.message').html('<ul class="list"><li>Error logging in. Please try again</li></ul>');
+        loginForm.addClass('error');
+        console.log(xhr,status,err);
+      }
 
-      $.ajax({
-        url : '/login',
-        type: 'POST',
-        async: true,
-        timeout: 10000,
-        contentType: "application/json",
-        data: JSON.stringify({
-          username : email,
-          password : password
-        }),
-        error: function(xhr, status, err) {
-          loginForm.removeClass('success');
-          $('.ui.error.message').html('<ul class="list"><li>Error logging in. Please try again</li></ul>');
-          loginForm.addClass('error');
-          console.log(xhr,status,err);
-        },
-        success: function (result, status, xhr) {
-            $('.ui.error.message').html('');
-            window.location.replace('/');
-        }
-      });
+      var signupSuccess = function (result, status, xhr) {
+        $('.ui.error.message').html('');
+        console.log(result);
+        loginForm.removeClass('loading');
+        client_login(email, password, loginSuccess, loginFailure);
+
+      };
+
+      var signupFailure = function(xhr, status, err) {
+        loginForm.removeClass('loading');
+        loginForm.removeClass('success');
+        $('.ui.error.message').html('<ul class="list"><li>Error signing up. Please try again</li></ul>');
+        loginForm.addClass('error');
+        console.log(xhr,status,err);
+      };
+
+      loginForm.addClass('loading');
+
+      client_signup_employer(data, signupSuccess, signupFailure);
     }
   };
 

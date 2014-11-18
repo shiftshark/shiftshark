@@ -150,8 +150,7 @@ $(document).ready(function() {
   };
 
   var settings = {
-    inline  : false,
-    on      : 'blur'
+    inline  : false
   };
 
   createShiftForm.form(rules, settings);

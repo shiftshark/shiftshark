@@ -64,8 +64,7 @@ $(document).ready(function() {
   };
 
   var settings = {
-    inline  : false,
-    on      : 'blur'
+    inline  : false
   };
 
   tradeShiftForm.form(rules, settings);

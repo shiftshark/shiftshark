@@ -83,8 +83,7 @@ $(document).ready(function() {
   };
 
   var settings = {
-    inline  : false,
-    on      : 'blur'
+    inline  : false
   };
 
   assignOfferForm.form(rules, settings);
