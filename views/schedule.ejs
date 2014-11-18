@@ -1,35 +1,25 @@
-<html>
-    <head>
-        <title><%= title %></title>
-        <link rel='stylesheet' href='/stylesheets/schedule.css' />
-        <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
-        <script src='/js/scheduleUI.js'></script>
-    </head>
-    <body>
-	  	<div class="scheduleWrapper">
-			<div class="timesRow">
-	    		Times of shifts go here
-		    </div>
-			<div class="contentRow">
-		    	<div class="day"><%= dateToCheck %></div>
-	 		    <div class="roleWrapper">
-		            <% for(shift in schedule) {%>
-			  	        <% if(schedule[shift].date === dateToCheck){ %>
-			        		<div class="role <%= schedule[shift]._id %>">
-				     		    <div class="cell"><%= schedule[shift].position %></div>
-				     		    <% for(var i=8*60/15; i<18*60/15; i++){ %>
-				     		    	<div class="cell <%= i %>">
-										<%= include helperSchUI %>
-				     		    		<% if( timeBlocksInRange(schedule[shift])(i) ){ %>
-				     		    			<%= Math.floor(i*15/60) %>:<%= (i*15%60) %>
-				     		    		<% } %>
-				     		    	</div>
-				     		    <% } %>
-				   		    </div>
-						<% } %>
-	    			<% } %>
-		    	</div>
-		   	</div>
-	    </div>
-    </body>
-</html>
+<div class="scheduleWrapper">
+	<div class="timesRow">
+		Times of shifts go here
+    </div>
+	<div class="contentRow">
+    	<div class="day"><%= dateToCheck %></div>
+		    <div class="roleWrapper">
+            <% for(shift in schedule) {%>
+	  	        <% if(new Date(schedule[shift].date).getDate() === new Date(dateToCheck).getDate() && new Date(schedule[shift].date).getMonth() === new Date(dateToCheck).getMonth() && new Date(schedule[shift].date).getFullYear() === new Date(dateToCheck).getFullYear()){ %>
+	        		<div class="role <%= schedule[shift]._id %>">
+		     		    <div class="cell"><%= schedule[shift].position %></div>
+		     		    <% for(var i=8*60/15; i<18*60/15; i++){ %>
+		     		    	<div class="cell <%= i %>">
+								<%= include helperSchUI %>
+		     		    		<% if( timeBlocksInRange(schedule[shift])(i) ){ %>
+		     		    			<%= Math.floor(i*15/60) %>:<%= (i*15%60) %>
+		     		    		<% } %>
+		     		    	</div>
+		     		    <% } %>
+		   		    </div>
+				<% } %>
+			<% } %>
+    	</div>
+   	</div>
+</div>
