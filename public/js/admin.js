@@ -52,7 +52,10 @@ $(document).ready(function() {
         fitToView   : false,
         autoHeight  : true,
         autoResize  : true,
-        scrolling   : 'no'
+        scrolling   : 'no',
+        afterClose  : function() {
+            $('.scheduleWrapper .active').removeClass('active');
+        }
     });
 
     $('.ui.checkbox').checkbox();

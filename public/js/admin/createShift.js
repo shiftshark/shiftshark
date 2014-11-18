@@ -279,13 +279,14 @@ $(document).ready(function() {
       var endDay     = endDayDropdown.dropdown('get value');
       var endYear    = endYearDropdown.dropdown('get value');
 
-      //TODO: Get the current position
-      var position  = "546b23fd76f9e3fefa5af52e";
       var startTime = Time(startHour, startMinute, startMeridian).totalMinutes;
       var endTime   = Time(endHour, endMinute, endMeridian).totalMinutes;
-      //TODO: Get date of creation
-      var date = new Date(2014, 10, 18);
       var trading = false;
+      var position = $('.scheduleWrapper .active').parent().attr('position');
+      var date = $('.scheduleWrapper .active').parent().attr('date');
+      console.log(date);
+      date = new Date(date);
+      console.log(position, date);
 
       var data = {
         assignee  : employee,
@@ -304,6 +305,7 @@ $(document).ready(function() {
         var shift = result.shift;
         $('.createShift.form .dropdown').dropdown('restore defaults');
         //TODO: Interact with Michael's calendar
+        window.location.reload();
       };
 
       var failure = function(xhr, status, err) {
