@@ -81,7 +81,7 @@ $(document).ready(function() {
       var firstName    = $('[name="firstname"]').val();
       var lastName     = $('[name="lastname"]').val();
       var scheduleName = $('[name="schedule-name"]').val();
-      var email        = $('[name="email"]').val();
+      var email        = $('[name="email"]').val().toLowerCase();
       var password     = $('[name="password"]').val();
       var data = {
         first_name    : firstName,
@@ -99,6 +99,7 @@ $(document).ready(function() {
       var loginFailure = function(xhr, status, err) {
         loginForm.removeClass('success');
         $('.ui.error.message').html('<ul class="list"><li>Error logging in. Please try again</li></ul>');
+        $.fancybox.update();
         loginForm.addClass('error');
         console.log(xhr,status,err);
       }
@@ -115,6 +116,7 @@ $(document).ready(function() {
         loginForm.removeClass('loading');
         loginForm.removeClass('success');
         $('.ui.error.message').html('<ul class="list"><li>Error signing up. Please try again</li></ul>');
+        $.fancybox.update();
         loginForm.addClass('error');
         console.log(xhr,status,err);
       };

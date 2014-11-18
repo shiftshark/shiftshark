@@ -39,7 +39,7 @@ $(document).ready(function() {
 
     if (validForm) {
       loginForm.addClass('loading');
-      var email = $('[name="email"]').val();
+      var email = $('[name="email"]').val().toLowerCase();
       var password = $('[name="password"]').val();
 
       var success = function(result, status, xhr) {
@@ -52,6 +52,7 @@ $(document).ready(function() {
         loginForm.removeClass('loading');
         loginForm.removeClass('success');
         $('.ui.error.message').html('<ul class="list"><li>Error logging in. Please try again</li></ul>');
+        $.fancybox.update();
         loginForm.addClass('error');
         console.log(xhr,status,err);
 

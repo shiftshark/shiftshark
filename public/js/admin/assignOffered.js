@@ -3,26 +3,6 @@ $(document).ready(function() {
 
   var employeeDropdown = $('.ui.assignOffered.form [name="select-employee"]').parent();
 
-  var startHourDropdown     = $('.ui.assignOffered.form [name="start-hour"]').parent();
-  var startMinuteDropdown   = $('.ui.assignOffered.form [name="start-minute"]').parent();
-  var startMeridianDropdown = $('.ui.assignOffered.form [name="start-meridian"]').parent();
-
-  var endHourDropdown     = $('.ui.assignOffered.form [name="end-hour"]').parent();
-  var endMinuteDropdown   = $('.ui.assignOffered.form [name="end-minute"]').parent();
-  var endMeridianDropdown = $('.ui.assignOffered.form [name="end-meridian"]').parent();
-
-  var startMonthDropdown = $('.ui.assignOffered.form [name="start-month"]').parent();
-  var startDayDropdown   = $('.ui.assignOffered.form [name="start-day"]').parent();
-  var startYearDropdown  = $('.ui.assignOffered.form [name="start-year"]').parent();
-
-  var endMonthDropdown   = $('.ui.assignOffered.form [name="end-month"]').parent();
-  var endDayDropdown     = $('.ui.assignOffered.form [name="end-day"]').parent();
-  var endYearDropdown    = $('.ui.assignOffered.form [name="end-year"]').parent();
-
-
-  $('.ui.assignOffered.form .meridian').dropdown('set value', 'am');
-  $('.ui.assignOffered.form .meridian').dropdown('set selected', 'AM');
-
   // form validation rules
   var rules = {
     selectEmployee : {
@@ -33,52 +13,6 @@ $(document).ready(function() {
           prompt: 'Please select an employee'
         }
       ]
-    },
-    startHour: {
-      identifier  : 'start-hour',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter a start hour'
-        },
-        {
-          type    : 'startTimeBeforeEnd[.ui.assignOffered.form]',
-          prompt  : 'Start time is before or same as end time'
-        }
-      ]
-    },
-    startMinue: {
-      identifier  : 'start-minute',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter a start minute'
-        }
-      ]
-    },
-    startMeridian: {
-      identifier  : 'start-meridian'
-    },
-    endHour: {
-      identifier  : 'end-hour',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter an end hour'
-        }
-      ]
-    },
-    endMinute: {
-      identifier  : 'end-minute',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter an end minute'
-        }
-      ]
-    },
-    endMeridian: {
-      identifier  : 'end-meridian'
     }
   };
 
@@ -97,19 +31,36 @@ $(document).ready(function() {
   });
 
   $('.ui.assignOffered.form .submit.button').on('click', function() {
-    var validForm = assignOfferForm.form('validate form');
+    assignOfferForm.form('validate form');
+    var isValid = !assignOfferForm.hasClass('error');
     $.fancybox.update();
 
-    if (validForm) {
-      var employee = startHourDropdown.dropdown('get value');
+    if (isValid) {
+      //TODO: get the real shift Id
+      var shiftId = '546ad8a43f01a023115d36ca';
+      var employee = $('.createShift.form .employeeList .active').attr('employeeId');
 
-      var startHour     = startHourDropdown.dropdown('get value');
-      var startMinute   = startMinuteDropdown.dropdown('get value');
-      var startMeridian = startMeridianDropdown.dropdown('get value');
+      var shift = {
+        claimant : employee,
+        trading  : false
+      }
 
-      var endHour     = endHourDropdown.dropdown('get value');
-      var endMinute   = endMinuteDropdown.dropdown('get value');
-      var endMeridian = endMeridianDropdown.dropdown('get value');
+      var success = function(result, status, xhr) {
+        $('.ui.error.message').html('');
+        assignOfferForm.removeClass('loading');
+        $('.fancybox-close').trigger('click');
+        var shift = result.shift;
+        $('.ui.assignOffered.form .dropdown').dropdown('restore defaults');
+        //TODO: Interact with Michael's calendar
+      };
+
+      var failure = function(xhr, status, err) {
+        $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        $.fancybox.update();
+        assignOfferForm.removeClass('loading');
+      };
+      assignOfferForm.addClass('loading');
+      client_shifts_change(shiftId,{},shift,success,failure);
     }
   });
 });

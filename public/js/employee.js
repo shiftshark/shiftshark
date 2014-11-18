@@ -39,7 +39,7 @@ $(document).ready(function() {
         scrolling   : 'no'
     });
 
-    $('.ui.checkbox').checkbox();
+    //$('.ui.checkbox').checkbox();
     $('.ui.dropdown').dropdown();
 
     $('.cancel.button').on('click', function() {

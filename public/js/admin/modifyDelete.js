@@ -212,12 +212,13 @@ $(document).ready(function() {
 
       var failure = function(xhr, status, err) {
         $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        $.fancybox.update();
         deleteShiftForm.removeClass('loading');
       };
 
       //TODO: find real id of the shift
       var shiftId = '546ad8a43f01a023115d36ef';
-
+      deleteShiftForm.addClass('loading');
       if (recurring) {
         lastSMonth = startMonth;
         lastSDay   = startDay;
