@@ -17,9 +17,9 @@ var Position = require('../models/position');
  *
  * Shift: {
  *   _id: ShiftID,
- *   assignee: Employee,
- *   claimant: Employee || null,
- *   position: Position,
+ *   assignee: EmployeeID,
+ *   claimant: EmployeeID || null,
+ *   position: PositionID,
  *   startTime: [0, 1439],
  *   endTime: [0, 1439],
  *   date: Date,
@@ -54,7 +54,7 @@ router.get('/', function(req, res) {
   if (req.query.trading != undefined) {
     if (req.query.trading === '1' || req.query.trading === 'true') filters.trading = true;
     if (req.query.trading === '0' || req.query.trading === 'false') filters.trading = false;
-    return res.status(400).send("Unable to parse 'trading' parameter value.")
+    return res.status(400).send("Unable to parse 'trading' parameter value.");
   }
   if (req.query.assignee) {
     filters.assignee = req.query.assignee;
@@ -74,7 +74,7 @@ router.get('/', function(req, res) {
 
   Shift.find(filters, function(err, shifts) {
     if (err) {
-      // handle error
+      return res.status(500).end();
     } else {
       res.json({ shifts: shifts });
     }
@@ -95,6 +95,8 @@ router.get('/', function(req, res) {
  *   * shift.startTime must occur before shift.endTime
  *   * startDate and endDate: multiple Shifts will be created on same weekday within date range
  *   * startDate <= shift.date; endDate >= shift.date
+ *   * assignee and claimant fields are populated in returned objects
+ *   * response.shift contains the shift specified in the request body only, even if other shifts were created
  *
  * Request: {
  *   shift: Shift,
@@ -103,7 +105,7 @@ router.get('/', function(req, res) {
  * }
  *
  * Response: {
- *   shifts: Shift[]
+ *   shift: Shift
  * }
  *
  */
@@ -116,46 +118,71 @@ router.post('/', function(req, res) {
   var series = new Series({ schedule: req.user.schedule });
   series.save(function(err, _series) {
     if (err) {
-      // handle error
+      return res.status(500).end();
     } else {
       if (req.body.startDate || req.body.endDate) {
-        // TODO?: parse these dates.
-        var firstDate = req.body.startDate || req.body.shift.date;
-        var lastDate = req.body.endDate || req.body.shift.date;
-        var endDate = new Date(lastDate);
+        var startDate = new Date(req.body.startDate || req.body.shift.date);
+        var endDate = new Date(req.body.endDate || req.body.shift.date);
+        var specifiedDate = new Date(req.shift.date);
+
+        // strip dates down to only year, month, day
+        // NOTE: sometimes setting to UTC changes what day of the week it is - using setHours instead
+        startDate.setHours(0,0,0,0);
+        endDate.setHours(0,0,0,0);
+        specifiedDate.setHours(0,0,0,0);
+
+        millisecsInDay = 24 * 60 * 60 * 1000;
+        var specifiedDay = specifiedDate.getDay();
+        if (startDate.getDay() != specifiedDay) {
+          startDate = new Date(abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
+        }
+        console.log("specified:", specifiedDate);
+        console.log("start:", startDate);
 
         var shiftTemplate = req.body.shift;
         shiftTemplate.series = _series._id;
-        var allShifts = [];
-        var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
+        var millisecsInWeek = 7 * millisecsInDay;
 
-        for (var currentDate = new Date(firstDate); currentDate < endDate; currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+        var specifiedShiftObject;
+        for (var currentDate = startDate; currentDate.getTime() < endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
           shiftTemplate.date = currentDate;
           var newShift = new Shift(shiftTemplate);
           newShift.save(function(err, _shift) {
             if (err) {
-              // handle error
+              return res.status(500).end();
             } else {
-              allShifts.push(_shift);
-              if(endDate - currentDate < millisecsInWeek) {
-                res.json({ shifts: allShifts });
+              if (currentDate.getTime() == specifiedDate.getTime()) {
+                specifiedShiftObject = _shift;
               }
             }
           });
         }
 
+        // return the shift specified in the request
+        Shift.findById(specifiedShiftObject._id, function(err, shift) {
+          if (err) {
+            return res.status(500).end();
+          } else {
+            res.json({ shift: shift });
+          }
+        });
+
       } else {
         // create a single shift
-        var newShift = new Shift(req.body.shift);
+        var shiftTemplate = req.body.shift;
+        shiftTemplate.schedule = req.user.schedule;
+        shiftTemplate.series = _series._id;
+
+        var newShift = new Shift(shiftTemplate);
         newShift.save(function(err, shift) {
           if (err) {
-            // handle error
+            return res.status(500).end();
           } else {
-            shift.populate('assignee claimant schedule position').exec(function(err, _shift) {
+            shift.populate('assignee claimant').exec(function(err, _shift) {
               if (err) {
-                // handle error
+                return res.status(500).end();
               } else {
-                res.json({ shifts: [_shift] });
+                res.json({ shift: _shift });
               }
             });
           }
