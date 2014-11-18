@@ -280,11 +280,11 @@ $(document).ready(function() {
       var endYear    = endYearDropdown.dropdown('get value');
 
       //TODO: Get the current position
-      var position  = "546ad010dc5362fa0a02c135";
+      var position  = "546b1f752a99d463069d4a76";
       var startTime = Time(startHour, startMinute, startMeridian).totalMinutes;
       var endTime   = Time(endHour, endMinute, endMeridian).totalMinutes;
       //TODO: Get date of creation
-      var date = new Date();
+      var date = new Date(2014, 10, 18);
       var trading = false;
 
       var data = {

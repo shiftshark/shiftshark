@@ -25,6 +25,8 @@
         <script src='/js/admin/modifyTrade.js'></script>
         <script src='/js/admin/modifyDelete.js'></script>
         <script src='/js/admin/assignOffered.js'></script>
+        <link rel='stylesheet' href='/stylesheets/schedule.css' />
+        <script src='/js/scheduleUI.js'></script>
     </head>
 
     <body>
@@ -59,6 +61,7 @@
                 </div>
             </div>
         </div>
+        <%= include schedule.ejs %>
         <div id='profileSettings' class='modalContent'>
             <%= include modals/profileSettings.ejs %>
         </div>

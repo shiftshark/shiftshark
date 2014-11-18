@@ -18,7 +18,13 @@ router.get('/', function(req, res) {
     Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
       if (err) return res.status(500).end();
       console.log(employees);
-      res.render('admin', {employees:employees});
+      Shift.find({ schedule: req.user.schedule }, function(err, shifts) {
+        if (err) {return res.status(500).end}
+          console.log(shifts);
+        if (shifts == undefined || shifts == null) {shifts = []}
+          console.log(shifts);
+        res.render('admin', {title:req.user.schedule, employees:employees, schedule:shifts, dateToCheck:"Mon Nov 18 2014"});
+      })
     });
   } else {
     // employee
