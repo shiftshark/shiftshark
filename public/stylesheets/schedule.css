@@ -62,4 +62,6 @@ html, body {
   min-width: 75px;
   max-width: 75px;
   display: inline-block;
+  cursor: pointer !important;
+  cursor: hand !important;
 }
