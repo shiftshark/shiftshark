@@ -237,6 +237,7 @@ test('Shift - PUT /shifts/:id', function () {
 
   equal(forceGiveToBen.data.shifts[0].claimant._id, ben.data.employee._id, "give shift to a different employee as employer");
 
+  clear_employer();
 });
 
 //////////////////
@@ -244,8 +245,31 @@ test('Shift - PUT /shifts/:id', function () {
 //////////////////
 
 test('Shift - DELETE /shifts/:id', function() {
-  clear_employer();
-  ok(true);
+
+  var shift = {
+    assignee: timID,
+    claimant: null,
+    position: position.data.position._id,
+    startTime: 600,
+    endTime: 700,
+    date: new Date("Feb 4 2014"),
+    trading: false
+  };
+
+  // remove single shift
+  var savedShift = client_shifts_create(shift, new Date("Jan 15 2014"), new Date("Mar 3 2014"));  
+  var deleteShift = client_shifts_remove(savedShift.data.shift._id, null);
+
+  equal(savedShift.data.shift._id, deleteShift.data.shiftIds[0], "single shift deleted");
+
+  // remove multiple (6) shifts
+  var savedShift = client_shifts_create(shift, new Date("Jan 15 2014"), new Date("Mar 3 2014"));  
+  var deleteMultiple = client_shifts_remove(savedShift.data.shift._id, {
+    startDate: new Date("Jan 15 2014"),
+    endDate: new Date("Mar 3 2014")
+  });
+
+  equal(deleteMultiple.data.shiftIds.length, 6, "deleted multiple shifts");
 
   // Employer Test Account LOGOUT
   client_logout();
