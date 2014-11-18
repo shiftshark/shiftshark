@@ -20,6 +20,8 @@
         <script src='/js/validationUtil.js'></script>
         <script src='/js/employee/claimShift.js'></script>
         <script src='/js/employee/tradeShift.js'></script>
+        <link rel='stylesheet' href='/stylesheets/schedule.css' />
+        <script src='/js/scheduleUI.js'></script>
     </head>
     <body>
         <%= include util/navbar.ejs %>
@@ -33,6 +35,7 @@
                 </a>
             </div>
         </div>
+        <%= include schedule.ejs %>
         <div id='claimShift' class='modalContent'>
             <%= include modals/employee/claimShift.ejs %>
         </div>

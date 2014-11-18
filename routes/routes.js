@@ -23,12 +23,19 @@ router.get('/', function(req, res) {
           console.log(shifts);
         if (shifts == undefined || shifts == null) {shifts = []}
           console.log(shifts);
-        res.render('admin', {title:req.user.schedule, employees:employees, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
+          res.render('admin', {isAdmin:true, employees:employees, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
+          // res.render('employee', {isAdmin:false, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
       })
     });
   } else {
     // employee
-    res.render('employee');
+    Shift.find({ schedule: req.user.schedule }, function(err, shifts) {
+        if (err) {return res.status(500).end}
+          console.log(shifts);
+        if (shifts == undefined || shifts == null) {shifts = []}
+          console.log(shifts);
+          res.render('employee', {isAdmin:false, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
+      })
   }
 });
 
