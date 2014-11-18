@@ -392,7 +392,7 @@ router.delete('/:id', function(req, res) {
         filters.date = {"$gte": startDate, "$lte": endDate};
         Shift.remove(filters, function(err, shifts) {
           if (err) {
-            // handle error
+            return res.status(500).end();
           } else {
             var shiftIds = shifts.map(function(obj) { return obj._id; });
             return res.json({ shiftIds: shiftIds });
