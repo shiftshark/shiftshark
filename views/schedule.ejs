@@ -8,8 +8,7 @@
 		    <div class="roleWrapper">
             <% for(shift in schedule) {%>
 	  	        <% if(new Date(schedule[shift].date).getDate() === new Date(dateToCheck).getDate() && new Date(schedule[shift].date).getMonth() === new Date(dateToCheck).getMonth() && new Date(schedule[shift].date).getFullYear() === new Date(dateToCheck).getFullYear()){ %>
-	        		<div class="role <%= schedule[shift]._id %>">
-		     		    <div class="cell"><%= schedule[shift].position %></div>
+	        		<div position="<%= schedule[shift].position %>" class="role <%= schedule[shift]._id %>">
 		     		    <% for(var i=8*60/15; i<18*60/15; i++){ %>
 		     		    	<div class="cell fancybox <%= i %>" href=<%= properRef(schedule[shift]) %>>
 		     		    		<% if( timeBlocksInRange(schedule[shift])(i) ){ %>

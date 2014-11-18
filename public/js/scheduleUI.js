@@ -5,9 +5,7 @@
  */
 
 $(document).on('click', '.cell', function(evt) {
-	//console.log(evt.target);
-	//evt.preventDefault();
-	//alert("hello");
+	$(this).addClass('active');
 });
 
 var changeColor = function(shift, color){
