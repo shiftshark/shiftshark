@@ -11,7 +11,7 @@ $(document).on('click', '.cell', function(evt) {
 });
 
 var changeColor = function(shiftId){
-
+    //$(shiftId)
 }
 
 var addShift = function(shiftId){

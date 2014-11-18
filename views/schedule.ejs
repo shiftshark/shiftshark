@@ -17,8 +17,29 @@
 			  	        <% if(schedule[shift].date === dateToCheck){ %>
 			        		<div class="role <%= schedule[shift]._id %>">
 				     		    <div class="cell"><%= schedule[shift].position %></div>
-				     		    <% for(i=8*60/15; i<18*60/15; i++){ %>
-				     		    	<div class="cell"><%= Math.floor((i*15)/60) %>:<%= (i*15)%60 %>am</div>
+				     		    <% for(var i=8*60/15; i<18*60/15; i++){ %>
+				     		    	<div class="cell <%= i %>">
+										<%
+                                        var timeBlocksInRange = function(shift){
+                                            var firstTime = Math.floor(shift.startTime/15);
+                                            var lastTime = Math.floor((shift.endTime)/15);
+                                            console.log("start");
+                                            if(shift.startTime === shift.endTime){
+                                                lastTime === firstTime;
+                                            }
+                                            return function(time){
+                                                console.log(time);
+                                                console.log(firstTime);
+                                                console.log(lastTime);
+                                                console.log("checking");
+                                                return firstTime<=time&&time<lastTime;
+                                            };
+                                        }
+                                        %>
+				     		    		<% if( timeBlocksInRange(schedule[shift])(i) ){ %>
+				     		    			<%= Math.floor(i*15/60) %>:<%= (i*15%60) %>
+				     		    		<% } %>
+				     		    	</div>
 				     		    <% } %>
 				   		    </div>
 						<% } %>
