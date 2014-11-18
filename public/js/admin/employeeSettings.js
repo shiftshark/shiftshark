@@ -37,7 +37,7 @@ $(document).ready(function() {
   };
 
   var settings = {
-    inline: true,
+    inline: false,
     on    : 'blur'
   };
 
@@ -46,7 +46,7 @@ $(document).ready(function() {
   var addEmployee = function() {
     var isValid = addForm.form('validate form');
     $.fancybox.update();
-
+    console.log(isValid);
     if (isValid) {
       var firstNameField = $('.add.employee.form [name="firstname"]');
       var lastNameField  = $('.add.employee.form [name="lastname"]');
