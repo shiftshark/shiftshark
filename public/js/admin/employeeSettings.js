@@ -74,7 +74,7 @@ $(document).ready(function() {
         var employee;
         for (var i=0; employee=employees[i]; i++) {
           var employeeName = employee.firstName + ' ' + employee.lastName;
-          employeeNamesHtml += "<div class='item'>" + employeeName + "</div>"
+          employeeNamesHtml += "<div class='item' employeeId='" + employee._id + "'>" + employeeName + "</div>"
         }
 
         $('.employeeList').html(employeeNamesHtml);
