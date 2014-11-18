@@ -165,7 +165,6 @@ $(document).ready(function() {
   });
 
   $('#deleteShiftPrevious').on('click', function(){
-    console.log(lastSMonth, lastSDay, lastSYear, lastEMonth, lastEDay, lastEYear);
     if (lastSMonth != "" && lastSDay   != "" && lastSYear  != "" && lastEMonth != "" && lastEDay   != "" && lastEYear  != "") {
       startMonthDropdown.dropdown('set value', lastSMonth);
       startMonthDropdown.dropdown('set selected', lastSMonth);
@@ -189,10 +188,11 @@ $(document).ready(function() {
   });
 
   $('.modify.delete.form .submit.button').on('click', function() {
-    var validForm = deleteShiftForm.form('validate form');
+    deleteShiftForm.form('validate form');
+    var isValid = !deleteShiftForm.hasClass('error');
     $.fancybox.update();
 
-    if (validForm) {
+    if (isValid) {
       var startMonth = startMonthDropdown.dropdown('get value');
       var startDay   = startDayDropdown.dropdown('get value');
       var startYear  = startYearDropdown.dropdown('get value');
@@ -201,6 +201,23 @@ $(document).ready(function() {
       var endDay     = endDayDropdown.dropdown('get value');
       var endYear    = endYearDropdown.dropdown('get value');
 
+      var success = function(result, status, xhr) {
+        $('.ui.error.message').html('');
+        deleteShiftForm.removeClass('loading');
+        $('.fancybox-close').trigger('click');
+        var shift = result.shift;
+        $('.modify.delete.form .dropdown').dropdown('restore defaults');
+        //TODO: Interact with Michael's calendar
+      };
+
+      var failure = function(xhr, status, err) {
+        $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        deleteShiftForm.removeClass('loading');
+      };
+
+      //TODO: find real id of the shift
+      var shiftId = '546ad8a43f01a023115d36ef';
+
       if (recurring) {
         lastSMonth = startMonth;
         lastSDay   = startDay;
@@ -208,6 +225,18 @@ $(document).ready(function() {
         lastEMonth = endMonth;
         lastEDay   = endDay;
         lastEYear  = endYear;
+
+        var startDate = new Date(parseInt(startYear), parseInt(startMonth), parseInt(startDay));
+        var endDate = new Date(parseInt(endYear), parseInt(endMonth), parseInt(endDay));
+
+        var query = {
+          startDate : startDate,
+          endDate   : endDate
+        };
+
+        client_shifts_remove(shiftId, query, success, failure);
+      } else {
+        client_shifts_remove(shiftId, null, success, failure);
       }
     }
   });
