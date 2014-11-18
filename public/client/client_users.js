@@ -78,7 +78,7 @@ function client_signup_employee (data, callback_success, callback_error) {
  *
  * Returns: Only returns when used synchronously; see definition for ajax_call(...).
  */
-function client_employee_get_all (data, callback_success, callback_error) {
+function client_employee_get_all (callback_success, callback_error) {
   return ajax_call('GET', '/users/employees/', null, callback_success, callback_error);
 }
 
@@ -94,6 +94,6 @@ function client_employee_get_all (data, callback_success, callback_error) {
  *
  * Returns: Only returns when used synchronously; see definition for ajax_call(...).
  */
-function client_employee_get_one (data, callback_success, callback_error) {
+function client_employee_get_one (id, callback_success, callback_error) {
   return ajax_call('GET', '/users/' + String(id), null, callback_success, callback_error);
 }

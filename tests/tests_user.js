@@ -18,29 +18,39 @@ test('User - Empoyee Account Creation', function () {
   clear_employer(true);
 
   // Register Three Test Employee Accounts
-  ok(client_signup_employee({
+  var employee_one = client_signup_employee({
     first_name: "Employee",
     last_name: "One",
     email: "employee-one@andreaboulian.com"
-  }).success, "Employee Account Creation - I");
+  });
 
-  ok(client_signup_employee({
+  ok(employee_one.success, "Employee Account Creation (I) - Successful Creation");
+  deepEqual(employee_one.data.employee, client_employee_get_one(employee_one.data.employee._id).data.employee, "Employee Account Creation (I) - New Employee Retrieved");
+
+  var employee_two = client_signup_employee({
     first_name: "Employee",
     last_name: "Two",
     email: "employee-two@andreaboulian.com"
-  }).success, "Employee Account Creation - II");
+  });
 
-  ok(client_signup_employee({
+  ok(employee_two.success, "Employee Account Creation (II) - Successful Creation");
+  deepEqual(employee_two.data.employee, client_employee_get_one(employee_two.data.employee._id).data.employee, "Employee Account Creation (II) - New Employee Retrieved");
+
+  var employee_three = client_signup_employee({
     first_name: "Employee",
-    last_name: "One",
+    last_name: "Three",
     email: "employee-three@andreaboulian.com"
-  }).success, "Employee Account Creation - III");
+  });
+
+  ok(employee_three.success, "Employee Account Creation (III) - Successful Creation");
+  deepEqual(employee_three.data.employee, client_employee_get_one(employee_three.data.employee._id).data.employee, "Employee Account Creation (III) - New Employee Retrieved");
+
 
   ok(client_signup_employee({
     first_name: "Employee",
-    last_name: "Two",
+    last_name: "Four-Two",
     email: "employee-two@andreaboulian.com"
-  }).success === false, "Employee Account Creation - Reject Duplicate");
+  }).success === false, "Employee Account Creation - Reject Duplicate Email");
 
   // Logout Employer
   client_logout();
