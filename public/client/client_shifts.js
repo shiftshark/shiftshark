@@ -90,7 +90,7 @@ function client_shifts_change (id, query, shift, callback_success, callback_erro
   if (typeof query === "object" && query !== null && ! $.isEmptyObject(query))
     url += '?' + $.param(query);
 
-  return ajax_call('PUT', url, { position: position }, callback_success, callback_error);
+  return ajax_call('PUT', url, { shift: shift }, callback_success, callback_error);
 }
 
 /**
