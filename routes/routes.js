@@ -18,7 +18,13 @@ router.get('/', function(req, res) {
     Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
       if (err) return res.status(500).end();
       console.log(employees);
-      res.render('admin', {employees:employees});
+      Shift.find({ schedule: req.user.schedule }, function(err, shifts) {
+        if (err) {return res.status(500).end}
+          console.log(shifts);
+        if (shifts == undefined || shifts == null) {shifts = []}
+          console.log(shifts);
+        res.render('admin', {title:req.user.schedule, employees:employees, schedule:shifts, dateToCheck:"Mon Nov 18 2014"});
+      })
     });
   } else {
     // employee
@@ -31,7 +37,7 @@ router.get('/signup', function(req, res) {
 });
 
 router.get('/scheduleTest', function(req, res) {
-    res.render('schedule', {title:'schedule', authType:'local'});
+    res.render('schedule', {title:'schedule', authType:'local', schedule:[{_id: 12345,assignee: "John S.", claimant: "Hello K.", position: "Mascot", startTime: 8*60, endTime: 9*60, date: "Mon Nov 17 2014", trading: false }, { _id: 67890, assignee: "John S.", claimant: null, position: "Chef", startTime: 10*60, endTime: 13*60, date: "Mon Nov 17 2014", trading: true }], dateToCheck:"Mon Nov 17 2014"});
 });
 
 //////////

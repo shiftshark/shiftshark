@@ -1,6 +1,6 @@
 $(document).ready(function() {
   var claimShiftForm = $('.ui.claim.shift.form');
-  var entireShift = false;
+  var entireShift = true;
 
   var employeeDropdown = $('.ui.claim.shift.form [name="select-employee"]').parent();
 
@@ -86,21 +86,21 @@ $(document).ready(function() {
   });
 
 
-  $('.ui.claim.shift.form .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
-    entireShift = true;
-    updateRules();
-    var $entireShift = $('.ui.claim.shift.form .entireShift');
-    $entireShift.addClass('hidden');
-    $.fancybox.update();
-  });
+  // $('.ui.claim.shift.form .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
+  //   entireShift = true;
+  //   updateRules();
+  //   var $entireShift = $('.ui.claim.shift.form .entireShift');
+  //   $entireShift.addClass('hidden');
+  //   $.fancybox.update();
+  // });
 
-  $('.ui.claim.shift.form .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
-    entireShift = false;
-    updateRules();
-    var $entireShift = $('.ui.claim.shift.form .entireShift');
-    $entireShift.removeClass('hidden');
-    $.fancybox.update();
-  });
+  // $('.ui.claim.shift.form .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
+  //   entireShift = false;
+  //   updateRules();
+  //   var $entireShift = $('.ui.claim.shift.form .entireShift');
+  //   $entireShift.removeClass('hidden');
+  //   $.fancybox.update();
+  // });
 
   $('#createShiftPrevious').on('click', function(){
     if (lastSMonth != "" && lastSDay   != "" && lastSYear  != "" && lastEMonth != "" && lastEDay   != "" && lastEYear  != "") {
@@ -126,10 +126,11 @@ $(document).ready(function() {
   });
 
   $('.ui.claim.shift.form .submit.button').on('click', function() {
-    var validForm = claimShiftForm.form('validate form');
+    claimShiftForm.form('validate form');
+    var isValid = !claimShiftForm.hasClass('error');
     $.fancybox.update();
 
-    if (validForm) {
+    if (isValid) {
       var employee = startHourDropdown.dropdown('get value');
 
       var startHour     = startHourDropdown.dropdown('get value');
@@ -139,6 +140,32 @@ $(document).ready(function() {
       var endHour     = endHourDropdown.dropdown('get value');
       var endMinute   = endMinuteDropdown.dropdown('get value');
       var endMeridian = endMeridianDropdown.dropdown('get value');
+
+      //TODO: get actual shift id
+      var shiftId = 'asdfasdfasdf'
+      var query = {
+        trading : false
+      }
+
+      var success = function(result, status, xhr) {
+        $('.ui.error.message').html('');
+        claimShiftForm.removeClass('loading');
+        $('.fancybox-close').trigger('click');
+        $('.ui.claim.shift.form .dropdown').dropdown('restore defaults');
+        //TODO: Interact with Michael's calendar
+      };
+
+      var failure = function(xhr, status, err) {
+        $('.ui.error.message').html('<ul class="list"><li>Unspecified Error. :/</li></ul>');
+        $.fancybox.update();
+        claimShiftForm.removeClass('loading');
+      };
+
+      if (entireShift) {
+        client_shifts_change(shiftId, query, success, failure);
+      } else {
+
+      }
     }
   });
 });

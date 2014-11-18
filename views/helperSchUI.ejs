@@ -1,0 +1,17 @@
+<%
+    timeBlocksInRange = function(shift){
+    var firstTime = Math.floor(shift.startTime/15);
+    var lastTime = Math.floor((shift.endTime)/15);
+    console.log("start");
+    if(shift.startTime === shift.endTime){
+        lastTime === firstTime;
+    }
+    return function(time){
+        console.log(time);
+        console.log(firstTime);
+        console.log(lastTime);
+        console.log("checking");
+        return firstTime<=time&&time<lastTime;
+    };
+}
+%>

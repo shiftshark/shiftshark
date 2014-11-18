@@ -136,6 +136,7 @@ $(document).ready(function() {
 
       var failure = function(xhr, status, err) {
         $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        $.fancybox.update();
         editShiftForm.removeClass('loading');
       };
 

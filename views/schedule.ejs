@@ -1,32 +1,35 @@
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/schedule.css' />
-    <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
-    <script src='/js/scheduleUI.js'></script>
-  </head>
-  <body>
-    <div class="scheduleWrapper">
-    	<div class="timesRow">
-    		Times of shifts go here
-    	</div>
-    	<div class="contentRow">
-    		<div class="day">Monday</div>
-    		<div>
-    			<div class="role">
-    				<div class="cell">Role Name</div>
-    				<div class="cell">8am</div>
-    				<div class="cell">8:30am</div>
-    				<div class="cell">9am</div>
-    				<div class="cell">9:30am</div>
-    		    </div>
-    			<div class="role"></div>
-    			<div class="role"></div>
-    			<div class="role"></div>
-    			<div class="role"></div>
-    			<div class="role"></div>
-    		</div>
-    	</div>
-    </div>
-  </body>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/schedule.css' />
+        <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
+        <script src='/js/scheduleUI.js'></script>
+    </head>
+    <body>
+	  	<div class="scheduleWrapper">
+			<div class="timesRow">
+	    		Times of shifts go here
+		    </div>
+			<div class="contentRow">
+		    	<div class="day"><%= dateToCheck %></div>
+	 		    <div class="roleWrapper">
+		            <% for(shift in schedule) {%>
+			  	        <% if(schedule[shift].date === dateToCheck){ %>
+			        		<div class="role <%= schedule[shift]._id %>">
+				     		    <div class="cell"><%= schedule[shift].position %></div>
+				     		    <% for(var i=8*60/15; i<18*60/15; i++){ %>
+				     		    	<div class="cell <%= i %>">
+										<%= include helperSchUI %>
+				     		    		<% if( timeBlocksInRange(schedule[shift])(i) ){ %>
+				     		    			<%= Math.floor(i*15/60) %>:<%= (i*15%60) %>
+				     		    		<% } %>
+				     		    	</div>
+				     		    <% } %>
+				   		    </div>
+						<% } %>
+	    			<% } %>
+		    	</div>
+		   	</div>
+	    </div>
+    </body>
 </html>
