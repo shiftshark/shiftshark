@@ -73,8 +73,7 @@ $(document).ready(function() {
 
   loginForm.form(rules, settings);
 
-  // adds a listener to the form submit button
-  $('.submit.button').click(function() {
+  var signup = function() {
     // attempts a form validation
     var validForm = loginForm.form('validate form');
 
@@ -134,9 +133,23 @@ $(document).ready(function() {
         },
         success: function (result, status, xhr) {
             $('.ui.error.message').html('');
-            console.log(result);
+            window.location.replace('/');
         }
       });
     }
+  };
+
+  $('.ui.form').on('keyup', function(e) {
+    if(e.keyCode == 13) {
+      signup();
+      return false;
+    } else {
+      return false;
+    }
+  });
+
+  // adds a listener to the form submit button
+  $('.submit.button').click(function() {
+    signup();
   });
 });

@@ -9,13 +9,27 @@ var Shift = require('../models/shift');
 var Availability = require('../models/availability');
 
 /* GET home page. */
-router.get('/', function(req, next) {
-  if (req.user === undefined || req.user === null) // unauthorized
+router.get('/', function(req, res) {
+  if (req.user === undefined || req.user === null) {
+    // unauthorized
     res.render('auth', {formType:'login'});
-  else if (req.user.employer === true) // employer
-    res.render('admin', {employees:['Elliott','Andre','Cathleen','Michael']});
-  else // employee
-    res.render('employee', {employees:['Elliott','Andre','Cathleen','Michael']});
+  } else if (req.user.employer === true) {
+    // employer
+    Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
+      if (err) return res.status(500).end();
+      var employeeNames = [];
+      for (var i = 0; i < employees.length; i++) {
+        var employeeName = employees[i].firstName + ' ' + employees[i].lastName;
+
+        employeeNames.push(employeeName);
+      }
+      
+      res.render('admin', {employees:employeeNames});
+    });
+  } else {
+    // employee
+    res.render('employee');
+  }
 });
 
 router.get('/admin', function(req, res) {
