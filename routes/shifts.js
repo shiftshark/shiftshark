@@ -54,7 +54,6 @@ router.get('/', function(req, res) {
   var filters = { schedule: req.user.schedule };
   var dateFilter = {};
   if (req.query.trading != undefined) {
-    console.log(req.query.trading, typeof req.query.trading);
     if (req.query.trading === '1' || req.query.trading === 'true') {
       filters.trading = true;
     } else if (req.query.trading === '0' || req.query.trading === 'false') {
@@ -158,7 +157,6 @@ router.post('/', function(req, res) {
         for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
           shiftTemplate.date = currentDate;
           allShifts.push(new Shift(shiftTemplate));
-          console.log(allShifts[allShifts.length - 1]);
         }
         Shift.create(allShifts, function(err) {
           console.log("inside create");
@@ -228,15 +226,21 @@ router.post('/', function(req, res) {
  */
 
 router.get('/:id', function(req, res) {
-  // TEST ME
-  // TODO: check permissions
-  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, shift) {
+  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }).populate('assignee claimant', userFieldsToHide).exec(function(err, shift) {
     Shift.find({ series: shift.series }, function(err, shifts) {
-      var dates = shifts.map(function(obj) { return obj.date; });
+      var dates = shifts.map(function(obj) { return new Date(obj.date).getTime(); });
+      var startDate = new Date(Math.min.apply(null, dates));
+      var endDate = new Date(Math.max.apply(null, dates));
+      // remove fields frontend shouldn't access
+      var secureShift = {};
+      var fields = fieldsToReturn.split(' ');
+      for(var i = 0; i < fields.length; i++) {
+        secureShift[fields[i]] = shift[fields[i]];
+      }
       return res.json({
-        shift: shift,
-        startDate: Math.min(dates),
-        endDate: Math.max(dates)
+        shift: secureShift,
+        startDate: startDate,
+        endDate: endDate
       });
     });
   });

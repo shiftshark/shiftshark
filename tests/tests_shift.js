@@ -7,7 +7,7 @@
 function compare_shifts(first, second) {
   deepEqual(typeof second.assignee, "object", "assignee field populates");
   for(var field in first) {
-    if (field == "date") deepEqual(first[field].getTime(), new Date(second[field]).getTime(), "date verified");
+    if (field == "date") deepEqual((new Date(first[field])).getTime(), new Date(second[field]).getTime(), "date verified");
     else if (field != "assignee") deepEqual(first[field], second[field], field + " verified");
   }
 }
@@ -124,8 +124,24 @@ test('Shift - GET /shifts/', function () {
 
 test('Shift - GET /shifts/:id', function () {
 
+  // new shift, using previous data
+  var shift = {
+    assignee: timID,
+    claimant: null,
+    position: position.data.position._id,
+    startTime: 600,
+    endTime: 700,
+    date: new Date("Jan 2 2014"),
+    trading: false
+  };
 
-  ok(true);
+  var savedShift = client_shifts_create(shift, new Date("Jan 1 2014"), new Date("Jan 30 2014"));
+  var getShift = client_shifts_get_one(savedShift.data.shift._id);
+  compare_shifts(getShift.data.shift, savedShift.data.shift, "shift object correct");
+  equal( (new Date(getShift.data.startDate)).getTime(), (new Date("Jan 2 2014")).getTime(), "startDate correct");
+  equal( (new Date(getShift.data.endDate)).getTime(), (new Date("Jan 30 2014")).getTime(), "endDate correct");
+
+  // ok(true);
 });
 
 ///////////////
