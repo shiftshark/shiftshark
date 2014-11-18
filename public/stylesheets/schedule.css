@@ -14,7 +14,6 @@ html, body {
 .scheduleWrapper{
   min-width: 600px;
   overflow: scroll;
-  background: lime;
   width: 100%;
 }
 
@@ -27,7 +26,6 @@ html, body {
 .contentRow{
   width: 100%;
   min-height:30px;
-  background-color: blue;
   display: table;
 }
 

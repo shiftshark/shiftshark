@@ -282,11 +282,11 @@ $(document).ready(function() {
       var startTime = Time(startHour, startMinute, startMeridian).totalMinutes;
       var endTime   = Time(endHour, endMinute, endMeridian).totalMinutes;
       var trading = false;
-      var position = $('.scheduleWrapper .active').parent().attr('position');
-      var date = $('.scheduleWrapper .active').parent().attr('date');
-      console.log(date);
+
+      var position = $('.createShift.form .positionList .active').attr('positionId');
+      var date = $('.day').attr('date');
+
       date = new Date(date);
-      console.log(position, date);
 
       var data = {
         assignee  : employee,

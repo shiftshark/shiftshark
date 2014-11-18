@@ -3,6 +3,22 @@
 <form class='ui createShift form' onsubmit="return false;">
     <div class="ui error message"></div>
 
+
+    <div class='fields createFields'>
+        <label class='five wide field right-justified vcentered'>Assign to:</label>
+        <div class='eleven wide field createInputs'>
+            <div class='ui selection dropdown'>
+                <input type='hidden' name='select-position'>
+                <div class='default text'>Select Position</div>
+                <i class='dropdown icon'></i>
+                <div class='menu positionList' style='overflow:auto;max-height:100px;'>
+                    <%= include ../../util/positionsDropdown.ejs %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class='fields createFields'>
         <label class='five wide field right-justified vcentered'>Assign to:</label>
         <div class='eleven wide field createInputs'>
