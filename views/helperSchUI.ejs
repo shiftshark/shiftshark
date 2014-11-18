@@ -45,3 +45,12 @@
         }
 	}
 %>
+
+<%
+changeColor = function(inputShift){
+    //window.querySelector("[shift~='"+inputShift._id+"']").find("."+time).css("background-color", color);
+    if(timeBlocksInRange(inputShift) && inputShift.trading){
+        return "trading";
+    }
+}
+%>

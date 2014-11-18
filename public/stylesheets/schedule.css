@@ -59,10 +59,13 @@ html, body {
 }
 
 .cell{
-  min-width: 75px;
-  max-width: 75px;
+  min-width: 20px;
   min-height: 20px;
   display: inline-block;
   cursor: pointer !important;
   cursor: hand !important;
+}
+
+.trading{
+  background-color: yellow;
 }

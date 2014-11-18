@@ -1,4 +1,5 @@
 <%= include helperSchUI %>
+<script src="scheduleUI.js"></script>
 <div class="scheduleWrapper">
 	<div class="timesRow">
 		Times of shifts go here
@@ -10,7 +11,7 @@
 	  	        <% if(new Date(schedule[shift].date).getDate() === new Date(dateToCheck).getDate() && new Date(schedule[shift].date).getMonth() === new Date(dateToCheck).getMonth() && new Date(schedule[shift].date).getFullYear() === new Date(dateToCheck).getFullYear()){ %>
 	        		<div position="<%= schedule[shift].position %>" class="role" shift="<%= schedule[shift]._id %>" date="<%= dateToCheck %>">
 		     		    <% for(var i=8*60/15; i<18*60/15; i++){ %>
-		     		    	<div class="cell fancybox <%= i %>" href=<%= properRef(schedule[shift]) %>>
+		     		    	<div class="cell fancybox <%= i %> <%= changeColor(schedule[shift]) %>" href=<%= properRef(schedule[shift]) %>>
 		     		    		<% if( timeBlocksInRange(schedule[shift])(i) ){ %>
 		     		    			<%= Math.floor(i*15/60) %>:<%= (i*15%60) %>
 		     		    		<% } %>
