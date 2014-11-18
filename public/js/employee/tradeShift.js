@@ -17,8 +17,7 @@ $(document).ready(function() {
 
   var rules;
   var settings = {
-    inline  : false,
-    on      : 'blur'
+    inline  : false
   };
 
   var updateRules = function () {

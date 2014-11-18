@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
 
         employeeNames.push(employeeName);
       }
-      
+
       res.render('admin', {employees:employeeNames});
     });
   } else {
@@ -32,20 +32,8 @@ router.get('/', function(req, res) {
   }
 });
 
-router.get('/admin', function(req, res) {
-    res.render('admin', {employees:['Elliott','Andre','Cathleen','Michael']});
-});
-
-router.get('/employee', function(req, res) {
-    res.render('employee', {employees:['Elliott','Andre','Cathleen','Michael']});
-});
-
 router.get('/signup', function(req, res) {
     res.render('auth', {formType:'employerSignup'});
-});
-
-router.get('/signupee', function(req, res) {
-    res.render('auth', {formType:'employeeSignup'});
 });
 
 router.get('/scheduleTest', function(req, res) {

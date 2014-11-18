@@ -1,3 +1,19 @@
+var getAllEmployees = function() {
+    var employees;
+    $.ajax({
+        url : '/users/employees/',
+        type: 'GET',
+        async: false,
+        contentType: "application/json",
+        data: JSON.stringify({}),
+        success: function (result, status, xhr) {
+            employees = result.employees;
+        }
+    });
+
+    return employees;
+};
+
 $(document).ready(function() {
     /*
     * Replace all SVG images with inline SVG
@@ -94,21 +110,14 @@ $(document).ready(function() {
     })
 
     $('#logout').on('click', function() {
-        $.ajax({
-            url : '/logout',
-            type: 'POST',
-            async: true,
-            timeout: 10000,
-            contentType: "application/json",
-            data: JSON.stringify({}),
-            beforeSend: function () {
-            },
-            error: function(xhr, status, err) {
-                alert('Error logging out; please clear cookies and reload page.');
-            },
-            success: function (result, status, xhr) {
-                window.location.reload();
-            }
-        });
+        var failure = function(xhr, status, err) {
+            alert('Error logging out; please clear cookies and reload page.');
+        };
+
+        var success = function (result, status, xhr) {
+            window.location.reload();
+        };
+
+        client_logout(success,failure)
     });
 });

@@ -50,8 +50,7 @@ $(document).ready(function() {
     };
 
     var settings = {
-        inline  : true,
-        on      : 'blur'
+        inline  : false
     };
 
     loginForm.form(rules, settings);
