@@ -16,7 +16,7 @@ var words = require('random-words');
  *   _id: EmployeeID,
  *   firstName: String,
  *   lastName: String.
- *   email: String
+ *   username: String
  * }
  */
 
@@ -97,6 +97,10 @@ router.post('/employers/', function(req, res) {
  * Error:
  *   400 - Validation error.
  *
+ * Response: {
+ *   employee: Employee
+ * }
+ *
  */
 
 router.post('/employees/', function(req, res) {
@@ -126,8 +130,13 @@ router.post('/employees/', function(req, res) {
       replyTo: 'shiftshark@mit.edu',
       subject: 'ShiftShark Employee Account',
       text: body
-    });
-    return res.status(200).end();
+    }, console.log);
+    return res.json({ employee: {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username
+    } });
   });
 });
 

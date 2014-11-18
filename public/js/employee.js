@@ -44,5 +44,17 @@ $(document).ready(function() {
 
     $('.cancel.button').on('click', function() {
         $('.fancybox-close').trigger('click');
-    })
+    });
+
+    $('#logout').on('click', function() {
+        var failure = function(xhr, status, err) {
+            alert('Error logging out; please clear cookies and reload page.');
+        };
+
+        var success = function (result, status, xhr) {
+            window.location.reload();
+        };
+
+        client_logout(success,failure)
+    });
 });

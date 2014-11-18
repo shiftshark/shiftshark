@@ -38,36 +38,26 @@ $(document).ready(function() {
     var validForm = loginForm.form('validate form');
 
     if (validForm) {
+      loginForm.addClass('loading');
       var email = $('[name="email"]').val();
       var password = $('[name="password"]').val();
 
-      $.ajax({
-        url : '/login',
-        type: 'POST',
-        async: true,
-        timeout: 10000,
-        contentType: "application/json",
-        data: JSON.stringify({
-          username : email,
-          password : password
-        }),
-        beforeSend: function () {
-          loginForm.addClass('loading');
-        },
-        error: function(xhr, status, err) {
-          loginForm.removeClass('loading');
-          loginForm.removeClass('success');
-          $('.ui.error.message').html('<ul class="list"><li>Error logging in. Please try again</li></ul>');
-          loginForm.addClass('error');
-          console.log(xhr,status,err);
+      var success = function(result, status, xhr) {
+        $('.ui.error.message').html('');
+        loginForm.removeClass('loading');
+        window.location.reload();
+      };
 
-        },
-        success: function (result, status, xhr) {
-            $('.ui.error.message').html('');
-            loginForm.removeClass('loading');
-            window.location.reload();
-        }
-      });
+      var failure = function(xhr, status, err) {
+        loginForm.removeClass('loading');
+        loginForm.removeClass('success');
+        $('.ui.error.message').html('<ul class="list"><li>Error logging in. Please try again</li></ul>');
+        loginForm.addClass('error');
+        console.log(xhr,status,err);
+
+      };
+
+      client_login(email, password, success, failure);
     }
   };
 

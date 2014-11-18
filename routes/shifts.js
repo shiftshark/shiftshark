@@ -6,6 +6,9 @@ var Avail = require('../models/availability');
 var Series = require('../models/series');
 var Position = require('../models/position');
 
+var fieldsToReturn = 'assignee claimant position date startTime endTime trading';
+var userFieldsToHide = '-hash -salt -schedule';
+
 
 /**
  * API Specification Authors: aandre@mit.edu, gendron@mit.edu
@@ -17,9 +20,9 @@ var Position = require('../models/position');
  *
  * Shift: {
  *   _id: ShiftID,
- *   assignee: Employee,
- *   claimant: Employee || null,
- *   position: Position,
+ *   assignee: EmployeeID,
+ *   claimant: EmployeeID || null,
+ *   position: PositionID,
  *   startTime: [0, 1439],
  *   endTime: [0, 1439],
  *   date: Date,
@@ -54,7 +57,7 @@ router.get('/', function(req, res) {
   if (req.query.trading != undefined) {
     if (req.query.trading === '1' || req.query.trading === 'true') filters.trading = true;
     if (req.query.trading === '0' || req.query.trading === 'false') filters.trading = false;
-    return res.status(400).send("Unable to parse 'trading' parameter value.")
+    return res.status(400).send("Unable to parse 'trading' parameter value.");
   }
   if (req.query.assignee) {
     filters.assignee = req.query.assignee;
@@ -72,15 +75,14 @@ router.get('/', function(req, res) {
     filters.date = dateFilter;
   }
 
-  Shift.find(filters, function(err, shifts) {
+  Shift.find(filters, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, shifts) {
     if (err) {
-      // handle error
+      return res.status(500).end();
     } else {
-      res.json({ shifts: shifts });
+      return res.json({ shifts: shifts });
     }
   });
 });
-
 
 /**
  * POST /shifts/
@@ -95,6 +97,8 @@ router.get('/', function(req, res) {
  *   * shift.startTime must occur before shift.endTime
  *   * startDate and endDate: multiple Shifts will be created on same weekday within date range
  *   * startDate <= shift.date; endDate >= shift.date
+ *   * assignee and claimant fields are populated in returned objects
+ *   * response.shift contains the shift specified in the request body only, even if other shifts were created
  *
  * Request: {
  *   shift: Shift,
@@ -103,7 +107,7 @@ router.get('/', function(req, res) {
  * }
  *
  * Response: {
- *   shifts: Shift[]
+ *   shift: Shift
  * }
  *
  */
@@ -116,46 +120,82 @@ router.post('/', function(req, res) {
   var series = new Series({ schedule: req.user.schedule });
   series.save(function(err, _series) {
     if (err) {
-      // handle error
+      console.log("save series", err);
+      return res.status(500).end();
     } else {
       if (req.body.startDate || req.body.endDate) {
-        // TODO?: parse these dates.
-        var firstDate = req.body.startDate || req.body.shift.date;
-        var lastDate = req.body.endDate || req.body.shift.date;
-        var endDate = new Date(lastDate);
+        var startDate = new Date(req.body.startDate || req.body.shift.date);
+        var endDate = new Date(req.body.endDate || req.body.shift.date);
+        var specifiedDate = new Date(req.body.shift.date);
+
+        // strip dates down to only year, month, day
+        // NOTE: sometimes setting to UTC changes what day of the week it is - using setHours instead
+        startDate.setHours(0,0,0,0);
+        endDate.setHours(0,0,0,0);
+        specifiedDate.setHours(0,0,0,0);
+
+        millisecsInDay = 24 * 60 * 60 * 1000;
+        var specifiedDay = specifiedDate.getDay();
+
+        console.log("original:", startDate);
+        if (startDate.getDay() < specifiedDay) {
+          startDate = new Date(Math.abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
+        } else if (startDate.getDay() > specifiedDay) {
+          startDate = new Date(Math.abs(- startDate.getDay() + specifiedDay + 7) * millisecsInDay + startDate.getTime());
+        }
+        console.log("specified:", specifiedDate);
+        console.log("start:", startDate);
 
         var shiftTemplate = req.body.shift;
         shiftTemplate.series = _series._id;
-        var allShifts = [];
-        var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
+        shiftTemplate.schedule = req.user.schedule;
+        var millisecsInWeek = 7 * millisecsInDay;
 
-        for (var currentDate = new Date(firstDate); currentDate < endDate; currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+        var allShifts = [];
+        for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
           shiftTemplate.date = currentDate;
-          var newShift = new Shift(shiftTemplate);
-          newShift.save(function(err, _shift) {
-            if (err) {
-              // handle error
-            } else {
-              allShifts.push(_shift);
-              if(endDate - currentDate < millisecsInWeek) {
-                res.json({ shifts: allShifts });
+          allShifts.push(new Shift(shiftTemplate));
+          console.log(allShifts[allShifts.length - 1]);
+        }
+        Shift.create(allShifts, function(err) {
+          console.log("inside create");
+          if (err) {
+            console.log("create allShifts");
+            return res.status(500).end();
+          } else {
+            for(var i = 1; i < arguments.length; i++) {
+              var shift = arguments[i];
+              if (new Date(shift.date).getTime() == specifiedDate.getTime()) {
+                Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
+                  if (err) {
+                    console.log("populate specified shift in multishift creation");
+                    return res.status(500).end();
+                  } else {
+                    return res.json({ shift: _shift });
+                  }
+                });
               }
             }
-          });
-        }
-
+          }
+        });
       } else {
         // create a single shift
-        var newShift = new Shift(req.body.shift);
+        var shiftTemplate = req.body.shift;
+        shiftTemplate.schedule = req.user.schedule;
+        shiftTemplate.series = _series._id;
+
+        var newShift = new Shift(shiftTemplate);
         newShift.save(function(err, shift) {
           if (err) {
-            // handle error
+            console.log("saving new shift", err);
+            return res.status(500).end();
           } else {
-            shift.populate('assignee claimant schedule position').exec(function(err, _shift) {
+            Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
               if (err) {
-                // handle error
+                console.log("populate new shift", err);
+                return res.status(500).end();
               } else {
-                res.json({ shifts: [_shift] });
+                return res.json({ shift: _shift });
               }
             });
           }
@@ -187,10 +227,10 @@ router.post('/', function(req, res) {
 router.get('/:id', function(req, res) {
   // TEST ME
   // TODO: check permissions
-  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }, function(err, shift) {
+  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, shift) {
     Shift.find({ series: shift.series }, function(err, shifts) {
       var dates = shifts.map(function(obj) { return obj.date; });
-      res.json({
+      return res.json({
         shift: shift,
         startDate: Math.min(dates),
         endDate: Math.max(dates)
@@ -244,24 +284,38 @@ router.get('/:id', function(req, res) {
     if (! req.user.employer) return res.status(401).end();
 
     var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
-    // TODO?: parse these dates.
-    var firstDate = req.body.startDate || req.body.shift.date + millisecsInWeek;
-    var lastDate = req.body.endDate || req.body.shift.date - millisecsInWeek;
-    var endDate = new Date(lastDate);
-    var allShifts = [];
+    var startDate = new Date(req.query.adjustStart || req.body.shift.date + millisecsInWeek);
+    var endDate = new Date(req.query.adjustEnd || req.body.shift.date - millisecsInWeek);
+
+    // strip dates down to only year, month, day
+    // NOTE: sometimes setting to UTC changes what day of the week it is - using setHours instead
+    startDate.setHours(0,0,0,0);
+    endDate.setHours(0,0,0,0);
+
 
     Shift.findById(req.params.id, function(err, shiftTemplate) {
+      var specifiedDay = new Date(shiftTemplate.date).getDay();
+      if (startDate.getDay() != specifiedDay) {
+        startDate = new Date(Math.abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
+      }
 
-      for (var currentDate = new Date(firstDate); currentDate <= endDate; currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+      for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
         shiftTemplate.date = currentDate;
         var newShift = new Shift(shiftTemplate);
         newShift.save(function(err, _shift) {
           if (err) {
-            // handle error
+            return res.status(500).end();
           } else {
             allShifts.push(_shift);
+            // we've created all objects, so populate and return them
             if(endDate - currentDate < millisecsInWeek) {
-              res.json({ shifts: allShifts });
+              Shift.find({}).or(allShifts).populate('assignee claimant', userFieldsToHide).exec(function(err, shifts) {
+                if (err) {
+                  return res.status(500).end();
+                } else {
+                  return res.json({ shifts: shifts })
+                }
+              });
             }
           }
         });
@@ -307,7 +361,7 @@ router.get('/:id', function(req, res) {
       if (err) {
         res.status(500).end();
       } else {
-        res.json({ shifts: [shift] });
+        return res.json({ shifts: [shift] });
       }
     });
 
@@ -344,7 +398,7 @@ router.delete('/:id', function(req, res) {
   if (req.query.startDate || req.query.endDate) {
     Shift.findById(req.params.id, function(err, shift) {
       if (err) {
-        // handle error
+        return res.status(500).end();
       } else {
         var startDate = req.query.startDate || shift.date;
         var endDate = req.query.endDate || shift.date;
@@ -352,10 +406,10 @@ router.delete('/:id', function(req, res) {
         filters.date = {"$gte": startDate, "$lte": endDate};
         Shift.remove(filters, function(err, shifts) {
           if (err) {
-            // handle error
+            return res.status(500).end();
           } else {
             var shiftIds = shifts.map(function(obj) { return obj._id; });
-            res.json({ shiftIds: shiftIds });
+            return res.json({ shiftIds: shiftIds });
           }
         });
       }
@@ -364,9 +418,9 @@ router.delete('/:id', function(req, res) {
   } else {
     Shift.remove({ _id: req.params.id }, function(err, shift) {
       if (err) {
-        // handle error
+        return res.status(500).end();
       } else {
-        res.json({ shiftIds: [shift._id] });
+        return res.json({ shiftIds: [shift._id] });
       }
     });
   }

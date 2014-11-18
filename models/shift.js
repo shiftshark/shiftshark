@@ -43,8 +43,7 @@ var shiftSchema = mongoose.Schema({
   claimant: {
     type: mongoose.Schema.ObjectId,
     ref: 'Employee',
-    default: null,
-    required: true
+    default: null
   },
   schedule: {
     type: mongoose.Schema.ObjectId,

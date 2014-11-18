@@ -1,3 +1,19 @@
+var getAllEmployees = function() {
+    var employees;
+    $.ajax({
+        url : '/users/employees/',
+        type: 'GET',
+        async: false,
+        contentType: "application/json",
+        data: JSON.stringify({}),
+        success: function (result, status, xhr) {
+            employees = result.employees;
+        }
+    });
+
+    return employees;
+};
+
 $(document).ready(function() {
     /*
     * Replace all SVG images with inline SVG
@@ -61,31 +77,35 @@ $(document).ready(function() {
         }
     });
 
-    var submitAndDestroyRoleInput = function(that) {
+    var submitAndDestroyRoleInput = function(evt) {
         var roleName = $('.roleInput input').val();
 
-        if (roleName.length != 0) {
-            // TODO: Submit that Role Name to server
-        }
-
         $that = $('#roleButton');
+        $that.addClass('animating');
+
+        if (roleName.length != 0) {
+            client_positions_create({name:roleName});
+        }
 
         $('#roleButton .input').children().animate({height:'29px',width:'93px'}, function() {
             $that.html(roleButton);
+            $that.removeClass('animating');
         });
+
+        // TODO: Add to displayed schedule
     }
 
     $('#roleButton').on('keypress', function(evt) {
         var isText = $($(this).children()[0]).hasClass('roleInput');
-        if (evt.charCode == 13 && isText) {
-            submitAndDestroyRoleInput();
+        if (evt.charCode == 13 && isText && !$that.hasClass('animating')) {
+            $(this).focusout();
         }
     });
 
     $('#roleButton').on('focusout', function(evt) {
         var isText = $($(this).children()[0]).hasClass('roleInput');
-        if (isText) {
-            submitAndDestroyRoleInput();
+        if (isText && !$that.hasClass('animating')) {
+            submitAndDestroyRoleInput(evt);
         }
     });
 
@@ -94,21 +114,14 @@ $(document).ready(function() {
     })
 
     $('#logout').on('click', function() {
-        $.ajax({
-            url : '/logout',
-            type: 'POST',
-            async: true,
-            timeout: 10000,
-            contentType: "application/json",
-            data: JSON.stringify({}),
-            beforeSend: function () {
-            },
-            error: function(xhr, status, err) {
-                alert('Error logging out; please clear cookies and reload page.');
-            },
-            success: function (result, status, xhr) {
-                window.location.reload();
-            }
-        });
+        var failure = function(xhr, status, err) {
+            alert('Error logging out; please clear cookies and reload page.');
+        };
+
+        var success = function (result, status, xhr) {
+            window.location.reload();
+        };
+
+        client_logout(success,failure)
     });
 });

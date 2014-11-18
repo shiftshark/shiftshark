@@ -82,8 +82,7 @@ $(document).ready(function() {
   };
 
   var settings = {
-    inline  : false,
-    on      : 'blur'
+    inline  : false
   };
 
   deleteShiftForm.form(rules, settings);
