@@ -54,7 +54,7 @@ $(document).ready(function() {
 
       var firstName = firstNameField.val();
       var lastName  = lastNameField.val();
-      var email     = emailField.val();
+      var email     = emailField.val().toLowerCase();
       var data      = {
                         first_name : firstName,
                         last_name  : lastName,
@@ -84,6 +84,7 @@ $(document).ready(function() {
         addForm.removeClass('loading');
         addForm.removeClass('success');
         $('.add.employee.form .ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        $.fancybox.update();
         addForm.addClass('error');
         console.log(xhr,status,err);
       };
