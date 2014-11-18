@@ -96,7 +96,7 @@ router.post('/employers/', function(req, res) {
  *
  * Error:
  *   400 - Validation error.
- * 
+ *
  * Response: {
  *   employee: Employee
  * }

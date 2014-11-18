@@ -77,31 +77,35 @@ $(document).ready(function() {
         }
     });
 
-    var submitAndDestroyRoleInput = function(that) {
+    var submitAndDestroyRoleInput = function(evt) {
         var roleName = $('.roleInput input').val();
 
-        if (roleName.length != 0) {
-            // TODO: Submit that Role Name to server
-        }
-
         $that = $('#roleButton');
+        $that.addClass('animating');
+
+        if (roleName.length != 0) {
+            client_positions_create({name:roleName});
+        }
 
         $('#roleButton .input').children().animate({height:'29px',width:'93px'}, function() {
             $that.html(roleButton);
+            $that.removeClass('animating');
         });
+
+        // TODO: Add to displayed schedule
     }
 
     $('#roleButton').on('keypress', function(evt) {
         var isText = $($(this).children()[0]).hasClass('roleInput');
-        if (evt.charCode == 13 && isText) {
-            submitAndDestroyRoleInput();
+        if (evt.charCode == 13 && isText && !$that.hasClass('animating')) {
+            $(this).focusout();
         }
     });
 
     $('#roleButton').on('focusout', function(evt) {
         var isText = $($(this).children()[0]).hasClass('roleInput');
-        if (isText) {
-            submitAndDestroyRoleInput();
+        if (isText && !$that.hasClass('animating')) {
+            submitAndDestroyRoleInput(evt);
         }
     });
 

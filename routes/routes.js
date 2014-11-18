@@ -17,14 +17,8 @@ router.get('/', function(req, res) {
     // employer
     Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
       if (err) return res.status(500).end();
-      var employeeNames = [];
-      for (var i = 0; i < employees.length; i++) {
-        var employeeName = employees[i].firstName + ' ' + employees[i].lastName;
-
-        employeeNames.push(employeeName);
-      }
-
-      res.render('admin', {employees:employeeNames});
+      console.log(employees);
+      res.render('admin', {employees:employees});
     });
   } else {
     // employee
