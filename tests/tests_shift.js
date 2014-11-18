@@ -170,6 +170,7 @@ test('Shift - PUT /shifts/:id', function () {
     adjustEnd: end
   }, null);
 
+  // dates we expect to create shifts on
   var dateStrings = ["Oct 07 2014", "Oct 14 2014", "Oct 21 2014", "Oct 28 2014",
   "Nov 11 2014", "Nov 18 2014", "Nov 25 2014", "Dec 02 2014"];
 
@@ -181,6 +182,61 @@ test('Shift - PUT /shifts/:id', function () {
   });
 
   deepEqual(returnedTimes, dateTimes, "objects created on correct dates");
+
+  // adjust start date to AFTER shift - should not add anything
+  var savedShift = client_shifts_create(shift, null, null);
+  var badStart = new Date(2015, 9, 3, 14, 2);  
+  var extendStartBad = client_shifts_change(savedShift.data.shift._id, {
+    adjustStart: badStart
+  }, null);
+
+  equal(extendStartBad.data.shifts.length, 0, "no shifts created on incorrect adjustStart");
+
+  // adjust end date to BEFORE shift - should not add anything
+  var badEnd = new Date(2013, 9, 3, 14, 2);  
+  var extendEndBad = client_shifts_change(savedShift.data.shift._id, {
+    adjustEnd: badEnd
+  }, null);
+
+  equal(extendEndBad.data.shifts.length, 0, "no shifts created on incorrect adjustEnd");
+
+  // offer a shift up for trade - should fail because Tim isn't signed in
+  var offerShiftFail = client_shifts_change(savedShift.data.shift._id, {
+    trade: "offer"
+  }, null);
+
+  equal(offerShiftFail.statusCode, 401, "prevent user from trading another's shift");
+
+  // create a shift up for trade, and then claim it
+  shift.trading = true;
+  var tradingShift = client_shifts_create(shift, null, null);
+  var claimShift = client_shifts_change(tradingShift.data.shift._id, {
+    trade: "claim"
+  }, null);
+
+  equal(claimShift.data.shifts[0].trading, false, "trading flag false");
+  equal(typeof claimShift.data.shifts[0].claimant, "object", "claimant field populated");
+
+  // now that I'm claimant, offer up for trade again
+  var offerShiftSucceed = client_shifts_change(claimShift.data.shifts[0]._id, {
+    trade: "offer"
+  }, null);
+  equal(offerShiftSucceed.data.shifts[0].trading, true, "claimant offer successful");
+
+  // as employer, give Tim's shift to Ben
+  var ben = client_signup_employee({
+    first_name: "Ben",
+    last_name: "Bitdiddle",
+    email: "hacker4lyfe@hardkore.org"
+  });
+
+  var timsShift = client_shifts_create(shift, null, null);
+  var forceGiveToBen = client_shifts_change(timsShift.data.shift._id, null, {
+    claimant: ben.data.employee._id
+  });
+
+  equal(forceGiveToBen.data.shifts[0].claimant._id, ben.data.employee._id, "give shift to a different employee as employer");
+
 });
 
 //////////////////

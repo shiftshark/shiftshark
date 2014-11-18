@@ -357,6 +357,8 @@ router.get('/:id', function(req, res) {
 
           }
 
+          console.log("dates of allShifts", allShifts.map(function(obj) { return obj.date; }));
+
           Shift.create(allShifts, function(err) {
             if (err) {
               console.log("create all shifts", err);
@@ -381,7 +383,9 @@ router.get('/:id', function(req, res) {
   } else if (req.query.trade) {
     Shift.findById(req.params.id, function(err, shift) {
       if (req.query.trade == "offer") {
-        if ((shift.assignee === req.user._id && !shift.claimant) || shift.claimant === req.user._id) {
+        console.log("claimant", shift.claimant);
+        console.log("me", req.user._id);
+        if ((shift.assignee === req.user._id && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
           doc = { trading: true };
           shift.trading = true;
         } else {
@@ -400,7 +404,13 @@ router.get('/:id', function(req, res) {
           console.log("save shift after trade", err);
           res.status(500).end();
         } else {
-          return res.json({ shifts: [_shift] });
+          Shift.findOne(_shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, tradedShift) {
+            if (err) {
+              return res.status(500).end();
+            } else {
+              return res.json({ shifts: [tradedShift] });
+            }
+          });
         }
       });
     });
@@ -419,7 +429,14 @@ router.get('/:id', function(req, res) {
         console.log("employer only body", err);
         res.status(500).end();
       } else {
-        return res.json({ shifts: [shift] });
+        Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
+          if (err) {
+            console.log("populating employer-forced updated shift", err);
+            res.status(500).end();
+          } else {
+            return res.json({ shifts: [_shift] });
+          }
+        });
       }
     });
 
