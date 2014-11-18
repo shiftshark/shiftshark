@@ -72,14 +72,13 @@ router.get('/', function(req, res) {
     filters.date = dateFilter;
   }
 
-  Shift.find(filters, function(err, shifts) {
+  Shift.find(filters).populate('assignee claimant').exec(function(err, shifts) {
     if (err) {
       return res.status(500).end();
     } else {
       res.json({ shifts: shifts });
     }
   });
-});
 
 
 /**
@@ -159,7 +158,7 @@ router.post('/', function(req, res) {
         }
 
         // return the shift specified in the request
-        Shift.findById(specifiedShiftObject._id, function(err, shift) {
+        Shift.findById(specifiedShiftObject._id).populate('assignee claimant').exec(function(err, shift) {
           if (err) {
             return res.status(500).end();
           } else {
@@ -214,7 +213,7 @@ router.post('/', function(req, res) {
 router.get('/:id', function(req, res) {
   // TEST ME
   // TODO: check permissions
-  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }, function(err, shift) {
+  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }).populate('assignee claimant').exec(function(err, shift) {
     Shift.find({ series: shift.series }, function(err, shifts) {
       var dates = shifts.map(function(obj) { return obj.date; });
       res.json({
