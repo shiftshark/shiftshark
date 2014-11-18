@@ -52,6 +52,22 @@ function client_signup_employer (data, callback_success, callback_error) {
 }
 
 /**
+ * Function: client_signup_employee
+ *
+ * Call: POST /users/employers/
+ *
+ * Parameters:
+ *   data             - Object: { first_name, last_name, email }
+ *   callback_success - function (optional): success callback
+ *   callback_error   - function (optional): failure callback
+ *
+ * Returns: Only returns when used synchronously; see definition for ajax_call(...).
+ */
+function client_signup_employee (data, callback_success, callback_error) {
+  return ajax_call('POST', '/users/employees/', data, callback_success, callback_error);
+}
+
+/**
  * Function: client_employee_get_all
  *
  * Call: GET /users/employees/
