@@ -17,25 +17,30 @@ router.get('/', function(req, res) {
     // employer
     Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
       if (err) return res.status(500).end();
-      console.log(employees);
+
       Shift.find({ schedule: req.user.schedule }, function(err, shifts) {
         if (err) {return res.status(500).end}
-          console.log(shifts);
         if (shifts == undefined || shifts == null) {shifts = []}
-          console.log(shifts);
-          res.render('admin', {isAdmin:true, employees:employees, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
-          // res.render('employee', {isAdmin:false, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
-      })
+          Position.find({ schedule: req.user.schedule }, function(err, positions) {
+            if (err) {return res.status(500).end}
+            if (positions == undefined || positions == null) {positions = []}
+            res.render('admin', {isAdmin:true, employees:employees, positions:positions, schedule:shifts, dateToCheck:(new Date("Mon Nov 18 2014"))});
+            // res.render('employee', {isAdmin:false, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
+          });
+      });
     });
   } else {
     // employee
     Shift.find({ schedule: req.user.schedule }, function(err, shifts) {
-        if (err) {return res.status(500).end}
-          console.log(shifts);
-        if (shifts == undefined || shifts == null) {shifts = []}
-          console.log(shifts);
-          res.render('employee', {isAdmin:false, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
-      })
+      if (err) {return res.status(500).end}
+      if (shifts == undefined || shifts == null) {shifts = []}
+        Position.find({ schedule: req.user.schedule }, function(err, positions) {
+          if (err) {return res.status(500).end}
+          if (positions == undefined || positions == null) {positions = []}
+          res.render('employee', {isAdmin:false, positions:positions, schedule:shifts, dateToCheck:(new Date("Mon Nov 18 2014"))});
+          // res.render('employee', {isAdmin:false, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
+        });
+    });
   }
 });
 
