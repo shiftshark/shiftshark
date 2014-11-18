@@ -1,56 +1,53 @@
 <%
-    timeBlocksInRange = function(inputShift){
-    var firstTime = Math.floor(inputShift.startTime/15);
-    var lastTime = Math.floor((inputShift.endTime)/15);
-    console.log("start");
-    if(inputShift.startTime === inputShift.endTime){
-        lastTime === firstTime;
-    }
-    return function(time){
-        console.log(time);
-        console.log(firstTime);
-        console.log(lastTime);
-        console.log("checking");
-        return firstTime<=time&&time<lastTime;
-    };
+timeBlocksInRange = function(inputShift){
+  var firstTime = Math.floor(inputShift.startTime/15);
+  var lastTime = Math.floor((inputShift.endTime)/15);
+
+  if(inputShift.startTime === inputShift.endTime){
+    lastTime === firstTime;
+  }
+  return function(time){
+    return firstTime<=time&&time<lastTime;
+  };
 }
 %>
 
 <% 
-	properRef = function(inputShift){
-        var claimant = String(inputShift.claimant);
-        var currentUser = String(req.user._id);
-        var assignee = String(inputShift.assignee);
+properRef = function(inputShift, i){
+  var claimant = String(inputShift.claimant);
+  var currentUser = String(req.user._id);
+  var assignee = String(inputShift.assignee);
 
-		if( timeBlocksInRange(inputShift)(i) ){
-		    if(inputShift.trading && isAdmin){
-		    	return "#assignOffered"
-		    }
-		    else if(inputShift.trading){
-		    	return "#claimShift"
-		    }
-		    else if(isAdmin){
-		    	return "#modifyShift"
-		    }
-		    else if(claimant == currentUser || (claimant == "null" && assignee == currentUser)){
-		        return "#tradeShift"
-		    } else {
-                return "null"
-            }
-		}
-		else if (isAdmin) {
-		        return "#createShift"
-		} else {
-            return "null"
-        }
-	}
+  if( timeBlocksInRange(inputShift)(i) ){
+    if(inputShift.trading && isAdmin && timeBlocksInRange(inputShift)(i)){
+      return "#assignOffered"
+    }
+    else if(inputShift.trading && timeBlocksInRange(inputShift)(i)){
+      return "#claimShift"
+    }
+    else if(isAdmin && timeBlocksInRange(inputShift)(i)){
+      return "#modifyShift"
+    }
+    else if(claimant == currentUser || (claimant == "null" && assignee == currentUser) && timeBlocksInRange(inputShift)(i)){
+      return "#tradeShift"
+    } else {
+      return "null"
+    }
+  }
+  else if (isAdmin) {
+    return "#createShift"
+  } else {
+    return "null"
+  }
+}
 %>
 
 <%
-changeColor = function(inputShift){
-    //window.querySelector("[shift~='"+inputShift._id+"']").find("."+time).css("background-color", color);
-    if(timeBlocksInRange(inputShift) && inputShift.trading){
-        return "trading";
-    }
+isMine = function(req, inputShift) {
+  var currentUser = String(req.user._id);
+  var shiftOwner = String(inputShift.assignee);
+  var shiftClaimant = String(inputShift.claimant);
+
+  return currentUser == shiftOwner || currentUser == shiftClaimant;
 }
 %>

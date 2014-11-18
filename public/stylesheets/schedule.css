@@ -59,13 +59,23 @@ html, body {
 }
 
 .cell{
-  min-width: 20px;
-  min-height: 20px;
-  display: inline-block;
+  position: relative;
+  height: 30px;
+  width: 100px;
+  display: table-cell;
   cursor: pointer !important;
   cursor: hand !important;
+  border: solid 1px;
 }
 
 .trading{
   background-color: yellow;
+}
+
+.currentOwner {
+  background-color: green;
+}
+
+.otherOwner {
+  background-color: white;
 }
