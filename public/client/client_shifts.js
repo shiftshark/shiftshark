@@ -45,7 +45,6 @@ function client_shifts_create (shift, startDate, endDate, callback_success, call
     req.startDate = startDate;
   if (typeof endDate === 'object' && endDate instanceof Date)
     req.endDate = endDate;
-
   return ajax_call('POST', '/shifts/', req, callback_success, callback_error);
 }
 

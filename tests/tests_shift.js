@@ -33,6 +33,7 @@ test('Shift - POST /shifts/', function () {
     trading: false
   };
 
+  // create a single shift
   var singleShiftCreate = client_shifts_create(shift, null, null);
   var _shift = singleShiftCreate.data.shift;
   deepEqual(typeof _shift.assignee, "object", "assignee field populates");
@@ -41,16 +42,34 @@ test('Shift - POST /shifts/', function () {
     else if (field != "assignee") deepEqual(shift[field], _shift[field], field + " verified");
   }
 
-  // var multiShiftCreateBoth = client_shifts_create(shift, new Date("Jan 01 2014"), new Date("Feb 4 2014"));
-  // var _shift = multiShiftCreateBoth.data.shift;
-  // deepEqual(typeof _shift.assignee, "object", "assignee field populates");
-  // for(var field in shift) {
-  //   if (field == "date") deepEqual(shift[field].getTime(), new Date(_shift[field]).getTime(), "date verified");
-  //   else if (field != "assignee") deepEqual(shift[field], _shift[field], field + " verified");
-  // }
+  // create multiple shifts in a series by specifying start and end dates
+  var multiShiftCreateBoth = client_shifts_create(shift, new Date("Jan 01 2014"), new Date("Feb 4 2014"));
+  var _shift = multiShiftCreateBoth.data.shift;
+  deepEqual(typeof _shift.assignee, "object", "assignee field populates");
+  for(var field in shift) {
+    if (field == "date") deepEqual(shift[field].getTime(), new Date(_shift[field]).getTime(), "date verified");
+    else if (field != "assignee") deepEqual(shift[field], _shift[field], field + " verified");
+  }
 
-  // var multiShiftCreateStart = client_shifts_create(shift, new Date("Jan 01 2014 8:00am"), null);  
-  var multiShiftCreateEnd = client_shifts_create(shift, null, new Date("Feb 06 2014 3:27pm"));  
+  // test dates with times
+
+  // create multiple shifts in a series with start date only
+  var multiShiftCreateStart = client_shifts_create(shift, new Date(2014, 0, 1, 5, 2), null);
+  var _shift = multiShiftCreateStart.data.shift;
+  deepEqual(typeof _shift.assignee, "object", "assignee field populates");
+  for(var field in shift) {
+    if (field == "date") deepEqual(shift[field].getTime(), new Date(_shift[field]).getTime(), "date verified");
+    else if (field != "assignee") deepEqual(shift[field], _shift[field], field + " verified");
+  }
+
+  // create multiple shifts in a series with end date only
+  var multiShiftCreateEnd = client_shifts_create(shift, null, new Date(2014, 1, 6, 4, 39));  
+  var _shift = multiShiftCreateEnd.data.shift;
+  deepEqual(typeof _shift.assignee, "object", "assignee field populates");
+  for(var field in shift) {
+    if (field == "date") deepEqual(shift[field].getTime(), new Date(_shift[field]).getTime(), "date verified");
+    else if (field != "assignee") deepEqual(shift[field], _shift[field], field + " verified");
+  }
 
   clear_employer();
   // ok(true);

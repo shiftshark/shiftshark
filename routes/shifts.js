@@ -7,6 +7,7 @@ var Series = require('../models/series');
 var Position = require('../models/position');
 
 var fieldsToReturn = 'assignee claimant position date startTime endTime trading';
+var userFieldsToHide = '-hash -salt -schedule';
 
 
 /**
@@ -74,7 +75,7 @@ router.get('/', function(req, res) {
     filters.date = dateFilter;
   }
 
-  Shift.find(filters, fieldsToReturn).populate('assignee claimant').exec(function(err, shifts) {
+  Shift.find(filters, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, shifts) {
     if (err) {
       return res.status(500).end();
     } else {
@@ -115,7 +116,6 @@ router.post('/', function(req, res) {
   // TEST ME
   // check permissions
   if (! req.user.employer) return res.status(401).end();
-  console.log("body", req.body);
 
   var series = new Series({ schedule: req.user.schedule });
   series.save(function(err, _series) {
@@ -124,7 +124,6 @@ router.post('/', function(req, res) {
       return res.status(500).end();
     } else {
       if (req.body.startDate || req.body.endDate) {
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!");
         var startDate = new Date(req.body.startDate || req.body.shift.date);
         var endDate = new Date(req.body.endDate || req.body.shift.date);
         var specifiedDate = new Date(req.body.shift.date);
@@ -167,7 +166,7 @@ router.post('/', function(req, res) {
             for(var i = 1; i < arguments.length; i++) {
               var shift = arguments[i];
               if (new Date(shift.date).getTime() == specifiedDate.getTime()) {
-                Shift.findOne(shift, fieldsToReturn).populate('assignee claimant').exec(function(err, _shift) {
+                Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
                   if (err) {
                     console.log("populate specified shift in multishift creation");
                     return res.status(500).end();
@@ -191,7 +190,7 @@ router.post('/', function(req, res) {
             console.log("saving new shift", err);
             return res.status(500).end();
           } else {
-            Shift.findOne(shift, fieldsToReturn).populate('assignee claimant').exec(function(err, _shift) {
+            Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
               if (err) {
                 console.log("populate new shift", err);
                 return res.status(500).end();
@@ -228,7 +227,7 @@ router.post('/', function(req, res) {
 router.get('/:id', function(req, res) {
   // TEST ME
   // TODO: check permissions
-  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }, fieldsToReturn).populate('assignee claimant').exec(function(err, shift) {
+  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, shift) {
     Shift.find({ series: shift.series }, function(err, shifts) {
       var dates = shifts.map(function(obj) { return obj.date; });
       return res.json({
@@ -310,7 +309,7 @@ router.get('/:id', function(req, res) {
             allShifts.push(_shift);
             // we've created all objects, so populate and return them
             if(endDate - currentDate < millisecsInWeek) {
-              Shift.find({}).or(allShifts).populate('assignee claimant').exec(function(err, shifts) {
+              Shift.find({}).or(allShifts).populate('assignee claimant', userFieldsToHide).exec(function(err, shifts) {
                 if (err) {
                   return res.status(500).end();
                 } else {
