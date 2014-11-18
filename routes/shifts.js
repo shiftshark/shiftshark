@@ -6,6 +6,8 @@ var Avail = require('../models/availability');
 var Series = require('../models/series');
 var Position = require('../models/position');
 
+var fieldsToReturn = 'assignee claimant position date startTime endTime trading';
+
 
 /**
  * API Specification Authors: aandre@mit.edu, gendron@mit.edu
@@ -72,7 +74,7 @@ router.get('/', function(req, res) {
     filters.date = dateFilter;
   }
 
-  Shift.find(filters).populate('assignee claimant').exec(function(err, shifts) {
+  Shift.find(filters, fieldsToReturn).populate('assignee claimant').exec(function(err, shifts) {
     if (err) {
       return res.status(500).end();
     } else {
@@ -113,16 +115,19 @@ router.post('/', function(req, res) {
   // TEST ME
   // check permissions
   if (! req.user.employer) return res.status(401).end();
+  console.log("body", req.body);
 
   var series = new Series({ schedule: req.user.schedule });
   series.save(function(err, _series) {
     if (err) {
+      console.log("save series", err);
       return res.status(500).end();
     } else {
       if (req.body.startDate || req.body.endDate) {
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!");
         var startDate = new Date(req.body.startDate || req.body.shift.date);
         var endDate = new Date(req.body.endDate || req.body.shift.date);
-        var specifiedDate = new Date(req.shift.date);
+        var specifiedDate = new Date(req.body.shift.date);
 
         // strip dates down to only year, month, day
         // NOTE: sometimes setting to UTC changes what day of the week it is - using setHours instead
@@ -132,40 +137,48 @@ router.post('/', function(req, res) {
 
         millisecsInDay = 24 * 60 * 60 * 1000;
         var specifiedDay = specifiedDate.getDay();
-        if (startDate.getDay() != specifiedDay) {
-          startDate = new Date(abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
+
+        console.log("original:", startDate);
+        if (startDate.getDay() < specifiedDay) {
+          startDate = new Date(Math.abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
+        } else if (startDate.getDay() > specifiedDay) {
+          startDate = new Date(Math.abs(- startDate.getDay() + specifiedDay + 7) * millisecsInDay + startDate.getTime());
         }
         console.log("specified:", specifiedDate);
         console.log("start:", startDate);
 
         var shiftTemplate = req.body.shift;
         shiftTemplate.series = _series._id;
+        shiftTemplate.schedule = req.user.schedule;
         var millisecsInWeek = 7 * millisecsInDay;
 
-        var specifiedShiftObject;
+        var allShifts = [];
         for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
           shiftTemplate.date = currentDate;
-          var newShift = new Shift(shiftTemplate);
-          newShift.save(function(err, _shift) {
-            if (err) {
-              return res.status(500).end();
-            } else {
-              if (currentDate.getTime() == specifiedDate.getTime()) {
-                specifiedShiftObject = _shift;
-              }
-            }
-          });
+          allShifts.push(new Shift(shiftTemplate));
+          console.log(allShifts[allShifts.length - 1]);
         }
-
-        // return the shift specified in the request
-        Shift.findById(specifiedShiftObject._id).populate('assignee claimant').exec(function(err, shift) {
+        Shift.create(allShifts, function(err) {
+          console.log("inside create");
           if (err) {
+            console.log("create allShifts");
             return res.status(500).end();
           } else {
-            return res.json({ shift: shift });
+            for(var i = 1; i < arguments.length; i++) {
+              var shift = arguments[i];
+              if (new Date(shift.date).getTime() == specifiedDate.getTime()) {
+                Shift.findOne(shift, fieldsToReturn).populate('assignee claimant').exec(function(err, _shift) {
+                  if (err) {
+                    console.log("populate specified shift in multishift creation");
+                    return res.status(500).end();
+                  } else {
+                    return res.json({ shift: _shift });
+                  }
+                });
+              }
+            }
           }
         });
-
       } else {
         // create a single shift
         var shiftTemplate = req.body.shift;
@@ -175,10 +188,12 @@ router.post('/', function(req, res) {
         var newShift = new Shift(shiftTemplate);
         newShift.save(function(err, shift) {
           if (err) {
+            console.log("saving new shift", err);
             return res.status(500).end();
           } else {
-            shift.populate('assignee claimant').exec(function(err, _shift) {
+            Shift.findOne(shift, fieldsToReturn).populate('assignee claimant').exec(function(err, _shift) {
               if (err) {
+                console.log("populate new shift", err);
                 return res.status(500).end();
               } else {
                 return res.json({ shift: _shift });
@@ -213,7 +228,7 @@ router.post('/', function(req, res) {
 router.get('/:id', function(req, res) {
   // TEST ME
   // TODO: check permissions
-  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }).populate('assignee claimant').exec(function(err, shift) {
+  Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }, fieldsToReturn).populate('assignee claimant').exec(function(err, shift) {
     Shift.find({ series: shift.series }, function(err, shifts) {
       var dates = shifts.map(function(obj) { return obj.date; });
       return res.json({
@@ -282,7 +297,7 @@ router.get('/:id', function(req, res) {
     Shift.findById(req.params.id, function(err, shiftTemplate) {
       var specifiedDay = new Date(shiftTemplate.date).getDay();
       if (startDate.getDay() != specifiedDay) {
-        startDate = new Date(abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
+        startDate = new Date(Math.abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
       }
 
       for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
