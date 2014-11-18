@@ -5,6 +5,7 @@
   </div>
   <div class="contentRow">
     <div class="day"><%= dateToCheck %></div>
+    <div class="fleft">asdf</div>
     <div class="roleWrapper">
       <% for(shift in schedule) {%>
       <% if(new Date(schedule[shift].date).getDate() === new Date(dateToCheck).getDate() && new Date(schedule[shift].date).getMonth() === new Date(dateToCheck).getMonth() && new Date(schedule[shift].date).getFullYear() === new Date(dateToCheck).getFullYear()){ %>
@@ -15,8 +16,8 @@
         <div
         class="cell fancybox <%= i %> <% if (timeBlocksInRange(schedule[shift])(i)) { if (schedule[shift].trading) { %> trading <% } else if (isMine(req, schedule[shift])) { %>currentOwner<% } else if(!isMine(req, schedule[shift])) { %> otherOwner <% }} %>"
         href=<%= properRef(schedule[shift], i) %>>
-          <% if( timeBlocksInRange(schedule[shift])(i) ) { %>
-          
+          <% if( timeBlocksInRange(schedule[shift])(i) ) { if(i % 4==0) { %>
+          <!--<%= Math.floor(i*15/60) % 12 == 0 ? 12 : Math.floor(i*15/60) % 12 %>--><% } else { %><!--:<%= (i*15%60) %>--><% } %>
           <% } %>
         </div>
         <% } %>
