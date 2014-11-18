@@ -313,6 +313,7 @@ router.get('/:id', function(req, res) {
             endTime: shift.endTime
           }
           var allShifts = [];
+          var millisecsInDay = 24 * 60 * 60 * 1000;
 
           if (req.query.adjustStart) {
             var startDate = new Date(req.query.adjustStart);
