@@ -258,7 +258,6 @@ $(document).ready(function() {
   $('.createShift.form .submit.button').on('click', function() {
     createShiftForm.form('validate form');
     var validForm = !createShiftForm.hasClass('error');
-    console.log(validForm);
     $.fancybox.update();
 
     if (validForm) {
@@ -281,7 +280,7 @@ $(document).ready(function() {
       var endYear    = endYearDropdown.dropdown('get value');
 
       //TODO: Get the current position
-      var position = "546ad010dc5362fa0a02c135";
+      var position  = "546ad010dc5362fa0a02c135";
       var startTime = Time(startHour, startMinute, startMeridian).totalMinutes;
       var endTime   = Time(endHour, endMinute, endMeridian).totalMinutes;
       //TODO: Get date of creation
@@ -298,14 +297,12 @@ $(document).ready(function() {
         trading   : trading
       }
 
-      console.log(data);
-
       var success = function(result, status, xhr) {
         $('.ui.error.message').html('');
         createShiftForm.removeClass('loading');
         $('.fancybox-close').trigger('click');
         var shift = result.shift;
-
+        $('.createShift.form .dropdown').dropdown('restore defaults');
         //TODO: Interact with Michael's calendar
       };
 
