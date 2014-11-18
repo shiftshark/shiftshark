@@ -49,7 +49,7 @@ router.get('/signupee', function(req, res) {
 });
 
 router.get('/scheduleTest', function(req, res) {
-    res.render('schedule', {title:'schedule', authType:'local'});
+    res.render('schedule', {title:'schedule', authType:'local', schedule:[{_id: 12345,assignee: "John S.", claimant: "Hello K.", position: "Mascot", startTime: 8*60, endTime: 9*60, date: "Mon Nov 17 2014", trading: false }, { _id: 67890, assignee: "John S.", claimant: null, position: "Chef", startTime: 10*60, endTime: 13*60, date: "Mon Nov 17 2014", trading: true }], dateToCheck:"Mon Nov 17 2014"});
 });
 
 //////////
