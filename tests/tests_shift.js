@@ -141,6 +141,7 @@ test('Shift - GET /shifts/:id', function () {
   equal( (new Date(getShift.data.startDate)).getTime(), (new Date("Jan 2 2014")).getTime(), "startDate correct");
   equal( (new Date(getShift.data.endDate)).getTime(), (new Date("Jan 30 2014")).getTime(), "endDate correct");
 
+  clear_employer();
   // ok(true);
 });
 
@@ -149,7 +150,19 @@ test('Shift - GET /shifts/:id', function () {
 ///////////////
 
 test('Shift - PUT /shifts/:id', function () {
-  clear_employer();
+
+  var shift = {
+    assignee: timID,
+    claimant: null,
+    position: position.data.position._id,
+    startTime: 600,
+    endTime: 700,
+    date: new Date("Dec 4 2014"),
+    trading: false
+  };
+
+  
+
   ok(true);
 });
 
