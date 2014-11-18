@@ -280,7 +280,7 @@ $(document).ready(function() {
       var endYear    = endYearDropdown.dropdown('get value');
 
       //TODO: Get the current position
-      var position  = "546b1f752a99d463069d4a76";
+      var position  = "546b23fd76f9e3fefa5af52e";
       var startTime = Time(startHour, startMinute, startMeridian).totalMinutes;
       var endTime   = Time(endHour, endMinute, endMeridian).totalMinutes;
       //TODO: Get date of creation

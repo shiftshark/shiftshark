@@ -10,8 +10,9 @@ $(document).on('click', '.cell', function(evt) {
 	alert("hello");
 });
 
-var changeColor = function(shiftId){
+var changeColor = function(shift, color){
     //$(shiftId)
+    
 }
 
 var addShift = function(shiftId){

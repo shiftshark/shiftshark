@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
           console.log(shifts);
         if (shifts == undefined || shifts == null) {shifts = []}
           console.log(shifts);
-        res.render('admin', {title:req.user.schedule, employees:employees, schedule:shifts, dateToCheck:"Mon Nov 18 2014"});
+        res.render('admin', {title:req.user.schedule, employees:employees, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
       })
     });
   } else {
