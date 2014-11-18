@@ -385,9 +385,10 @@ router.get('/:id', function(req, res) {
       if (req.query.trade == "offer") {
         console.log("claimant", shift.claimant);
         console.log("me", req.user._id);
-        if ((shift.assignee === req.user._id && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
+        if ((String(shift.assignee) === String(req.user._id) && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
           doc = { trading: true };
           shift.trading = true;
+          shift.claimant = null;
         } else {
           return res.status(401).end();
         } 

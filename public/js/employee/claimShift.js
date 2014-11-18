@@ -21,7 +21,6 @@ $(document).ready(function() {
   };
 
   var updateRules = function () {
-    console.log(entireShift);
     // form validation rules
     rules = {
       startHour: {
@@ -141,10 +140,9 @@ $(document).ready(function() {
       var endMinute   = endMinuteDropdown.dropdown('get value');
       var endMeridian = endMeridianDropdown.dropdown('get value');
 
-      //TODO: get actual shift id
-      var shiftId = 'asdfasdfasdf'
+      var shiftId    = $('.scheduleWrapper .active').parent().attr('shift');
       var query = {
-        trading : false
+        trade : 'claim'
       }
 
       var success = function(result, status, xhr) {
@@ -153,6 +151,7 @@ $(document).ready(function() {
         $('.fancybox-close').trigger('click');
         $('.ui.claim.shift.form .dropdown').dropdown('restore defaults');
         //TODO: Interact with Michael's calendar
+        window.location.reload();
       };
 
       var failure = function(xhr, status, err) {
@@ -162,7 +161,7 @@ $(document).ready(function() {
       };
 
       if (entireShift) {
-        client_shifts_change(shiftId, query, success, failure);
+        client_shifts_change(shiftId, query, null, success, failure);
       } else {
 
       }
