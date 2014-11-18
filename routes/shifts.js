@@ -288,69 +288,93 @@ router.get('/:id', function(req, res) {
 
     var millisecsInWeek = 7 * 24 * 60 * 60 * 1000;
 
-    Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }).populate('assignee claimant', userFieldsToHide).exec(function(err, shift) {
+    Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }).exec(function(err, shift) {
       Shift.find({ series: shift.series }, function(err, shifts) {
-        var dates = shifts.map(function(obj) { return new Date(obj.date).getTime(); });
+        if (err) {
+          console.log("find shifts with series", err);
+          return res.status(500).end();
+        } else {
+          var dates = shifts.map(function(obj) { return new Date(obj.date).getTime(); });
 
-        // TODO: check for malformed query params
-        var seriesStart = new Date(Math.min.apply(null, dates));
-        var seriesEnd = new Date(Math.max.apply(null, dates));
-        var specifiedDate = new Date(shift.date);
-        specifiedDate.setHours(0,0,0,0);
-        var specifiedDay = specifiedDate.getDay();
+          // TODO: check for malformed query params
+          var seriesStart = new Date(Math.min.apply(null, dates));
+          var seriesEnd = new Date(Math.max.apply(null, dates));
+          var specifiedDate = new Date(shift.date);
+          specifiedDate.setHours(0,0,0,0);
+          var specifiedDay = specifiedDate.getDay();
 
-        // create new shifts in accordance with adjustStart/adjustEnd query params
-        var allShifts = [];
-
-        if (req.query.adjustStart) {
-          var startDate = new Date(req.query.adjustStart)
-          var endDate = new Date(seriesStart.getTime() - millisecsInWeek);
-
-          startDate.setHours(0,0,0,0);
-          endDate.setHours(0,0,0,0);
-
-          if (startDate.getDay() < specifiedDay) {
-            startDate = new Date(Math.abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
-          } else if (startDate.getDay() > specifiedDay) {
-            startDate = new Date(Math.abs(- startDate.getDay() + specifiedDay + 7) * millisecsInDay + startDate.getTime());
+          // create new shifts in accordance with adjustStart/adjustEnd query params
+          var shiftTemplate = {
+            assignee: shift.assignee,
+            claimant: null,
+            schedule: shift.schedule,
+            position: shift.position,
+            series: shift.series,
+            startTime: shift.startTime,
+            endTime: shift.endTime
           }
+          var allShifts = [];
 
-          for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
-            shift.date = currentDate;
-            allShifts.push(new Shift(shift));
-          }
+          if (req.query.adjustStart) {
+            var startDate = new Date(req.query.adjustStart);
+            var endDate = new Date(seriesStart.getTime() - millisecsInWeek);
 
-        }
-        if (req.query.adjustEnd) {
-          var startDate = new Date(seriesEnd.getTime() + millisecsInWeek);
-          var endDate = new Date(req.query.adjustEnd);
+            startDate.setHours(0,0,0,0);
+            endDate.setHours(0,0,0,0);
 
-          startDate.setHours(0,0,0,0);
-          endDate.setHours(0,0,0,0);
-
-          for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
-            shift.date = currentDate
-            allShifts.push(new Shift(shift));
-          }
-
-        }
-
-        Shift.create(allShifts, function(err) {
-          if (err) {
-            return res.status(500).end();
-          } else {
-            var shifts = [];
-            for(var i = 1; i < arguments.length; i++) {
-              var secureShift = {};
-              var fields = fieldsToReturn.split(' ');
-              for(var i = 0; i < fields.length; i++) {
-                secureShift[fields[i]] = shift[fields[i]];
-              }
-              shifts.push(secureShift);
+            if (startDate.getDay() < specifiedDay) {
+              startDate = new Date(Math.abs(startDate.getDay() - specifiedDay) * millisecsInDay + startDate.getTime());
+            } else if (startDate.getDay() > specifiedDay) {
+              startDate = new Date(Math.abs(- startDate.getDay() + specifiedDay + 7) * millisecsInDay + startDate.getTime());
             }
-            return res.json({ shifts: shifts });
+
+            console.log("adjustStart:");
+            console.log("startDate", startDate);
+            console.log("endDate", endDate);
+            console.log("specifiedDate", specifiedDate);
+
+            for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+              shiftTemplate.date = currentDate;
+              allShifts.push(new Shift(shiftTemplate));
+            }
+
           }
-        });
+          if (req.query.adjustEnd) {
+            var startDate = new Date(seriesEnd.getTime() + millisecsInWeek);
+            var endDate = new Date(req.query.adjustEnd);
+
+            startDate.setHours(0,0,0,0);
+            endDate.setHours(0,0,0,0);
+            console.log("adjustEnd:");
+            console.log("startDate", startDate);
+            console.log("endDate", endDate);
+            console.log("specifiedDate", specifiedDate);
+
+            for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+              shiftTemplate.date = currentDate
+              allShifts.push(new Shift(shiftTemplate));
+            }
+
+          }
+
+          Shift.create(allShifts, function(err) {
+            if (err) {
+              console.log("create all shifts", err);
+              return res.status(500).end();
+            } else {
+              var shifts = [];
+              for(var i = 1; i < arguments.length; i++) {
+                var secureShift = {};
+                var fields = fieldsToReturn.split(' ');
+                for(var j = 0; j < fields.length; j++) {
+                  secureShift[fields[j]] = arguments[i][fields[j]];
+                }
+                shifts.push(secureShift);
+              }
+              return res.json({ shifts: shifts });
+            }
+          });
+        }
       });
     });
 
@@ -373,6 +397,7 @@ router.get('/:id', function(req, res) {
       }
       shift.save(function(err, _shift) {
         if (err) {
+          console.log("save shift after trade", err);
           res.status(500).end();
         } else {
           return res.json({ shifts: [_shift] });
@@ -391,6 +416,7 @@ router.get('/:id', function(req, res) {
 
     Shift.findOneAndUpdate({ _id: req.params.id }, doc, function(err, shift) {
       if (err) {
+        console.log("employer only body", err);
         res.status(500).end();
       } else {
         return res.json({ shifts: [shift] });

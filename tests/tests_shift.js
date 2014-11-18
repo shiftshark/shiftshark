@@ -157,13 +157,30 @@ test('Shift - PUT /shifts/:id', function () {
     position: position.data.position._id,
     startTime: 600,
     endTime: 700,
-    date: new Date("Dec 4 2014"),
+    date: new Date("Nov 4 2014"),
     trading: false
   };
 
-  
+  // extend a single shift
+  var savedShift = client_shifts_create(shift, null, null);
+  var start = new Date(2014, 9, 3, 14, 2);
+  var end = new Date(2014, 11, 4, 4, 1);
+  var extendBothWays = client_shifts_change(savedShift.data.shift._id, {
+    adjustStart: start,
+    adjustEnd: end
+  }, null);
 
-  ok(true);
+  var dateStrings = ["Oct 07 2014", "Oct 14 2014", "Oct 21 2014", "Oct 28 2014",
+  "Nov 11 2014", "Nov 18 2014", "Nov 25 2014", "Dec 02 2014"];
+
+  var dateTimes = dateStrings.map(function(date) {
+    return (new Date(date)).getTime();
+  });
+  var returnedTimes = extendBothWays.data.shifts.map(function(obj) {
+    return (new Date(obj.date)).getTime();
+  });
+
+  deepEqual(returnedTimes, dateTimes, "objects created on correct dates");
 });
 
 //////////////////
