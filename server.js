@@ -89,7 +89,7 @@ app.use(express.static(path.join(__dirname, 'tests')));
 var transporter = nodemailer.createTransport(smtpTransport({
     service: 'Gmail',
     auth: {
-      user: 'shiftsharknoreply@gmail.com',
+      user: 'noreplyshiftshark@gmail.com',
       pass: 'fjfjfjfjsharkFj'
     }
 }));

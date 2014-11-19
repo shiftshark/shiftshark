@@ -122,7 +122,6 @@ router.post('/', function(req, res) {
   var series = new Series({ schedule: req.user.schedule });
   series.save(function(err, _series) {
     if (err) {
-      console.log("save series", err);
       return res.status(500).end();
     } else {
       if (req.body.startDate || req.body.endDate) {
@@ -156,9 +155,7 @@ router.post('/', function(req, res) {
           allShifts.push(new Shift(shiftTemplate));
         }
         Shift.create(allShifts, function(err) {
-          console.log("inside create");
           if (err) {
-            console.log("create allShifts");
             return res.status(500).end();
           } else {
             for(var i = 1; i < arguments.length; i++) {
@@ -166,7 +163,6 @@ router.post('/', function(req, res) {
               if (new Date(shift.date).getTime() == specifiedDate.getTime()) {
                 Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
                   if (err) {
-                    console.log("populate specified shift in multishift creation");
                     return res.status(500).end();
                   } else {
                     return res.json({ shift: _shift });
@@ -185,12 +181,10 @@ router.post('/', function(req, res) {
         var newShift = new Shift(shiftTemplate);
         newShift.save(function(err, shift) {
           if (err) {
-            console.log("saving new shift", err);
             return res.status(500).end();
           } else {
             Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
               if (err) {
-                console.log("populate new shift", err);
                 return res.status(500).end();
               } else {
                 return res.json({ shift: _shift });
@@ -268,7 +262,7 @@ router.get('/:id', function(req, res) {
  *   * adjustStart <= startDate of series; adjustEnd >= startDate of series
  *   * adjustStart and adjustEnd ignored if trade specified
  *   * request body ignored if any query params specified
- *   * employer sends 
+ *   * employer sends
  *
  * Request: {
  *   shift: (optional) Shift
@@ -290,7 +284,6 @@ router.get('/:id', function(req, res) {
     Shift.findOne({ _id: req.params.id, schedule: req.user.schedule }).exec(function(err, shift) {
       Shift.find({ series: shift.series }, function(err, shifts) {
         if (err) {
-          console.log("find shifts with series", err);
           return res.status(500).end();
         } else {
           var dates = shifts.map(function(obj) { return new Date(obj.date).getTime(); });
@@ -328,11 +321,6 @@ router.get('/:id', function(req, res) {
               startDate = new Date(Math.abs(- startDate.getDay() + specifiedDay + 7) * millisecsInDay + startDate.getTime());
             }
 
-            console.log("adjustStart:");
-            console.log("startDate", startDate);
-            console.log("endDate", endDate);
-            console.log("specifiedDate", specifiedDate);
-
             for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
               shiftTemplate.date = currentDate;
               allShifts.push(new Shift(shiftTemplate));
@@ -345,10 +333,6 @@ router.get('/:id', function(req, res) {
 
             startDate.setHours(0,0,0,0);
             endDate.setHours(0,0,0,0);
-            console.log("adjustEnd:");
-            console.log("startDate", startDate);
-            console.log("endDate", endDate);
-            console.log("specifiedDate", specifiedDate);
 
             for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
               shiftTemplate.date = currentDate
@@ -357,11 +341,8 @@ router.get('/:id', function(req, res) {
 
           }
 
-          console.log("dates of allShifts", allShifts.map(function(obj) { return obj.date; }));
-
           Shift.create(allShifts, function(err) {
             if (err) {
-              console.log("create all shifts", err);
               return res.status(500).end();
             } else {
               var shifts = [];
@@ -383,15 +364,13 @@ router.get('/:id', function(req, res) {
   } else if (req.query.trade) {
     Shift.findById(req.params.id, function(err, shift) {
       if (req.query.trade == "offer") {
-        console.log("claimant", shift.claimant);
-        console.log("me", req.user._id);
         if ((String(shift.assignee) === String(req.user._id) && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
           doc = { trading: true };
           shift.trading = true;
           shift.claimant = null;
         } else {
           return res.status(401).end();
-        } 
+        }
       } else if (req.query.trade == "claim") {
         if (!shift.claimant && shift.trading) {
           shift.trading = false;
@@ -402,7 +381,6 @@ router.get('/:id', function(req, res) {
       }
       shift.save(function(err, _shift) {
         if (err) {
-          console.log("save shift after trade", err);
           res.status(500).end();
         } else {
           Shift.findOne(_shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, tradedShift) {
@@ -427,12 +405,10 @@ router.get('/:id', function(req, res) {
 
     Shift.findOneAndUpdate({ _id: req.params.id }, doc, function(err, shift) {
       if (err) {
-        console.log("employer only body", err);
         res.status(500).end();
       } else {
         Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
           if (err) {
-            console.log("populating employer-forced updated shift", err);
             res.status(500).end();
           } else {
             return res.json({ shifts: [_shift] });

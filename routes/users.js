@@ -130,7 +130,9 @@ router.post('/employees/', function(req, res) {
       replyTo: 'shiftshark@mit.edu',
       subject: 'ShiftShark Employee Account',
       text: body
-    }, console.log);
+    }, function(err, message) {
+      if (err) res.status(400).send('EMAIL_ERR');
+    });
     return res.json({ employee: {
       _id: user._id,
       firstName: user.firstName,
