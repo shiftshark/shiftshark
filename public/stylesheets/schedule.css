@@ -12,7 +12,6 @@ html, body {
 }*/
 
 .scheduleWrapper{
-  min-width: 600px;
   overflow: scroll;
   width: 100%;
 }
@@ -82,14 +81,14 @@ html, body {
 }
 
 .roleWrapper table { 
-  border-collapse:collapse;
+  border-collapse:separate;
+  border-spacing: 0px;
   width: 100%;
 }
 
 .roleWrapper td{
   background-color: white;
   border: solid 1px;
-
 }
 
 .posHead{
