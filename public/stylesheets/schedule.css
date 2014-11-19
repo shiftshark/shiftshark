@@ -105,11 +105,10 @@
   overflow: hidden;
   padding: 0;
   border-left: solid 1px;
-  position: fixed !important;
 }
 
 .posHead, .posName {
-  position: fixed !important;
+  position: absolute !important;
   z-index: 2;
 }
 
