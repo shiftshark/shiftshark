@@ -54,8 +54,7 @@ router.get('/', function(req, res) {
   var filters = { schedule: req.user.schedule };
   var dateFilter = {};
   if (req.query.trading != undefined) {
-    if (req.query.trading 
-     '1' || req.query.trading === 'true') {
+    if (req.query.trading === '1' || req.query.trading === 'true') {
       filters.trading = true;
     } else if (req.query.trading === '0' || req.query.trading === 'false') {
       filters.trading = false;
