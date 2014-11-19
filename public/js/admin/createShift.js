@@ -26,7 +26,15 @@ $(document).ready(function() {
 
   // form validation rules
   var rules = {
-    selectEmployee : {
+    selectPosition : {
+      identifier  : 'select-position',
+      rules: [
+        {
+          type  : 'empty',
+          prompt: 'Please select an employee'
+        }
+      ]
+    },selectEmployee : {
       identifier  : 'select-employee',
       rules: [
         {
@@ -313,6 +321,9 @@ $(document).ready(function() {
         $.fancybox.update();
         createShiftForm.removeClass('loading');
       };
+
+      createShiftForm.addClass('loading');
+
       if (recurring) {
         lastSMonth = startMonth;
         lastSDay   = startDay;
@@ -327,7 +338,7 @@ $(document).ready(function() {
         (startDate,endDate);
         (startYear, startMonth, startDay);
         (endYear, endMonth, endDay);
-
+        console.log(startDate, endDate);
         client_shifts_create(data, startDate, endDate, success, failure);
       } else {
         client_shifts_create (data, null, null, success, failure);

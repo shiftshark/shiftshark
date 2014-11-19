@@ -160,7 +160,7 @@ router.post('/', function(req, res) {
           } else {
             for(var i = 1; i < arguments.length; i++) {
               var shift = arguments[i];
-              if (new Date(shift.date).getTime() == specifiedDate.getTime()) {
+              if (Math.abs(new Date(shift.date).getTime() - specifiedDate.getTime()) < millisecsInDay) {
                 Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
                   if (err) {
                     return res.status(500).end();
