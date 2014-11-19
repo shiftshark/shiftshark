@@ -52,3 +52,16 @@ isMine = function(req, inputShift) {
   return currentUser == shiftOwner || currentUser == shiftClaimant;
 }
 %>
+
+<%
+getPositionName = function(inputShift, positions) {
+  for (var i=0; i < positions.length; i++) {
+    var position = positions[i];
+    if (String(inputShift.position) == String(position._id)) {
+        return position.name;
+    }
+  }
+
+  return currentUser == shiftOwner || currentUser == shiftClaimant;
+}
+%>

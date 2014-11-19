@@ -22,7 +22,7 @@
       <div position="<%= schedule[shift].position %>"
       class="role" shift="<%= schedule[shift]._id %>"
       date="<%= dateToCheck %>">
-        <div class="cell posName"> <%= schedule[shift].position.name %> </div>
+        <div class="cell posName"> <%= getPositionName(schedule[shift], positions) %> </div>
         <% for(var i=8*60/15; i<18*60/15; i++){ %>
         <div
         class="cell fancybox <%= i %> <% if (timeBlocksInRange(schedule[shift])(i)) { if (schedule[shift].trading) { %> trading <% } else if (isMine(req, schedule[shift])) { %>currentOwner<% } else if(!isMine(req, schedule[shift])) { %> otherOwner <% }} %>"
