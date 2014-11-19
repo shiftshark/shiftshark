@@ -324,9 +324,9 @@ $(document).ready(function() {
         var startDate = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay));
         var endDate = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay));
 
-        console.log(startDate,endDate);
-        console.log(startYear, startMonth, startDay);
-        console.log(endYear, endMonth, endDay);
+        (startDate,endDate);
+        (startYear, startMonth, startDay);
+        (endYear, endMonth, endDay);
 
         client_shifts_create(data, startDate, endDate, success, failure);
       } else {

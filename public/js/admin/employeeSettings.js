@@ -46,7 +46,7 @@ $(document).ready(function() {
   var addEmployee = function() {
     var isValid = addForm.form('validate form');
     $.fancybox.update();
-    console.log(isValid);
+    (isValid);
     if (isValid) {
       var firstNameField = $('.add.employee.form [name="firstname"]');
       var lastNameField  = $('.add.employee.form [name="lastname"]');
@@ -78,6 +78,7 @@ $(document).ready(function() {
         }
 
         $('.employeeList').html(employeeNamesHtml);
+        $('.dropdown').dropdown();
       };
 
       var failure = function(xhr, status, err) {
@@ -86,7 +87,7 @@ $(document).ready(function() {
         $('.add.employee.form .ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
         $.fancybox.update();
         addForm.addClass('error');
-        console.log(xhr,status,err);
+        (xhr,status,err);
       };
 
       addForm.addClass('loading');

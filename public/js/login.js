@@ -44,7 +44,6 @@ $(document).ready(function() {
 
       var success = function(result, status, xhr) {
         $('.ui.error.message').html('');
-        loginForm.removeClass('loading');
         window.location.reload();
       };
 
@@ -52,9 +51,8 @@ $(document).ready(function() {
         loginForm.removeClass('loading');
         loginForm.removeClass('success');
         $('.ui.error.message').html('<ul class="list"><li>Error logging in. Please try again</li></ul>');
-        $.fancybox.update();
         loginForm.addClass('error');
-        console.log(xhr,status,err);
+        (xhr,status,err);
 
       };
 
