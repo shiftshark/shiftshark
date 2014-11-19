@@ -56,8 +56,8 @@
   max-height: 30px;
   width: 100px;
   display: table-cell;
-  cursor: pointer !important;
-  cursor: hand !important;
+  cursor: pointer;
+  cursor: hand;
   border: solid 1px;
 }
 
@@ -97,6 +97,9 @@
 .timeIntervals td {
   width: 80px;
 }
+.timeIntervals td:nth-child(2) {
+  width: 98px;
+}
 
 .posHead{
   background-color: white;
@@ -108,11 +111,11 @@
 }
 
 .posHead, .posName {
-  position: absolute !important;
+  position: absolute;
   z-index: 2;
 }
 
-.titleDummy, .posHead, .posName {
 
-  width: 100px !important;
+.titleDummy{
+  min-width: 100px;
 }
