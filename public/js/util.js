@@ -4,6 +4,7 @@ var Time = function (hour, minute, meridian) {
     this.hourStandard;
     this.minute;
     this.meridian;
+    this.formatted;
 
     if (minute === undefined || meridian == undefined) {
         minute                = hour;
@@ -36,5 +37,7 @@ var Time = function (hour, minute, meridian) {
             this.totalMinutes = ((hour + 12) * 60 + minute);
         }
     }
+
+    this.formatted = this.hour + ':' + this.minute + ' ' + this.meridian;
     return this;
 }
