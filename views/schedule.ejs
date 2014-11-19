@@ -7,13 +7,13 @@
         <tr class="topBar">
           <td class="posHead"> Position Name </div>
           <!-- right now this hardcodes the times from 8am-6pm -->
-          <% for(var j=8; j<18; j++){ %>
+          <% for(var j=0; j<24; j++){ %>
               <td colspan="4">
-                <% if ((j-1)%12 + 1 < 10){ %>
-                  <!-- append a 1 in front of any single digit hour; ensure 12 doesn't get counted as 0 -->
-                  <%= (j<12 ?  "0"+j+"a" : "0"+((j-1)%12 + 1)+"p") %>
+                <% if ((j+11)%12 + 1 < 10){ %>
+                  <!-- append a 0 in front of any single digit hour; ensure 12 doesn't get counted as 0 -->
+                  <%= (j<12 ?  "0"+j+"a" : "0"+((j+11)%12 + 1)+"p") %>
                 <% } else{ %>
-                  <%= (j<12 ?  j+"a" : ((j-1)%12 + 1)+"p") %>
+                  <%= (j<12 ?  ((j+11)%12 + 1)+"a" : ((j+11)%12 + 1)+"p") %>
                 <% } %>
               </td>
           <% } %>
@@ -25,7 +25,7 @@
       class="role" shift="<%= schedule[shift]._id %>"
       date="<%= dateToCheck %>">
         <div class="cell posName"> <%= getPositionName(schedule[shift], positions) %> </div>
-        <% for(var i=8*60/15; i<18*60/15; i++){ %>
+        <% for(var i=0*60/15; i<24*60/15; i++){ %>
         <div
         class="cell fancybox <%= i %> <% if (timeBlocksInRange(schedule[shift])(i)) { if (schedule[shift].trading) { %> trading <% } else if (isMine(req, schedule[shift])) { %>currentOwner<% } else if(!isMine(req, schedule[shift])) { %> otherOwner <% }} %>"
         href=<%= properRef(schedule[shift], i) %>>
