@@ -7,11 +7,22 @@
     <div class="day"><%= dateToCheck %></div>
     <div class="fleft">asdf</div>
     <div class="roleWrapper">
+      <div class="role">
+        <div class="cell posName"> Position Name </div>
+        <% for(var i=8*60/15; i<18*60/15; i++){ %>
+          <div class="cell  <%= i %>">
+            <% if(i % 4==0) { %>
+              <%= Math.floor(i*15/60) % 12 == 0 ? 12+"n" : (Math.floor(i*15/60) % 12)+"a" %>
+            <% }%>
+          </div>
+        <% } %>
+      </div>
       <% for(shift in schedule) {%>
       <% if(new Date(schedule[shift].date).getDate() === new Date(dateToCheck).getDate() && new Date(schedule[shift].date).getMonth() === new Date(dateToCheck).getMonth() && new Date(schedule[shift].date).getFullYear() === new Date(dateToCheck).getFullYear()){ %>
       <div position="<%= schedule[shift].position %>"
       class="role" shift="<%= schedule[shift]._id %>"
       date="<%= dateToCheck %>">
+        <div class="cell posName"> <%= schedule[shift].position.name %> </div>
         <% for(var i=8*60/15; i<18*60/15; i++){ %>
         <div
         class="cell fancybox <%= i %> <% if (timeBlocksInRange(schedule[shift])(i)) { if (schedule[shift].trading) { %> trading <% } else if (isMine(req, schedule[shift])) { %>currentOwner<% } else if(!isMine(req, schedule[shift])) { %> otherOwner <% }} %>"
