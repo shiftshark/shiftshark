@@ -24,8 +24,8 @@ router.get('/', function(req, res) {
           Position.find({ schedule: req.user.schedule }, function(err, positions) {
             if (err) {return res.status(500).end}
             if (positions == undefined || positions == null) {positions = []}
-            // res.render('admin', {req:req, isAdmin:true, employees:employees, positions:positions, schedule:shifts, dateToCheck:(new Date("Mon Nov 18 2014"))});
-            res.render('employee', {req:req, isAdmin:false, positions:positions, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
+            res.render('admin', {req:req, isAdmin:true, employees:employees, positions:positions, schedule:shifts, dateToCheck:(new Date("Mon Nov 18 2014"))});
+            // res.render('employee', {req:req, isAdmin:false, positions:positions, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
           });
       });
     });
