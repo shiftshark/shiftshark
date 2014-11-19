@@ -147,4 +147,17 @@ $(document).ready(function() {
             window.location.replace("/?date=" + tomorrow.toDateString());
         }
     });
+
+    update_pos = function(evt) {
+        var titles = $('.posHead, .posName');
+        var scroll = $('.scheduleWrapper').scrollLeft();
+        var dayWidth = $('.day').width();
+        if (scroll > dayWidth) {
+            titles.css('left', 0);
+        } else {
+            titles.css('left', dayWidth - scroll);
+        }
+    }
+
+    $('.scheduleWrapper').scroll(update_pos);
 });

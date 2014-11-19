@@ -78,9 +78,7 @@
   min-width: 100px;
   max-width: 100px;
   overflow: hidden;
-  /*position: fixed !important;*/
   background-color: white;
-  /*z-index: 2;*/
 }
 
 .roleWrapper table { 
@@ -104,12 +102,19 @@
 .posHead{
   background-color: white;
   min-width: 100px;
-  width:100px !important;
   max-width: 100px;
   overflow: hidden;
   padding: 0;
   border-left: solid 1px;
-  /*position: fixed !important;
-  z-index: 2;*/
+  position: fixed !important;
 }
-*/
+
+.posHead, .posName {
+  position: fixed !important;
+  z-index: 2;
+}
+
+.titleDummy, .posHead, .posName {
+
+  width: 100px !important;
+}
