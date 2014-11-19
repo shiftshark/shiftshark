@@ -85,12 +85,12 @@ html, body {
   overflow: hidden;
 }
 
-table { 
+.roleWrapper table { 
   border-collapse:collapse;
   width: 100%;
 }
 
-td{
+.roleWrapper td{
   background-color: white;
   border: solid 1px;
 
