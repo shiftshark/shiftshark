@@ -26,7 +26,15 @@ $(document).ready(function() {
 
   // form validation rules
   var rules = {
-    selectEmployee : {
+    selectPosition : {
+      identifier  : 'select-position',
+      rules: [
+        {
+          type  : 'empty',
+          prompt: 'Please select an employee'
+        }
+      ]
+    },selectEmployee : {
       identifier  : 'select-employee',
       rules: [
         {
