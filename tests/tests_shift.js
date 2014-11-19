@@ -21,19 +21,22 @@ test('Shift - POST /shifts/', function () {
   // Employer Test Account LOGIN
   test_employer_login();
 
+  var getEmployees = client_employee_get_all();
+  employees = getEmployees.data.employees;
+
   // create an employee
-  tim = client_signup_employee({
-    first_name: "Tim",
-    last_name: "Beaver",
-    email: "tim-the-beaver@beavers.com"
-  });
-  timID = tim.data.employee._id;
+  // tim = client_signup_employee({
+  //   first_name: "Tim",
+  //   last_name: "Beaver",
+  //   email: "tim-the-beaver@beavers.com"
+  // });
+  // timID = tim.data.employee._id;
 
   // create their position
   position = client_positions_create({ name: "Mascot" });
 
   var shift = {
-    assignee: timID,
+    assignee: employees[1]._id,
     claimant: null,
     position: position.data.position._id,
     startTime: 0,
@@ -77,7 +80,7 @@ test('Shift - GET /shifts/', function () {
 
   // new shift, using previous data
   var mayShift = {
-    assignee: timID,
+    assignee: employees[1]._id,
     claimant: null,
     position: position.data.position._id,
     startTime: 600,
@@ -86,7 +89,7 @@ test('Shift - GET /shifts/', function () {
     trading: true
   };
   var januaryShift = {
-    assignee: timID,
+    assignee: employees[1]._id,
     claimant: null,
     position: position.data.position._id,
     startTime: 600,
@@ -103,7 +106,7 @@ test('Shift - GET /shifts/', function () {
   deepEqual(maySavedShift.data.shift, getTradingShift.data.shifts[0], "filter by trading");
 
   // filter by employee
-  var getTimsShifts = client_shifts_get_all({ employee: timID });
+  var getTimsShifts = client_shifts_get_all({ employee: employees[1]._id });
   deepEqual([maySavedShift.data.shift, januarySavedShift.data.shift], getTimsShifts.data.shifts, "filter by employee");
 
   // filter by start date
@@ -126,7 +129,7 @@ test('Shift - GET /shifts/:id', function () {
 
   // new shift, using previous data
   var shift = {
-    assignee: timID,
+    assignee: employees[1]._id,
     claimant: null,
     position: position.data.position._id,
     startTime: 600,
@@ -152,7 +155,7 @@ test('Shift - GET /shifts/:id', function () {
 test('Shift - PUT /shifts/:id', function () {
 
   var shift = {
-    assignee: timID,
+    assignee: employees[1]._id,
     claimant: null,
     position: position.data.position._id,
     startTime: 600,
@@ -224,18 +227,12 @@ test('Shift - PUT /shifts/:id', function () {
   equal(offerShiftSucceed.data.shifts[0].trading, true, "claimant offer successful");
 
   // as employer, give Tim's shift to Ben
-  var ben = client_signup_employee({
-    first_name: "Ben",
-    last_name: "Bitdiddle",
-    email: "hacker4lyfe@hardkore.org"
-  });
-
   var timsShift = client_shifts_create(shift, null, null);
   var forceGiveToBen = client_shifts_change(timsShift.data.shift._id, null, {
-    claimant: ben.data.employee._id
+    claimant: employees[2]._id
   });
 
-  equal(forceGiveToBen.data.shifts[0].claimant._id, ben.data.employee._id, "give shift to a different employee as employer");
+  equal(forceGiveToBen.data.shifts[0].claimant._id, employees[2]._id, "give shift to a different employee as employer");
 
   clear_employer();
 });
@@ -247,7 +244,7 @@ test('Shift - PUT /shifts/:id', function () {
 test('Shift - DELETE /shifts/:id', function() {
 
   var shift = {
-    assignee: timID,
+    assignee: employees[1]._id,
     claimant: null,
     position: position.data.position._id,
     startTime: 600,
