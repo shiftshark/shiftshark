@@ -132,7 +132,7 @@ router.put('/:id', function(req, res) {
     if (err) {
       return res.status(500).end();
     } else {
-      res.json({ position: { _id: position._id, name: position.name } });
+      return res.json({ position: { _id: position._id, name: position.name } });
     }
   });
 });
