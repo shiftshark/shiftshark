@@ -26,6 +26,11 @@
     <body>
         <%= include util/navbar.ejs %>
         <div class='ui hidden adminOptions menu'>
+            <div class="left item wrap vcentered">
+                <i class="left arrow icon dateNavigation"></i>
+                <%= dateToCheck.toDateString() %>
+                <i class="right arrow icon dateNavigation"></i>
+            </div>
             <div class='right item'>
                 <a href='#claimShift' class='ui inverted black fancybox button'>
                     Claim Shift

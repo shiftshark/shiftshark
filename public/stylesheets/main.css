@@ -141,6 +141,11 @@ label.colon {
     cursor: hand !important;
 }
 
+.dateNavigation {
+    cursor: pointer !important;
+    cursor: hand !important;
+}
+
 .fancybox-inner {
     overflow-x: hidden !important;
 }

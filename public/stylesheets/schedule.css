@@ -18,7 +18,6 @@
 
 .timesRow{
   width:100%;
-  background-color: red;
   min-height: 20px;
 }
 
@@ -43,9 +42,6 @@
 }
 
 .roleWrapper{
-  /*margin-left: 110px;
-  width:100%;*/
-  background-color: black;
   display: table-cell;
 }
 
