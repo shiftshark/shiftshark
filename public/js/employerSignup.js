@@ -116,7 +116,6 @@ $(document).ready(function() {
         loginForm.removeClass('loading');
         loginForm.removeClass('success');
         $('.ui.error.message').html('<ul class="list"><li>Error signing up. Please try again</li></ul>');
-        $.fancybox.update();
         loginForm.addClass('error');
         console.log(xhr,status,err);
       };
