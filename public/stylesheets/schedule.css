@@ -59,6 +59,7 @@ html, body {
 .cell{
   position: relative;
   height: 30px;
+  max-height: 30px;
   width: 100px;
   display: table-cell;
   cursor: pointer !important;
@@ -82,4 +83,25 @@ html, body {
   min-width: 100px;
   max-width: 100px;
   overflow: hidden;
+}
+
+.roleWrapper table { 
+  border-collapse:collapse;
+  width: 100%;
+}
+
+.roleWrapper td{
+  background-color: white;
+  border: solid 1px;
+
+}
+
+.posHead{
+  background-color: white;
+  min-width: 100px;
+  width:100px;
+  max-width: 100px;
+  overflow: hidden;
+  padding: 0;
+  border-left: solid 1px;
 }
