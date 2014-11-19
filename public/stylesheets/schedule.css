@@ -14,7 +14,6 @@ html, body {
 .scheduleWrapper{
   min-width: 600px;
   overflow: scroll;
-  background: lime;
   width: 100%;
 }
 
@@ -27,7 +26,6 @@ html, body {
 .contentRow{
   width: 100%;
   min-height:30px;
-  background-color: blue;
   display: table;
 }
 
@@ -59,7 +57,23 @@ html, body {
 }
 
 .cell{
-  min-width: 75px;
-  max-width: 75px;
-  display: inline-block;
+  position: relative;
+  height: 30px;
+  width: 100px;
+  display: table-cell;
+  cursor: pointer !important;
+  cursor: hand !important;
+  border: solid 1px;
+}
+
+.trading{
+  background-color: yellow;
+}
+
+.currentOwner {
+  background-color: green;
+}
+
+.otherOwner {
+  background-color: white;
 }

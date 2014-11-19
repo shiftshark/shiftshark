@@ -109,8 +109,7 @@ $(document).ready(function() {
       var endDay     = endDayDropdown.dropdown('get value');
       var endYear    = endYearDropdown.dropdown('get value');
 
-      //TODO: find the real shift ID
-      var shiftId = '546ad8a43f01a023115d36ce';
+      var shiftId = $('.scheduleWrapper .active').parent().attr('shift');
       var adjustStart = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay));
       var adjustEnd = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay));
       //TODO: find out if it was traded beforehand
@@ -132,6 +131,7 @@ $(document).ready(function() {
         var shift = result.shift;
         $('.ui.modify.edit.form .dropdown').dropdown('restore defaults');
         //TODO: Interact with Michael's calendar
+        window.location.reload();
       };
 
       var failure = function(xhr, status, err) {

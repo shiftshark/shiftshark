@@ -1,17 +1,54 @@
 <%
-    timeBlocksInRange = function(shift){
-    var firstTime = Math.floor(shift.startTime/15);
-    var lastTime = Math.floor((shift.endTime)/15);
-    console.log("start");
-    if(shift.startTime === shift.endTime){
-        lastTime === firstTime;
+timeBlocksInRange = function(inputShift){
+  var firstTime = Math.floor(inputShift.startTime/15);
+  var lastTime = Math.floor((inputShift.endTime)/15);
+
+  if(inputShift.startTime === inputShift.endTime){
+    lastTime === firstTime;
+  }
+  return function(time){
+    return firstTime<=time&&time<lastTime;
+  };
+}
+%>
+
+<% 
+properRef = function(inputShift, i){
+  var claimant = String(inputShift.claimant);
+  var currentUser = String(req.user._id);
+  var assignee = String(inputShift.assignee);
+
+  if( timeBlocksInRange(inputShift)(i) ){
+    if(inputShift.trading && isAdmin && timeBlocksInRange(inputShift)(i)){
+      return "#assignOffered"
     }
-    return function(time){
-        console.log(time);
-        console.log(firstTime);
-        console.log(lastTime);
-        console.log("checking");
-        return firstTime<=time&&time<lastTime;
-    };
+    else if(inputShift.trading && timeBlocksInRange(inputShift)(i)){
+      return "#claimShift"
+    }
+    else if(isAdmin && timeBlocksInRange(inputShift)(i)){
+      return "#modifyShift"
+    }
+    else if(claimant == currentUser || (claimant == "null" && assignee == currentUser) && timeBlocksInRange(inputShift)(i)){
+      return "#tradeShift"
+    } else {
+      return "null"
+    }
+  }
+  else if (isAdmin) {
+    // return "#createShift"
+    return "null"
+  } else {
+    return "null"
+  }
+}
+%>
+
+<%
+isMine = function(req, inputShift) {
+  var currentUser = String(req.user._id);
+  var shiftOwner = String(inputShift.assignee);
+  var shiftClaimant = String(inputShift.claimant);
+
+  return currentUser == shiftOwner || currentUser == shiftClaimant;
 }
 %>

@@ -193,6 +193,7 @@ $(document).ready(function() {
     $.fancybox.update();
 
     if (isValid) {
+      var shiftId    = $('.scheduleWrapper .active').parent().attr('shift');
       var startMonth = startMonthDropdown.dropdown('get value');
       var startDay   = startDayDropdown.dropdown('get value');
       var startYear  = startYearDropdown.dropdown('get value');
@@ -208,6 +209,7 @@ $(document).ready(function() {
         var shift = result.shift;
         $('.modify.delete.form .dropdown').dropdown('restore defaults');
         //TODO: Interact with Michael's calendar
+        window.location.reload();
       };
 
       var failure = function(xhr, status, err) {
@@ -216,8 +218,7 @@ $(document).ready(function() {
         deleteShiftForm.removeClass('loading');
       };
 
-      //TODO: find real id of the shift
-      var shiftId = '546ad8a43f01a023115d36ef';
+      var position = $('.scheduleWrapper .active').parent().attr('position');
       deleteShiftForm.addClass('loading');
       if (recurring) {
         lastSMonth = startMonth;

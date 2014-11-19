@@ -54,7 +54,8 @@ router.get('/', function(req, res) {
   var filters = { schedule: req.user.schedule };
   var dateFilter = {};
   if (req.query.trading != undefined) {
-    if (req.query.trading === '1' || req.query.trading === 'true') {
+    if (req.query.trading 
+     '1' || req.query.trading === 'true') {
       filters.trading = true;
     } else if (req.query.trading === '0' || req.query.trading === 'false') {
       filters.trading = false;
@@ -275,7 +276,6 @@ router.get('/:id', function(req, res) {
  */
 
  router.put('/:id', function(req, res) {
-  // TEST ME
   if (req.query.adjustStart || req.query.adjustEnd) {
     // check permissions - only employer can adjust start/end dates
     if (! req.user.employer) return res.status(401).end();
@@ -307,6 +307,7 @@ router.get('/:id', function(req, res) {
             endTime: shift.endTime
           }
           var allShifts = [];
+          var millisecsInDay = 24 * 60 * 60 * 1000;
 
           if (req.query.adjustStart) {
             var startDate = new Date(req.query.adjustStart);
@@ -364,9 +365,10 @@ router.get('/:id', function(req, res) {
   } else if (req.query.trade) {
     Shift.findById(req.params.id, function(err, shift) {
       if (req.query.trade == "offer") {
-        if ((shift.assignee === req.user._id && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
+        if ((String(shift.assignee) === String(req.user._id) && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
           doc = { trading: true };
           shift.trading = true;
+          shift.claimant = null;
         } else {
           return res.status(401).end();
         }
@@ -442,7 +444,6 @@ router.get('/:id', function(req, res) {
  */
 
 router.delete('/:id', function(req, res) {
-  // TEST ME
   // check permissions
   if (! req.user.employer) return res.status(401).end();
 
@@ -455,12 +456,20 @@ router.delete('/:id', function(req, res) {
         var endDate = req.query.endDate || shift.date;
         var filters = {series: shift.series};
         filters.date = {"$gte": startDate, "$lte": endDate};
-        Shift.remove(filters, function(err, shifts) {
+
+        Shift.find(filters, function(err, shifts) {
           if (err) {
             return res.status(500).end();
           } else {
             var shiftIds = shifts.map(function(obj) { return obj._id; });
-            return res.json({ shiftIds: shiftIds });
+            Shift.remove(filters, function(err, num) {
+              if (err) {
+                return res.status(500).end();
+              } else {
+                return res.json({ shiftIds: shiftIds });
+              }
+            });
+            
           }
         });
       }
@@ -468,10 +477,11 @@ router.delete('/:id', function(req, res) {
     });
   } else {
     Shift.remove({ _id: req.params.id }, function(err, shift) {
+      console.log("single shift delete", shift);
       if (err) {
         return res.status(500).end();
       } else {
-        return res.json({ shiftIds: [shift._id] });
+        return res.json({ shiftIds: [req.params.id] });
       }
     });
   }
