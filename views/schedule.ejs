@@ -4,8 +4,8 @@
     Times of shifts go here
   </div>
   <div class="contentRow">
-    <div class="day"><%= dateToCheck %></div>
-    <div class="fleft">asdf</div>
+    <div class="day" date="<%= dateToCheck %>"><%= dateToCheck %></div>
+    <div class="fleft"></div>
     <div class="roleWrapper">
       <% for(shift in schedule) {%>
       <% if(new Date(schedule[shift].date).getDate() === new Date(dateToCheck).getDate() && new Date(schedule[shift].date).getMonth() === new Date(dateToCheck).getMonth() && new Date(schedule[shift].date).getFullYear() === new Date(dateToCheck).getFullYear()){ %>
