@@ -23,13 +23,17 @@
         <script src='/js/admin/createShift.js'></script>
         <script src='/js/admin/modifyEdit.js'></script>
         <script src='/js/admin/modifyTrade.js'></script>
+        <script src='/js/admin/modifyTradeOwn.js'></script>
         <script src='/js/admin/modifyDelete.js'></script>
         <script src='/js/admin/assignOffered.js'></script>
+        <script src='/js/admin/claimShift.js'></script>
         <link rel='stylesheet' href='/stylesheets/schedule.css' />
         <script src='/js/scheduleUI.js'></script>
+
     </head>
 
     <body>
+        <div id='curUser' userId='<%= req.user._id %>'
         <%= include util/navbar.ejs %>
         <div class='ui adminOptions menu'>
             
@@ -78,7 +82,7 @@
             <%= include modals/admin/modifyShift.ejs %>
         </div>
         <div id='assignOffered' class='modalContent'>
-            <%= include modals/admin/assignOffered.ejs %>
+            <%= include modals/admin/claimShift.ejs %>
         </div>
     </body>
 </html>

@@ -21,6 +21,19 @@ $(document).on('click', '.cell', function(evt) {
 
     var owner = !shift.shift.claimant ? shift.shift.assignee : shift.shift.claimant;
     var ownerName = owner.firstName + ' ' + owner.lastName;
+    var curUserId = $('#curUser').attr('userId');
+    var tradeRadio = $('.modify .tradeOwn.field');
+
+    if (String(owner._id) == curUserId) {
+        tradeRadio.removeClass('hidden');
+    } else {
+        tradeRadio.removeClass('hidden');
+        tradeRadio.addClass('hidden');
+        var editRadio = $('.modify.action [value="edit"]').parent();
+        var deleteRadio = $('.modify.action [value="delete"]').parent();
+        deleteRadio.checkbox('enable');
+        editRadio.checkbox('enable');
+    }
 
     $('.ownerIndicator').html(ownerName + "'s shift is currently selected.")
 
