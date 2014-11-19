@@ -34,7 +34,7 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
   connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ':' +
     process.env.OPENSHIFT_MONGODB_DB_PASSWORD + '@' +
     process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
-    process.env.OPENSHIFT_MONGODB_DB_PORT + '/openshiftappname'; // CHANGE LATER!
+    process.env.OPENSHIFT_MONGODB_DB_PORT + '/shiftshark'; // CHANGE LATER!
 }
 
 var db = mongoose.connect(connection_string);
