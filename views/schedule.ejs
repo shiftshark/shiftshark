@@ -1,22 +1,24 @@
 <%= include helperSchUI %>
 <div class="scheduleWrapper">
-  <div class="timesRow">
-    Times of shifts go here
-  </div>
   <div class="contentRow">
     <div class="day" date="<%= dateToCheck %>"><%= dateToCheck %></div>
-    <div class="fleft"></div>
     <div class="roleWrapper">
-      <div class="role">
-        <div class="cell posName"> Position Name </div>
-        <% for(var i=8*60/15; i<18*60/15; i++){ %>
-          <div class="cell  <%= i %>">
-            <% if(i % 4==0) { %>
-              <%= Math.floor(i*15/60) % 12 == 0 ? 12+"n" : (Math.floor(i*15/60) % 12)+"a" %>
-            <% }%>
-          </div>
-        <% } %>
-      </div>
+      <table>
+        <tr class="topBar">
+          <td class="posHead"> Position Name </div>
+          <!-- right now this hardcodes the times from 8am-6pm -->
+          <% for(var j=8; j<18; j++){ %>
+              <td colspan="4">
+                <% if ((j-1)%12 + 1 < 10){ %>
+                  <!-- append a 1 in front of any single digit hour; ensure 12 doesn't get counted as 0 -->
+                  <%= (j<12 ?  "0"+j+"a" : "0"+((j-1)%12 + 1)+"p") %>
+                <% } else{ %>
+                  <%= (j<12 ?  j+"a" : ((j-1)%12 + 1)+"p") %>
+                <% } %>
+              </td>
+          <% } %>
+        </tr>
+      </table>
       <% for(shift in schedule) {%>
       <% if(new Date(schedule[shift].date).getDate() === new Date(dateToCheck).getDate() && new Date(schedule[shift].date).getMonth() === new Date(dateToCheck).getMonth() && new Date(schedule[shift].date).getFullYear() === new Date(dateToCheck).getFullYear()){ %>
       <div position="<%= schedule[shift].position %>"
