@@ -19,6 +19,12 @@ $(document).on('click', '.cell', function(evt) {
     var endDay   = endDate.getDate();
     var endYear  = endDate.getFullYear();
 
+    var owner = !shift.shift.claimant ? shift.shift.assignee : shift.shift.claimant;
+    var ownerName = owner.firstName + ' ' + owner.lastName;
+
+    $('.ownerIndicator').html(ownerName + "'s shift is currently selected.")
+
+
     $('.modify.form [name="start-month"]').parent().dropdown('set value', startMonth);    
     $('.modify.form [name="start-month"]').parent().dropdown('set selected', startMonth);    
     $('.modify.form [name="start-day"]').parent().dropdown('set value', startDay);    
