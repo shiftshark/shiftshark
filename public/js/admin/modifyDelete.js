@@ -228,8 +228,8 @@ $(document).ready(function() {
         lastEDay   = endDay;
         lastEYear  = endYear;
 
-        var startDate = new Date(parseInt(startYear), parseInt(startMonth), parseInt(startDay));
-        var endDate = new Date(parseInt(endYear), parseInt(endMonth), parseInt(endDay));
+        var startDate = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay));
+        var endDate = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay));
 
         var query = {
           startDate : startDate,

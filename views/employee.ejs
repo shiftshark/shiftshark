@@ -25,19 +25,23 @@
     </head>
     <body>
         <%= include util/navbar.ejs %>
-        <div class='ui hidden adminOptions menu'>
-            <<div class="left item wrap vcentered dateNavWrapper">
+        <div class='ui adminOptions menu'>
+            <div class="left item wrap dateNavWrapper">
                 <i class="left arrow icon dateNavigation"></i>
                 <div class="wrap"><%= dateToCheck.toDateString() %></div>
                 <i class="right arrow icon dateNavigation"></i>
             </div>
-            <div class='right item'>
-                <a href='#claimShift' class='ui inverted black fancybox button'>
-                    Claim Shift
-                </a>
-                <a href='#tradeShift' class='ui inverted black fancybox button'>
-                    Trade Shift
-                </a>
+            <div class='hidden right item'>
+                <div class="item wrap">
+                    <a href='#claimShift' class='ui inverted black fancybox button'>
+                        Claim Shift
+                    </a>
+                </div>
+                <div class="item wrap">
+                    <a href='#tradeShift' class='ui inverted black fancybox button'>
+                        Trade Shift
+                    </a>
+                </div>
             </div>
         </div>
         <%= include schedule.ejs %>
