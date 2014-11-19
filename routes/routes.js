@@ -19,12 +19,17 @@ router.get('/', function(req, res) {
       if (err) return res.status(500).end();
 
       Shift.find({ schedule: req.user.schedule }, function(err, shifts) {
-        if (err) {return res.status(500).end}
-        if (shifts == undefined || shifts == null) {shifts = []}
+        if (err) return res.status(500).end();
+        if (shifts == undefined || shifts == null) { shifts = []; }
           Position.find({ schedule: req.user.schedule }, function(err, positions) {
-            if (err) {return res.status(500).end}
-            if (positions == undefined || positions == null) {positions = []}
-            res.render('admin', {req:req, isAdmin:true, employees:employees, positions:positions, schedule:shifts, dateToCheck:(new Date("Mon Nov 18 2014"))});
+            if (err) return res.status(500).end();
+            if (positions == undefined || positions == null) { positions = []; }
+            // determine date
+            var date = new Date(); // today
+            if (req.query.date !== undefined && req.query.date !== null) {
+              date = new Date(String(req.query.date));
+            }
+            res.render('admin', {req:req, isAdmin:true, employees:employees, positions:positions, schedule:shifts, dateToCheck: date});
             // res.render('employee', {req:req, isAdmin:false, positions:positions, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
           });
       });
@@ -32,12 +37,17 @@ router.get('/', function(req, res) {
   } else {
     // employee
     Shift.find({ schedule: req.user.schedule }, function(err, shifts) {
-      if (err) {return res.status(500).end}
-      if (shifts == undefined || shifts == null) {shifts = []}
+      if (err) return res.status(500).end();
+      if (shifts == undefined || shifts == null) { shifts = []; }
         Position.find({ schedule: req.user.schedule }, function(err, positions) {
-          if (err) {return res.status(500).end}
-          if (positions == undefined || positions == null) {positions = []}
-          res.render('employee', {req:req, isAdmin:false, positions:positions, schedule:shifts, dateToCheck:(new Date("Mon Nov 18 2014"))});
+          if (err) return res.status(500).end();
+          if (positions == undefined || positions == null) { positions = []; }
+          // determine date
+          var date = new Date(); // today
+          if (req.query.date !== undefined && req.query.date !== null) {
+            date = new Date(String(req.query.date));
+          }
+          res.render('employee', {req:req, isAdmin:false, positions:positions, schedule:shifts, dateToCheck: date});
           // res.render('employee', {isAdmin:false, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
         });
     });

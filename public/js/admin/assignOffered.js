@@ -36,8 +36,7 @@ $(document).ready(function() {
     $.fancybox.update();
 
     if (isValid) {
-      //TODO: get the real shift Id
-      var shiftId = '546ad8a43f01a023115d36ca';
+      var shiftId = $('.scheduleWrapper .active').parent().attr('shift');
       var employee = $('.createShift.form .employeeList .active').attr('employeeId');
 
       var shift = {
@@ -52,6 +51,7 @@ $(document).ready(function() {
         var shift = result.shift;
         $('.ui.assignOffered.form .dropdown').dropdown('restore defaults');
         //TODO: Interact with Michael's calendar
+        window.location.reload();
       };
 
       var failure = function(xhr, status, err) {
@@ -60,7 +60,7 @@ $(document).ready(function() {
         assignOfferForm.removeClass('loading');
       };
       assignOfferForm.addClass('loading');
-      client_shifts_change(shiftId,{},shift,success,failure);
+      client_shifts_change(shiftId,null,shift,success,failure);
     }
   });
 });
