@@ -88,7 +88,7 @@ test('Position - PUT /positions/:id', function () {
 
   // Change One and Verify Other
   positions[0].name = "Position Three";
-  client_positions_change(positions[0]._id, positions[0]);
+  deepEqual(client_positions_change(positions[0]._id, positions[0]).data.position, positions[0], "position change returnd correct Position Object");
   var pos0 = client_positions_get_one(positions[0]._id).data.position;
   var pos1 = client_positions_get_one(positions[1]._id).data.position;
   deepEqual(pos0, positions[0], "successfully modified position name");
