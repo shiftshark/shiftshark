@@ -7,6 +7,6 @@ All documentation -- design, teamwork plan, and meeting minutes -- are located i
 The site is hosted online with OpenShift at http://shiftshark-aandre.rhcloud.com/
 
 # Automated Tests
-To run the tests, visit `http://shiftshark-aandre.rhcloud.com/`.
+To run the tests, visit `http://shiftshark-aandre.rhcloud.com/tests.html`.
 
 NOTE: The tests are not safe to be run concurrently! Only one TA should visit this URL at a time. The test may take several seconds to run.
