@@ -1,10 +1,10 @@
-Project 4.1 -- ShiftShark
+Project 4.2 -- MVP -- ShiftShark
 ===
 ***6.170 Final Team Project***
 
 All documentation -- design, teamwork plan, and meeting minutes -- are located in the `docs/` directory of our GitHub Repo.
 
-The site is hosted online with OpenShift at http://shiftshark-aandre.rhcloud.com/
+The site is hosted online by OpenShift at http://shiftshark-aandre.rhcloud.com/
 
 # Automated Tests
 To run the tests, visit `http://shiftshark-aandre.rhcloud.com/tests.html`.
