@@ -19,7 +19,6 @@ html, body {
 
 .timesRow{
   width:100%;
-  background-color: red;
   min-height: 20px;
 }
 
@@ -44,9 +43,6 @@ html, body {
 }
 
 .roleWrapper{
-  /*margin-left: 110px;
-  width:100%;*/
-  background-color: black;
   display: table-cell;
 }
 

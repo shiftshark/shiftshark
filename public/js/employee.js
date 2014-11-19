@@ -57,4 +57,22 @@ $(document).ready(function() {
 
         client_logout(success,failure)
     });
+
+    $('.dateNavigation').on('click', function() {
+        $this = $(this);
+
+        var isLeft = $this.hasClass('left');
+        var currentDate = $('.day').attr('date');
+        currentDate = new Date(currentDate);
+
+        if (isLeft) {
+            var yesterday = currentDate;
+            yesterday.setDate(currentDate.getDate()-1);
+            window.location.replace("/?date=" + yesterday.toDateString());
+        } else {
+            var tomorrow = currentDate;
+            tomorrow.setDate(currentDate.getDate()+1);
+            window.location.replace("/?date=" + tomorrow.toDateString());
+        }
+    });
 });

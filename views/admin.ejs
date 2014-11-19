@@ -29,14 +29,17 @@
         <script src='/js/admin/claimShift.js'></script>
         <link rel='stylesheet' href='/stylesheets/schedule.css' />
         <script src='/js/scheduleUI.js'></script>
-
     </head>
 
     <body>
-        <div id='curUser' userId='<%= req.user._id %>'
+        <div id='curUser' userId='<%= req.user._id %>' />
         <%= include util/navbar.ejs %>
         <div class='ui adminOptions menu'>
-            
+            <div class="left item wrap vcentered">
+                <i class="left arrow icon dateNavigation"></i>
+                <%= dateToCheck.toDateString() %>
+                <i class="right arrow icon dateNavigation"></i>
+            </div>
             <div class='right item'>
                 <div class='item wrap'>
                     <a href='#employeeSettings' class='ui inverted black fancybox button'>
