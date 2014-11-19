@@ -153,3 +153,7 @@ label.colon {
 .ownerIndicator {
     padding-bottom: 10px;
 }
+
+.dateNavWrapper i, .dateNavWrapper div {
+    font-size: 1.5em !important;
+}

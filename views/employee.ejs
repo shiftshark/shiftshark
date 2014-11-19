@@ -26,9 +26,9 @@
     <body>
         <%= include util/navbar.ejs %>
         <div class='ui hidden adminOptions menu'>
-            <div class="left item wrap vcentered">
+            <<div class="left item wrap vcentered dateNavWrapper">
                 <i class="left arrow icon dateNavigation"></i>
-                <%= dateToCheck.toDateString() %>
+                <div class="wrap"><%= dateToCheck.toDateString() %></div>
                 <i class="right arrow icon dateNavigation"></i>
             </div>
             <div class='right item'>
