@@ -128,12 +128,13 @@ router.get('/:id', function(req, res) {
 
 router.put('/:id', function(req, res) {
   // TODO: check permissions
-  Position.findOneAndUpdate(req.params.id, req.body.position, function(err, position) {
-    if (err) {
-      return res.status(500).end();
-    } else {
-      return res.json({ position: { _id: position._id, name: position.name } });
-    }
+  Position.findOne(req.params.id, function(err, position) {
+    if (err) return res.status(500).end();
+    position.name = req.body.position.name;
+    position.save(function(err, _position) {
+      if (err) return res.status(500).end();
+      return res.json({ position: { _id: _position._id, name: _position.name } });
+    });
   });
 });
 
