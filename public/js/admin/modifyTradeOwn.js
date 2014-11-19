@@ -146,7 +146,7 @@ $(document).ready(function() {
       }
 
       var success = function(result, status, xhr) {
-        console.log("success");
+        ("success");
         $('.ui.error.message').html('');
         $('.ui.modify.tradeOwn.form').removeClass('error');
         tradeOwnShiftForm.removeClass('loading');
