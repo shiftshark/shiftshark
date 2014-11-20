@@ -1,3 +1,27 @@
 <div class='centered-text ctitle'>Add Employee</div>
 
-<%= include forminstances/employeeAdd.ejs %>
+<div class='ui add employee form'>
+    <div class='ui error message'></div>
+    <label>First Name:</label>
+    <div class='ui left labeled icon input field'>
+        <input type='text' name='firstname' placeholder='First Name'>
+        <i class='user icon'></i>
+    </div>
+    <label>Last Name:</label>
+    <div class='ui left labeled icon input field'>
+        <input type='text' name='lastname' placeholder='Last Name'>
+        <i class='user icon'></i>
+    </div>
+    <label>Email Address:</label>
+    <div class='ui left labeled icon input field'>
+        <input type='text' name='email' placeholder='email@domain.com'>
+        <i class='mail icon'></i>
+    </div>
+    <p>The employee will receive an email containing the account password.</p>
+    <div class='ui formButtons menu'>
+        <div class='right item submitButtons'>
+            <div class='ui red cancel button'>Cancel</div>
+            <div class='ui black submit button'>Add</div>
+        </div>
+    </div>
+</div>
