@@ -1,0 +1,30 @@
+<!-- Author: aandre@mit.edu -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Timetable Test</title>
+        <!-- Timetable CSS -->
+        <link rel="stylesheet" href="/stylesheets/timetable.css">
+    </head>
+    <body>
+        <!-- Query -->
+        <script src="/lib/jquery-2.1.1.min.js"></script>
+        <!-- Timetable JS -->
+        <script src="/js/timetable.js"></script>
+        <!-- Manual Test -->
+        <script>
+            $(document).ready(function () {
+                var t1 = Timetable();
+                var t2 = Timetable();
+
+                $('#test-timetable-1').append(t1);
+                $('#test-timetable-2').append(t2);
+
+            });
+        </script>
+        <div id="test-timetable-1"></div>
+        <div id="test-timetable-2"></div>
+    </body>
+</html>

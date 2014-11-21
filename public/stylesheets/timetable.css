@@ -1,0 +1,7 @@
+.timetable {
+  border: 1px solid black;
+}
+
+.timetable > td {
+  border: 1px solid black;
+}
