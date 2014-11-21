@@ -1,7 +1,37 @@
 .timetable {
-  border: 1px solid black;
+  border-collapse: collapse;
+  font-size: 12px;
 }
 
-.timetable > td {
-  border: 1px solid black;
+.timetable td {
+  border: 2px solid black;
+  padding: 5px;
+  vertical-align: middle;
+  min-width: 16px;
+}
+
+.timetable tr {
+  height: 28px;
+}
+
+.timetable td[colspan="4"] {
+  min-width: 80px;
+}
+
+.header-row {
+  height: auto !important;
+}
+
+.label-time {
+  font-weight: bold;
+  text-align: center;
+}
+
+td.label-position {
+  min-width: 80px;
+  max-width: 100px;
+
+  text-align: center;
+  font-weight: bold;
+  font-style: italic;
 }

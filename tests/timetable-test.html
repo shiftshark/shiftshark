@@ -17,11 +17,13 @@
         <script>
             $(document).ready(function () {
                 var t1 = Timetable();
-                var t2 = Timetable();
+                // var t2 = Timetable();
 
                 $('#test-timetable-1').append(t1);
-                $('#test-timetable-2').append(t2);
+                // $('#test-timetable-2').append(t2);
 
+                t1.position_add_update ({_id:"001", name: "Position One"});
+                t1.position_add_update ({_id:"002", name: "Position Two"});
             });
         </script>
         <div id="test-timetable-1"></div>
