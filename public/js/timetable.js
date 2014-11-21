@@ -98,10 +98,18 @@ function Timetable (date) {
    *   position - Position
    */
   table.position_add_update = function (position) {
-    var row = position_row(position);
-    table.append(row);
+    var positionID = position._id;
+    var existing_position = $('.timetable tr[positionID=' + positionID + ']');
 
-    hide_hours_left(time_start); hide_hours_right(time_end);
+    if (existing_position.length === 0) { // does not exist
+      var row = position_row(position);
+      table.append(row);
+
+      hide_hours_left(time_start); hide_hours_right(time_end);
+    } else { // exists, modify name
+      var label = existing_position.children('td.label-position').first();
+      label.html(position.name);
+    }
   };
 
   /**
