@@ -3,35 +3,102 @@
   font-size: 12px;
 }
 
-.timetable td {
-  border: 2px solid black;
-  padding: 5px;
-  vertical-align: middle;
-  min-width: 16px;
-}
-
 .timetable tr {
-  height: 28px;
-}
-
-.timetable td[colspan="4"] {
-  min-width: 80px;
+  height: 25px;
 }
 
 .header-row {
   height: auto !important;
 }
 
+.timetable td {
+  border: 2px solid black;
+  padding: 1px;
+  vertical-align: middle;
+  min-width: 10px;
+  word-wrap: break-word;
+}
+
+td.block-empty {
+  max-width: 21px;
+}
+
+td.block-shift {
+  max-width: 96px;
+  word-wrap: break-word;
+  padding: 4px; /* for text */
+}
+
+.timetable td[colspan="4"] {
+  /*min-width: 80px;*/
+}
+
 .label-time {
   font-weight: bold;
   text-align: center;
+  min-width: 56px !important;
+  max-width: 96px !important;
 }
 
 td.label-position {
-  min-width: 80px;
-  max-width: 100px;
+  min-width: 76px;
+  max-width: 106px;
+  height: auto !important;
 
   text-align: center;
   font-weight: bold;
   font-style: italic;
+}
+
+/* Coloring */
+
+td.block-shift {
+  /* color-coding shifts will not require */
+  background-color: #ccc;
+}
+
+.block-shift.trading {
+  background-color: #FFDD00; /* referenced in JS; DO NOT CHANGE */
+  color: #000;
+  font-style: italic;
+}
+
+/* Border Styling */
+td.time-block[quarter='0'] {
+  border-right-width: 1px;
+  border-right-style: dotted;
+}
+
+td.time-block[quarter='1'], td.time-block[quarter='2'] {
+  border-right-width: 1px;
+  border-left-width: 1px;
+  border-right-style: dotted;
+  border-left-style: dotted;
+}
+
+td.time-block[quarter='3'] {
+  border-left-width: 1px;
+  border-left-style: dotted;
+}
+
+td.time-block[quarter='0'], td.label-time {
+  border-left-width: 1px;
+}
+
+td.time-block[quarter='3'], td.label-time {
+  border-right-width: 1px;
+}
+
+.top-square {
+  border-left: none !important;
+  border-top: none !important;
+}
+
+table.timetable {
+  border-right: 2px solid black;
+}
+
+td.time-block.block-shift {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
 }
