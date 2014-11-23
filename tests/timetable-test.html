@@ -101,6 +101,9 @@
           endTime: 17 * 60,
           trading: true
         });
+
+        // remove shifts
+        setTimeout(function () {
         t1.shift_add_update ({ // beyong left and right boundaries
           _id: "s6",
           assignee: {
@@ -114,11 +117,8 @@
           endTime: 19.25 * 60,
           trading: false
         });
-
-        // remove shifts
-        // setTimeout(function () {
-        //   t1.shift_remove("s1");
-        // },1000);
+          // t1.shift_remove("s1");
+        },1000);
         // setTimeout(function () {
         //   t1.shift_remove("s6");
         // },2000);

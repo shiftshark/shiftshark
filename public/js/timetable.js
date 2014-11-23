@@ -65,6 +65,7 @@ function Timetable (date) {
     }
 
     shift_insert(table, shift);
+    show_hours_between(table, time_start, time_end); // adjust boundaries for possible new row
   };
 
   /**
@@ -121,8 +122,7 @@ function Timetable (date) {
 
     if (existing_position.length === 0) { // does not exist
       var row = position_new_create(table, position);
-
-      show_hours_between(table, time_start, time_end);
+      show_hours_between(table, time_start, time_end); // adjust boundaries
     } else { // exists, modify name
       var label = existing_position.children('td.label-position').first();
       label.html(position.name);
@@ -202,9 +202,7 @@ function hide_hours_left (table, hour) {
   table.ready(function() {
     for (var h = hour - 1; h >= 0; h--) {
       var hour_col = table.find('td[hour='+ h + ']');
-      if (hour_col.first().css('display') !== 'none') {
-        hour_col.css('display', 'none');
-      } else break;
+      hour_col.addClass('hidden-cell');
     }
   });
 }
@@ -213,31 +211,25 @@ function hide_hours_right (table, hour) {
   table.ready(function() {
     for (var h = hour + 1; h < 24; h++) {
       var hour_col = table.find('td[hour='+ h + ']');
-      if (hour_col.first().css('display') !== 'none') {
-        hour_col.css('display', 'none');
-      } else break;
+      hour_col.addClass('hidden-cell');
     }
   });
 }
 
 function extend_hours_left (table, hour) {
   table.ready(function() {
-    for (var h = hour; h < 24; h++) {
+    for (var h = hour; h <= 12; h++) {
       var hour_col = table.find('td[hour='+ h + ']');
-      if (hour_col.first().css('display') === 'none') {
-        hour_col.css('display', '');
-      } else break;
+      hour_col.removeClass('hidden-cell');
     }
   });
 }
 
 function extend_hours_right (table, hour) {
   table.ready(function() {
-    for (var h = hour; h >= 0; h--) {
+    for (var h = hour; h >= 12; h--) {
       var hour_col = table.find('td[hour='+ h + ']');
-      if (hour_col.first().css('display') === 'none') {
-        hour_col.css('display', '');
-      } else break;
+      hour_col.removeClass('hidden-cell');
     }
   });
 }
