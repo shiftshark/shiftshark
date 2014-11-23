@@ -1,0 +1,130 @@
+<!-- Author: aandre@mit.edu -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Timetable Test</title>
+    <!-- Timetable CSS -->
+    <link rel="stylesheet" href="/stylesheets/timetable.css">
+  </head>
+  <body>
+    <!-- Requirements -->
+    <script src="/lib/jquery-2.1.1.min.js"></script>
+    <script src="/lib/seedrandom.js"></script>
+    <!-- Timetable JS -->
+    <script src="/js/timetable.js"></script>
+    <!-- Manual Test -->
+    <script>
+      $(document).ready(function () {
+        var t1 = Timetable();
+        // var t2 = Timetable();
+
+        $('#test-timetable-1').append(t1);
+
+        // add test positions
+        t1.position_add_update ({_id:"p1", name: "dfsdfdsfdsf"});
+        t1.position_add_update ({_id:"p2", name: "Position Two"});
+        t1.position_add_update ({_id:"p1", name: "Position One"});
+
+        // add test shifts
+        t1.shift_add_update ({
+          _id: "s1",
+          assignee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          claimant: null,
+          position: "p1",
+          startTime: 9 * 60,
+          endTime: 10.25 * 60,
+          trading: false
+        });
+        t1.shift_add_update ({ // overlapping
+          _id: "s2",
+          assignee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          claimant: null,
+          position: "p1",
+          startTime: 10 * 60,
+          endTime: 11.5 * 60,
+          trading: false
+        });
+        t1.shift_add_update ({ // claimant, not trading
+          _id: "s3",
+          assignee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          claimant: {
+            _id: "e2",
+            firstName: "Employee",
+            lastName: "Two"
+          },
+          position: "p1",
+          startTime: 10.25 * 60,
+          endTime: 13 * 60,
+          trading: false
+        });
+        t1.shift_add_update ({ // trading, no claimant
+          _id: "s4",
+          assignee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          claimant: null,
+          position: "p1",
+          startTime: 14 * 60,
+          endTime: 16 * 60,
+          trading: true
+        });
+        t1.shift_add_update ({ // claimant, trading
+          _id: "s5",
+          assignee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          claimant: {
+            _id: "e2",
+            firstName: "Employee",
+            lastName: "Two"
+          },
+          position: "p1",
+          startTime: 16 * 60,
+          endTime: 17 * 60,
+          trading: true
+        });
+        t1.shift_add_update ({ // beyong left and right boundaries
+          _id: "s6",
+          assignee: {
+            _id: "e2",
+            firstName: "Employee",
+            lastName: "Two"
+          },
+          claimant: null,
+          position: "p1",
+          startTime: 7.5 * 60,
+          endTime: 19.25 * 60,
+          trading: false
+        });
+
+        // remove shifts
+        // setTimeout(function () {
+        //   t1.shift_remove("s1");
+        // },1000);
+        // setTimeout(function () {
+        //   t1.shift_remove("s6");
+        // },2000);
+      });
+    </script>
+    <div id="test-timetable-1"></div>
+    <div id="test-timetable-2"></div>
+  </body>
+</html>
