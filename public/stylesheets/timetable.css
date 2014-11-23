@@ -50,6 +50,10 @@ td.label-position {
   font-style: italic;
 }
 
+.hidden-cell {
+  display: none;
+}
+
 /* Coloring */
 
 td.block-shift {
