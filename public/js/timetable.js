@@ -9,7 +9,7 @@
  * A "class" for creating and manipulating single-day timetables.
  *
  * Parameters:
- *   date          - Date: timetable date
+ *   table_date       - Date: timetable date
  *
  * Returns: jQuery HTML table element
  *
@@ -18,11 +18,13 @@
  *   $('#container').append(t);
  *   t.someFunction();
  */
-function Timetable (date) {
+function Timetable (table_date) {
   // create HTML table and initialize
   var table = create_elem('table');
   table.addClass('timetable');
   init_table(table);  // construct header
+
+  var date = table_date;
 
   // adjust displayed start/end times
   var time_start = 8, time_end = 18;
@@ -36,8 +38,11 @@ function Timetable (date) {
    * Parameters:
    *   shift - Shift: occurrs on same date as timetable, else ignored
    *
+   * Returns: (Boolean) successful insertion
+   *
    * Behavioral Notes:
    *   * Shift blocks are not split.
+   *   * Shift date must match timetable date, else ignored.
    *   * Shift with existing ShiftID will delete existing shift block before re-adding.
    *   * Shift replaces and spans accross empty blocks.
    *   * New row within position is created if shift cannot fit in any of the existing rows.
@@ -45,6 +50,10 @@ function Timetable (date) {
    */
   table.shift_add_update = function (shift) {
     var shiftID = shift._id;
+
+    // ignore wrong date
+    if (shift.date.toDateString() !== date.toDateString())
+      return false; // failure
 
     // if already exists, remove before re-creating
     var existing_shift = $('.timetable td[shiftID=' + shiftID + ']');
@@ -66,6 +75,8 @@ function Timetable (date) {
 
     shift_insert(table, shift);
     show_hours_between(table, time_start, time_end); // adjust boundaries for possible new row
+
+    return true; // sucess
   };
 
   /**
