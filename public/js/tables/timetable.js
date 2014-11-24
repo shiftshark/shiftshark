@@ -13,6 +13,10 @@
  *
  * Returns: jQuery HTML table element
  *
+ * Dependencies:
+ *   * jQuery
+ *   * seedrandom
+ *
  * Usage:
  *   var t = Timetable(new Date());
  *   $('#container').append(t);
@@ -510,6 +514,7 @@ function shift_insert (table, shift) {
   var shiftBlock = row.find('.time-block[hour=' + block.start.hour + '][quarter=' + block.start.quarter + ']').first();
   shiftBlock.attr('colspan', block.numQuarters);
   shiftBlock.attr('shiftID', shift._id);
+  shiftBlock.attr('date', shift.date.toDateString());
   shiftBlock.removeClass('block-empty').addClass('block-shift');
   for (i = 1; i < block.numQuarters; i++) {
     var blockRight = shiftBlock.next();
