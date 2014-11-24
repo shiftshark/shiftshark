@@ -56,7 +56,7 @@ function Timetable (table_date) {
     var shiftID = shift._id;
 
     // ignore wrong date
-    if (date_equals(shift.date, date))
+    if (!date_equals(shift.date, date))
       return false; // failure
 
     // if already exists, remove before re-creating
@@ -94,8 +94,14 @@ function Timetable (table_date) {
    * Behavioral Notes:
    *   * Empty blocks are re-populated, spanning the area of the removed shift.
    *   * If only shift on position's row (and multiple position rows), blank row will be removed.
+   *
+   * Returns: (Boolean) successful removal
    */
   table.shift_remove = function (shiftID) {
+    if (table.find('.block-shift[shiftID=' + shiftID + ']').length === 0) {
+      return false;
+    }
+
     var row = shift_delete(table, shiftID);
 
     // check if row empty (and only row) and remove
@@ -104,6 +110,8 @@ function Timetable (table_date) {
       console.log(table.find('tr[positionID=' + row.attr('positionID') + ']').length);
       position_row_subtract(table, row);
     }
+
+    return true;
   };
 
   /**
@@ -151,9 +159,18 @@ function Timetable (table_date) {
    *
    * Parameters:
    *   positionID - positionID: exists in table, else ignored
+   *
+   * Returns: (Boolean) true for success
    */
   table.position_remove = function (positionID) {
-    table.find('tr[positionID=' + positionID + ']').remove();
+    var positionRows = table.find('tr[positionID=' + positionID + ']');
+
+    if (positionRows.length === 0){
+      return false;
+    } else {
+      positionRows.remove();
+      return true;
+    }
   };
 
   /**
