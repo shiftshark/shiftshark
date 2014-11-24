@@ -1,3 +1,5 @@
+/* Timetable */
+
 .timetable {
   border-collapse: collapse;
   font-size: 12px;
@@ -49,6 +51,9 @@ td.label-position {
   font-weight: bold;
   font-style: italic;
 }
+
+/* Calendar */
+
 
 .hidden-cell {
   display: none;

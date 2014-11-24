@@ -14,10 +14,11 @@
     <script src="/lib/seedrandom.js"></script>
     <!-- Timetable JS -->
     <script src="/js/tables/timetable.js"></script>
+    <script src="/js/tables/calendar.js"></script>
     <!-- Manual Test -->
     <script>
       $(document).ready(function () {
-        var t1 = Timetable(new Date(2014, 11, 22));
+        var t1 = Calendar(new Date(2014, 11, 22), new Date(2014, 11, 27));
         // var t2 = Timetable();
 
         $('#test-timetable-1').append(t1);

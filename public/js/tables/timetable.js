@@ -56,7 +56,7 @@ function Timetable (table_date) {
     var shiftID = shift._id;
 
     // ignore wrong date
-    if (shift.date.toDateString() !== date.toDateString())
+    if (date_equals(shift.date, date))
       return false; // failure
 
     // if already exists, remove before re-creating
