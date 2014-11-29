@@ -3,21 +3,38 @@
     <head>
         <title>ShiftShark</title>
         <link rel='shortcut icon' href='/images/favicon.ico'>
-        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
-        <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
-        <link rel='stylesheet' href='stylesheets/style.css' />
-        <link rel='stylesheet' href='stylesheets/main.css' />
+        <!-- JQuery -->
         <script src='/lib/jquery-2.1.1.min.js'></script>
+        <!-- Moment -->
+        <script src="/lib/moment.js"></script>
+        <!-- FancyBox -->
+        <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
         <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
+        <!-- Semantic -->
+        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
         <script src='/lib/semantic.min.js'></script>
+        <!-- Ajax Helpers -->
         <script src='/client/client_avails.js'></script>
         <script src='/client/client_basic.js'></script>
         <script src='/client/client_positions.js'></script>
         <script src='/client/client_shifts.js'></script>
         <script src='/client/client_users.js'></script>
+        <!-- Overall CSS -->
+        <link rel='stylesheet' href='stylesheets/style.css' />
+        <!-- Main Page CSS -->
+        <link rel='stylesheet' href='stylesheets/main.css' />
+        <!-- Timetable CSS -->
+        <link rel="stylesheet" href="/stylesheets/tables.css">
+        <!-- Timetable JS -->
+        <script src="/js/tables/timetable.js"></script>
+        <script src="/js/tables/calendar.js"></script>
+        <!-- Util files -->
         <script src='/js/validationUtil.js'></script>
         <script src='/js/util.js'></script>
+        <script src="/lib/seedrandom.js"></script>
+        <!-- Main JS files -->
         <script src='/js/admin.js'></script>
+        <script src='/js/createSchedule.js'></script>
         <script src='/js/admin/employeeSettings.js'></script>
         <script src='/js/admin/modify.js'></script>
         <script src='/js/admin/createShift.js'></script>
@@ -27,8 +44,6 @@
         <script src='/js/admin/modifyDelete.js'></script>
         <script src='/js/admin/assignOffered.js'></script>
         <script src='/js/admin/claimShift.js'></script>
-        <link rel='stylesheet' href='/stylesheets/schedule.css' />
-        <script src='/js/scheduleUI.js'></script>
     </head>
 
     <body>
@@ -37,7 +52,7 @@
         <div class='ui adminOptions menu'>
             <div class="left item wrap vcentered dateNavWrapper">
                 <i class="left arrow icon dateNavigation"></i>
-                <div class="wrap"><%= dateToCheck.toDateString() %></div>
+                <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
                 <i class="right arrow icon dateNavigation"></i>
             </div>
             <div class='right item'>
@@ -68,9 +83,7 @@
                 </div>
             </div>
         </div>
-        <%= include schedule.ejs %>
-        <div class="fleft">
-            <%= include legend.ejs %>
+        <div id="schedule">
         </div>
         <div id='profileSettings' class='modalContent'>
             <%= include modals/profileSettings.ejs %>
@@ -81,11 +94,13 @@
         <div id='createShift' class='modalContent'>
             <%= include modals/admin/createShift.ejs %>
         </div>
+        <a class="hidden fancybox" id="modifyShiftTrigger" href="#modifyShift"></a>
         <div id='modifyShift' class='modalContent'>
             <%= include modals/admin/modifyShift.ejs %>
         </div>
+        <a class="hidden fancybox" id="assignOfferedTrigger" href="#assignOffered"></a>
         <div id='assignOffered' class='modalContent'>
-            <%= include modals/admin/claimShift.ejs %>
+            <%= include modals/claimShift.ejs %>
         </div>
     </body>
 </html>
