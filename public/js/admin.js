@@ -59,6 +59,18 @@ $(document).ready(function() {
         }
     });
 
+    $('.datePicker').datetimepicker({
+        timepicker : false,
+        format     : 'm/d/Y'
+    });
+
+    $('.timePicker').datetimepicker({
+        datepicker : false,
+        step       : 15,
+        scrollTime : true,
+        format     : 'h:i a'
+    });
+
     // instantiate the semantic checkboxes and dropdowns
     $('.ui.checkbox').checkbox();
     $('.ui.dropdown').dropdown();
@@ -67,7 +79,7 @@ $(document).ready(function() {
     var roleInput = "<div class='ui icon roleInput input'>\
                         <input type='text'>\
                         <i class='right icon'></i>\
-                    </div>"
+                    </div>";
 
     // Find the role button
     var roleButton = $('#roleButton').html();
@@ -109,7 +121,6 @@ $(document).ready(function() {
             window.setTimeout(window.location.reload(), 1000);
         });
 
-        // TODO: Add to displayed schedule
         
     }
 

@@ -41,7 +41,6 @@ $(document).ready(function() {
     var owner = claimant ? claimant : assignee;
     var curUser = $('#curUser').attr('userId');
     var tradeRadio = $('.modify .tradeOwn.field');
-    console.log(curUser);
 
     // checks if shift belongs to user and shows appropriate radio buttons
     if (owner == curUser) {
@@ -54,6 +53,21 @@ $(document).ready(function() {
         deleteRadio.checkbox('enable');
         editRadio.checkbox('enable');
     }
+
+    // populate the appropriate fields in the form
+    // get clicked shift
+    var shiftId   = $this.attr('shiftid');
+    var series    = client_shifts_get_one(shiftId).data;
+    var shift     = series.shift;
+    var startTime = new Time(shift.startTime);
+    var endTime   = new Time(shift.endTime);
+    var startDate = new Date(series.startDate);
+    var endDate   = new Date(series.endDate);
+
+    $('#modifyShift .startDate .datePicker').val(formatDate(startDate));
+    $('#modifyShift .endDate .datePicker').val(formatDate(endDate));
+    $('#modifyShift .startTime .timePicker').val(startTime.formatted);
+    $('#modifyShift .endTime .timePicker').val(endTime.formatted);
 
     $('#modifyShiftTrigger').trigger('click');
     $this.addClass('active');

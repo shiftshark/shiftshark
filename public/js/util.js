@@ -38,6 +38,23 @@ var Time = function (hour, minute, meridian) {
         }
     }
 
-    this.formatted = this.hour + ':' + this.minute + ' ' + this.meridian;
+    var formattedHour = this.hour + '';
+    formattedHour = formattedHour.length == 2 ? formattedHour : '0' + formattedHour;
+
+    var formattedMinute = this.minute + '';
+    formattedMinute = formattedMinute.length == 2 ? formattedMinute : '0' + formattedMinute;
+
+    this.formatted = formattedHour + ':' + formattedMinute + ' ' + this.meridian;
     return this;
+}
+
+var formatDate = function(date) {
+    var month = date.getMonth() + 1 + "";
+    var day   = date.getDate() + "";
+    var year  = date.getFullYear() + "";
+
+    month = month.length == 2 ? month : "0" + month;
+    day   = day.length   == 2 ? day   : "0" + day;
+
+    return month + "/" + day + "/" + year;
 }
