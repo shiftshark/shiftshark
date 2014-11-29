@@ -147,7 +147,7 @@ function Timetable (table_date) {
       show_hours_between(table, time_start, time_end); // adjust boundaries
     } else { // exists, modify name
       var label = existing_position.children('td.label-position').first();
-      label.html(position.name);
+      label.html(position.name || "-");
     }
   };
 
@@ -398,10 +398,17 @@ function init_table (table) {
   header.append(create_elem('td').addClass('top-square')); // empty square
   table.append(header);
 
+  time_heading(header);
+
+  // show table once created
+  table.show(0);
+}
+
+// init header row with times
+function time_heading (header) {
   for (var h = 0; h < 24; h++) {
     var timestring = time_string(h);
 
-    // time heading
     var heading = create_elem('td');
     heading.attr('colspan', '4');
     heading.addClass('label-time');
@@ -409,9 +416,6 @@ function init_table (table) {
     heading.html(timestring);
     header.append(heading);
   }
-
-  // show table once created
-  table.show(0);
 }
 
 // create new position with single row
@@ -424,7 +428,7 @@ function position_new_create (table, position) {
   var label = create_elem('td');
   label.addClass('label-position');
   label.attr('rowspan', '1');
-  label.html(position.name);
+  label.html(position.name || "-");
   row.append(label);
 
   // create 15-minute block

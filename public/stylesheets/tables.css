@@ -42,7 +42,7 @@ td.block-shift {
   max-width: 96px !important;
 }
 
-td.label-position {
+td.label-position, td.label-employee {
   min-width: 76px;
   max-width: 106px;
   height: auto !important;

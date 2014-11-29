@@ -20,7 +20,6 @@
     <script>
       $(document).ready(function () {
         availEmployee = AvailabilityEmployeeTable();
-
         $('#test-table-employee').append(availEmployee);
 
         availEmployee.avail_add_update({
@@ -60,6 +59,49 @@
           endTime: 11.2 * 60
         });
         },2000);
+
+
+        availAdmin = AvailabilityAdminTable(0);
+        $('#test-table-employer').append(availAdmin);
+
+        availAdmin.avail_add_update({
+          _id: "a1",
+          employee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          day: 0,
+          startTime: 4 * 60,
+          endTime: 6 * 60
+        });
+        availAdmin.avail_add_update({
+          _id: "a2",
+          employee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          day: 0,
+          startTime: 6.5 * 60,
+          endTime: 12 * 60
+        });
+        availAdmin.avail_add_update({
+          _id: "a3",
+          employee: {
+            _id: "e2",
+            firstName: "Employee",
+            lastName: "Two"
+          },
+          day: 0,
+          startTime: 10 * 60,
+          endTime: 15 * 60
+        });
+
+        setTimeout(function () {
+          availAdmin.avail_remove('a1');
+        },2000);
+
       });
     </script>
     <div id="test-table-employee"></div>
