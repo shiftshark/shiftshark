@@ -1,12 +1,17 @@
 /* Timetable */
 
 .timetable {
+  font-family: "Times New Roman", Times, serif;
   border-collapse: collapse;
   font-size: 12px;
 }
 
+table.timetable {
+  overflow: scroll;
+}
+
 .timetable tr {
-  height: 25px;
+  height: auto;
 }
 
 .header-row {
@@ -22,17 +27,12 @@
 }
 
 td.block-empty {
-  max-width: 21px;
+  min-width: 12px;
 }
 
 td.block-shift {
-  max-width: 96px;
-  word-wrap: break-word;
-  padding: 4px; /* for text */
-}
-
-.timetable td[colspan="4"] {
-  /*min-width: 80px;*/
+  min-width: 86px;
+  padding: 1px 4px; /* for text */
 }
 
 .label-time {
@@ -45,6 +45,18 @@ td.block-shift {
 td.label-position {
   min-width: 76px;
   max-width: 106px;
+  height: auto !important;
+
+  text-align: center;
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* Availability Table */
+
+td.label-day {
+  min-width: 36px !important;
+  max-width: 46px !important;
   height: auto !important;
 
   text-align: center;
@@ -67,7 +79,7 @@ td.label-position {
   border-bottom: 1px dashed black;
 }
 
-td.label-day {
+td.label-date {
   word-wrap: break-word;
   min-width: 80px;
   max-width: 100px;
