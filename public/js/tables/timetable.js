@@ -60,8 +60,8 @@ function Timetable (table_date) {
       return false; // failure
 
     // if already exists, remove before re-creating
-    var existing_shift = $('.timetable td[shiftID=' + shiftID + ']');
-    if (existing_shift.length !== 0) existing_shift.remove();
+    var existing_shift = table.find('.block-shift[shiftID=' + shiftID + ']');
+    if (existing_shift.length !== 0) table.shift_remove(shiftID);
 
     // adjust boundaries if necessary
     var startHour = Math.floor(shift.startTime / 60),
@@ -107,7 +107,6 @@ function Timetable (table_date) {
     // check if row empty (and only row) and remove
     if (table.find('tr[positionID=' + row.attr('positionID') + ']').length > 1 &&
         row.find('.block-empty').length === 24 * 4) {
-      console.log(table.find('tr[positionID=' + row.attr('positionID') + ']').length);
       position_row_subtract(table, row);
     }
 
