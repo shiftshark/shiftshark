@@ -163,6 +163,38 @@ router.get('/:id', function(req, res) {
  *
  */
 
+router.put('/:id', function(req, res) {
+  Avail.findById(req.params.id, function(err, avail) {
+    if (err) {
+      return res.status(500).end();
+    } else {
+      if (String(req.user._id) === String(avail.employee)) {
+        Avail.find({ employee: req.user._id, day: avail.day,
+          "$and": [{ endTime: { "$gte": req.body.startTime || (avail.startTime + 1) } }, { startTime: { "$lte": req.body.endTime || (avail.endTime - 1) } }] },
+          function(err, avails) {
+            if (err) {
+              return res.status(500).end();
+            } else if (avails) {
+              // conflicts found, don't create
+              return res.status(400).end();
+            } else {
+              avail.update(req.query, function(err, _avail) {
+                if (err) {
+                  return res.status(500).end();
+                } else {
+                  res.json({ avail: _avail });
+                }
+              });
+            }
+        });
+      } else {
+        // permission denied
+        return res.status(401).end();
+      }
+    }
+  });
+});
+
  /**
  * DELETE /avails/:id
  *
