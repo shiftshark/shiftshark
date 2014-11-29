@@ -26,13 +26,36 @@ $(document).ready(function() {
     schedule.shift_add_update(shift);
   }
 
+  // open the trading modal
   $('.block-shift.trading').on('click', function() {
+    $this = $(this);
     $('#assignOfferedTrigger').trigger('click');
-    $(this).addClass('active');
+    $this.addClass('active');
   });
 
+  // open the modify shift modal
   $('.block-shift').not('.trading').on('click', function() {
+    $this = $(this);
+    var claimant = $this.attr('claimant');
+    var assignee = $this.attr('assignee');
+    var owner = claimant ? claimant : assignee;
+    var curUser = $('#curUser').attr('userId');
+    var tradeRadio = $('.modify .tradeOwn.field');
+    console.log(curUser);
+
+    // checks if shift belongs to user and shows appropriate radio buttons
+    if (owner == curUser) {
+        tradeRadio.removeClass('hidden');
+    } else {
+        tradeRadio.removeClass('hidden');
+        tradeRadio.addClass('hidden');
+        var editRadio = $('.modify.action [value="edit"]').parent();
+        var deleteRadio = $('.modify.action [value="delete"]').parent();
+        deleteRadio.checkbox('enable');
+        editRadio.checkbox('enable');
+    }
+
     $('#modifyShiftTrigger').trigger('click');
-    $(this).addClass('active');
+    $this.addClass('active');
   });
 });

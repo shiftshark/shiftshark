@@ -113,6 +113,7 @@ $(document).ready(function() {
         
     }
 
+    // submits the new role / position when the user hits enter
     $('#roleButton').on('keypress', function(evt) {
         var isText = $($(this).children()[0]).hasClass('roleInput');
         if (evt.charCode == 13 && isText && !$that.hasClass('animating')) {
@@ -120,6 +121,7 @@ $(document).ready(function() {
         }
     });
 
+    // submits the enw role / position when the user unfocuses
     $('#roleButton').on('focusout', function(evt) {
         var isText = $($(this).children()[0]).hasClass('roleInput');
         if (isText && !$that.hasClass('animating')) {
@@ -127,10 +129,12 @@ $(document).ready(function() {
         }
     });
 
+    // closes fancybox when the user hits cancel
     $('.cancel.button').on('click', function() {
         $('.fancybox-close').trigger('click');
     })
 
+    // logs the user out when they click on the logout button
     $('#logout').on('click', function() {
         var failure = function(xhr, status, err) {
             alert('Error logging out; please clear cookies and reload page.');
@@ -140,7 +144,7 @@ $(document).ready(function() {
             window.location.reload();
         };
 
-        client_logout(success,failure)
+        client_logout(success,failure);
     });
 
     // date navigation
