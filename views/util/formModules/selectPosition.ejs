@@ -1,0 +1,13 @@
+<div class='fields createFields'>
+    <label class='five wide field right-justified vcentered'><%= selectPosition %>:</label>
+    <div class='eleven wide field createInputs'>
+        <div class='ui selection dropdown'>
+            <input type='hidden' name='select-position'>
+            <div class='default text'>Select Position</div>
+            <i class='dropdown icon'></i>
+            <div class='menu positionList' style='overflow:auto;max-height:100px;'>
+                <%= include ../positionsDropdown.ejs %>
+            </div>
+        </div>
+    </div>
+</div>

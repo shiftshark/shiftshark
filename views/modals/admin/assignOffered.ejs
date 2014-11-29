@@ -3,23 +3,10 @@
 <div class='ui assignOffered form'>
     <div class="ui error message"></div>
 
-    <div class='fields createFields'>
-        <label class='five wide field right-justified vcentered'>Assign to:</label>
-        <div class='eleven wide field createInputs'>
-            <div class='ui selection dropdown'>
-                <input type='hidden' name='select-employee'>
-                <div class='default text'>Select Employee</div>
-                <i class='dropdown icon'></i>
-                <div class='menu employeeList' style='overflow:auto;max-height:100px;'>
-                    <%= include ../../util/employeesDropdown.ejs %>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class='ui formButtons menu'>
-        <div class='right item'>
-            <div class='ui red cancel button'>Cancel</div>
-            <div class='ui black submit button'>Assign</div>
-        </div>
-    </div>
+    <% var selectEmployee = "Assign to";
+    var cancelSubmit = "Cancel"; %>
+
+    <%= include ../../util/formModules/selectEmployee.ejs %>
+    
+    <%= include ../../util/formMOdules/cancelSubmit.ejs %>
 </div>

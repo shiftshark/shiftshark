@@ -46,6 +46,7 @@ $(document).ready(function() {
         }, 'xml');
     });
 
+    // Instantiate the fancybox settings
     $('.fancybox').fancybox({
         maxWidth    : 700,
         minWidth    : 700,
@@ -54,33 +55,45 @@ $(document).ready(function() {
         autoResize  : true,
         scrolling   : 'no',
         afterClose  : function() {
-            $('.scheduleWrapper .active').removeClass('active');
+            $('#schedule .active').removeClass('active');
         }
     });
 
+    // instantiate the semantic checkboxes and dropdowns
     $('.ui.checkbox').checkbox();
     $('.ui.dropdown').dropdown();
 
+    // HTML to be put into the role button
     var roleInput = "<div class='ui icon roleInput input'>\
                         <input type='text'>\
                         <i class='right icon'></i>\
                     </div>"
 
+    // Find the role button
     var roleButton = $('#roleButton').html();
 
+    // click listener on the role button turns the button into a textbox
     $('#roleButton').on('click', function() {
+        // checks if it is a textbox
         var isText = $($(this).children()[0]).hasClass('roleInput');
 
+        // if it is a button then transform it into a text input
         if (!isText) {
+            // store this jquery object
             $that = $(this);
+            // animate the button into a new size
             $(this).children().animate({height:'31px',width:'214px'}, function() {
+                // replace the button with a textbox
                 $that.html(roleInput);
+                // set the focus to the textbox
                 $('#roleButton input').focus();
             });
         }
     });
 
+    // destroys the text input and submits the text to the server
     var submitAndDestroyRoleInput = function(evt) {
+        // get the text within the button
         var roleName = $('.roleInput input').val();
 
         $that = $('#roleButton');
@@ -100,6 +113,7 @@ $(document).ready(function() {
         
     }
 
+    // submits the new role / position when the user hits enter
     $('#roleButton').on('keypress', function(evt) {
         var isText = $($(this).children()[0]).hasClass('roleInput');
         if (evt.charCode == 13 && isText && !$that.hasClass('animating')) {
@@ -107,6 +121,7 @@ $(document).ready(function() {
         }
     });
 
+    // submits the enw role / position when the user unfocuses
     $('#roleButton').on('focusout', function(evt) {
         var isText = $($(this).children()[0]).hasClass('roleInput');
         if (isText && !$that.hasClass('animating')) {
@@ -114,10 +129,12 @@ $(document).ready(function() {
         }
     });
 
+    // closes fancybox when the user hits cancel
     $('.cancel.button').on('click', function() {
         $('.fancybox-close').trigger('click');
     })
 
+    // logs the user out when they click on the logout button
     $('#logout').on('click', function() {
         var failure = function(xhr, status, err) {
             alert('Error logging out; please clear cookies and reload page.');
@@ -127,14 +144,15 @@ $(document).ready(function() {
             window.location.reload();
         };
 
-        client_logout(success,failure)
+        client_logout(success,failure);
     });
 
+    // date navigation
     $('.dateNavigation').on('click', function() {
         $this = $(this);
 
         var isLeft = $this.hasClass('left');
-        var currentDate = $('.day').attr('date');
+        var currentDate = $('#currentDate').attr('date');
         currentDate = new Date(currentDate);
 
         if (isLeft) {

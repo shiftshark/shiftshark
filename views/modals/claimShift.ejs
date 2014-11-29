@@ -1,0 +1,28 @@
+<div class='centered-text ctitle' style='padding-bottom:10px;'>Claim Shift</div>
+<div class="centered-text ownerIndicator"></div>
+<div class='ui claim shift form'>
+    <div class="ui error message"></div>
+    
+
+    <div class='inline forceCenter wrap fields'>
+        <p class='field'>Claim Part of Shift</p>
+        <div class='field'>
+            <div class='ui toggle disabled checkbox'>
+                <input class='field' type='checkbox' checked='checked'>
+                <label></label>
+            </div>
+            
+        </div>
+        <p class='field' style='padding-left:27px;'>Claim Entire Shift</p>
+    </div>
+
+    <div class='entireShift '>
+        <%= include ../util/formModules/setTime.ejs %>
+    </div>
+    <div class='ui formButtons menu'>
+        <div class='right item'>
+            <div class='ui red cancel button'>Cancel</div>
+            <div class='ui black submit button'>Claim</div>
+        </div>
+    </div>
+</div>
