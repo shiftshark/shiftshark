@@ -33,8 +33,6 @@ var Position = require('../models/position');
  * Query Params:
  *   * employee - Employee identifier
  *   * day - weekday that employees are available [0,6]
- *   * startTime - avails occurring after or on Time [0, 1439]
- *   * endTime - avails occurring before or on Time [0, 1439]
  *
  * Notes:
  *   * availibilites lasting over period between startTime and endTime may
@@ -45,6 +43,16 @@ var Position = require('../models/position');
  * }
  *
  */
+
+router.get('/', function(req, res) {
+  Avail.find(req.query).populate('employee').exec(function(err, avails) {
+    if (err) {
+      return req.status(500).end();
+    } else {
+      return res.json({ avails: avails });
+    }
+  });
+});
 
  /**
  * POST /avails/
@@ -69,6 +77,37 @@ var Position = require('../models/position');
  *
  */
 
+router.post('/', function(req, res) {
+  // check permissions
+  if (req.user.employer || String(req.user._id) === String(req.body.avail.employee)) {
+    var fields = req.body.avail;
+    fields.schedule = req.user.employee.schedule;
+    // find conflicting availability objects
+    Avail.find({ employee: req.user._id, day: fields.day,
+      "$and": [{ endTime: { "$gte": fields.startTime } }, { startTime: { "$lte": fields.endTime } }] },
+      function(err, avails) {
+        if (err) {
+          return res.status(500).end();
+        } else if (avails) {
+          // conflicts found, don't create
+          return res.status(400).end();
+        } else {
+          var newAvail = new Avail(fields);
+          newAvail.save(function(err, avail) {
+            if (err) {
+              return res.status(500).end();
+            } else {
+              res.json({ avail: avail });
+            }
+          });
+        }
+    });
+  } else {
+    // permission denied
+    res.status(401).end();
+  }
+});
+
  /**
  * GET /avails/:id
  *
@@ -86,6 +125,18 @@ var Position = require('../models/position');
  * }
  *
  */
+
+router.get('/:id', function(req, res) {
+  if (req.user.employer || String(req.user._id) === String(req.params.id)) {
+    Avail.findById(req.params.id).populate('employee').exec(function(err, avail) {
+      if (err) {
+        return res.status(500).end();
+      } else {
+        res.json({ avail: avail });
+      }
+    });
+  }
+});
 
  /**
  * PUT /avails/:id
@@ -112,6 +163,38 @@ var Position = require('../models/position');
  *
  */
 
+router.put('/:id', function(req, res) {
+  Avail.findById(req.params.id, function(err, avail) {
+    if (err) {
+      return res.status(500).end();
+    } else {
+      if (String(req.user._id) === String(avail.employee)) {
+        Avail.find({ employee: req.user._id, day: avail.day,
+          "$and": [{ endTime: { "$gte": req.body.startTime || (avail.startTime + 1) } }, { startTime: { "$lte": req.body.endTime || (avail.endTime - 1) } }] },
+          function(err, avails) {
+            if (err) {
+              return res.status(500).end();
+            } else if (avails) {
+              // conflicts found, don't create
+              return res.status(400).end();
+            } else {
+              avail.update(req.query, function(err, _avail) {
+                if (err) {
+                  return res.status(500).end();
+                } else {
+                  res.json({ avail: _avail });
+                }
+              });
+            }
+        });
+      } else {
+        // permission denied
+        return res.status(401).end();
+      }
+    }
+  });
+});
+
  /**
  * DELETE /avails/:id
  *
@@ -128,4 +211,26 @@ var Position = require('../models/position');
  *
  */
 
- module.exports = router;
+router.delete('/:id', function(req, res) {
+  Avail.findById(req.params.id, function(err, avail) {
+    if (err) {
+      return res.status(500).end();
+    } else {
+      if (String(avail.employee) === String(req.user._id)) {
+        avail.remove(function(err, _avail) {
+          if (err) {
+            return res.status(500).end();
+          } else {
+            return res.json({ availId: avail._id });
+          }
+        });
+      } else {
+        // permission denied
+        return res.status(401).end(); 
+      }
+    }
+  });
+});
+
+
+module.exports = router;
