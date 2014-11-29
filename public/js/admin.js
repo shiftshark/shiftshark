@@ -48,8 +48,8 @@ $(document).ready(function() {
 
     // Instantiate the fancybox settings
     $('.fancybox').fancybox({
-        maxWidth    : 700,
-        minWidth    : 700,
+        maxWidth    : 500,
+        minWidth    : 500,
         fitToView   : false,
         autoHeight  : true,
         autoResize  : true,

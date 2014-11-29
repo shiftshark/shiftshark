@@ -1,344 +1,113 @@
 $(document).ready(function() {
-  var createShiftForm = $('.ui.createShift.form');
-  var recurring = false;
+  var selector         = '.ui.createShift.form';
+  var $form            = $(selector);
+  var recurring        = false;
+  var employeeDropdown = $(selector + ' [name="select-employee"]').parent();
+  var $startTime       = $(selector + ' .startTime .timePicker');
+  var $endTime         = $(selector + ' .endTime .timePicker');
+  var $startDate       = $(selector + ' .startDate .datePicker');
+  var $endDate         = $(selector + ' .endDate .datePicker');
+  var components       = ['positions', 'employees', 'startTime', 'endTime', 'startDate', 'endDate'];
+  var rules;
 
-  var employeeDropdown = $('.createShift.form [name="select-employee"]').parent();
-
-  var startHourDropdown     = $('.createShift.form [name="start-hour"]').parent();
-  var startMinuteDropdown   = $('.createShift.form [name="start-minute"]').parent();
-  var startMeridianDropdown = $('.createShift.form [name="start-meridian"]').parent();
-
-  var endHourDropdown     = $('.createShift.form [name="end-hour"]').parent();
-  var endMinuteDropdown   = $('.createShift.form [name="end-minute"]').parent();
-  var endMeridianDropdown = $('.createShift.form [name="end-meridian"]').parent();
-
-  var startMonthDropdown = $('.createShift.form [name="start-month"]').parent();
-  var startDayDropdown   = $('.createShift.form [name="start-day"]').parent();
-  var startYearDropdown  = $('.createShift.form [name="start-year"]').parent();
-
-  var endMonthDropdown   = $('.createShift.form [name="end-month"]').parent();
-  var endDayDropdown     = $('.createShift.form [name="end-day"]').parent();
-  var endYearDropdown    = $('.createShift.form [name="end-year"]').parent();
-
-
-  $('.ui.createShift.form .meridian').dropdown('set value', 'am');
-  $('.ui.createShift.form .meridian').dropdown('set selected', 'AM');
-
-  // form validation rules
-  var rules = {
-    selectPosition : {
-      identifier  : 'select-position',
-      rules: [
-        {
-          type  : 'empty',
-          prompt: 'Please select an employee'
-        }
-      ]
-    },selectEmployee : {
-      identifier  : 'select-employee',
-      rules: [
-        {
-          type  : 'empty',
-          prompt: 'Please select an employee'
-        }
-      ]
-    },
-    startHour: {
-      identifier  : 'start-hour',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter a start hour'
-        },
-        {
-          type    : 'startTimeBeforeEnd[.ui.createShift.form]',
-          prompt  : 'Start time is before or same as end time'
-        }
-      ]
-    },
-    startMinue: {
-      identifier  : 'start-minute',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter a start minute'
-        }
-      ]
-    },
-    startMeridian: {
-      identifier  : 'start-meridian'
-    },
-    endHour: {
-      identifier  : 'end-hour',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter an end hour'
-        }
-      ]
-    },
-    endMinute: {
-      identifier  : 'end-minute',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter an end minute'
-        }
-      ]
-    },
-    endMeridian: {
-      identifier  : 'end-meridian'
-    },
-    startMonth: {
-      identifier  : 'start-month',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter a start month'
-        },
-        {
-          type    : 'validDate[.ui.createShift.form, start, false]',
-          prompt  : 'Invalid start date'
-        },
-        {
-          type    : 'startDateBeforeEndDate[.ui.createShift.form, false]',
-          prompt  : 'Start date is after end date'
-        }
-      ]
-    },
-    startDay: {
-      identifier  : 'start-day',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter a start eay'
-        }
-      ]
-    },
-    startYear: {
-      identifier  : 'start-year',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter a start year'
-        }
-      ]
-    },
-    endMonth: {
-      identifier  : 'end-month',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter an end month'
-        },
-        {
-          type    : 'validDate[.ui.createShift.form, end, false]',
-          prompt  : 'Invalid end date'
-        }
-      ]
-    },
-    endDay: {
-      identifier  : 'end-day',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter an end day'
-        }
-      ]
-    },
-    endYear: {
-      identifier  : 'end-year',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter an end year'
-        }
-      ]
-    }
-  };
+  $(selector + ' .meridian').dropdown('set value', 'am');
+  $(selector + ' .meridian').dropdown('set selected', 'AM');
 
   var settings = {
     inline  : false
   };
 
-  createShiftForm.form(rules, settings);
-
   var updateRules = function () {
-    rules.startMonth.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter an start month'
-      },
-      {
-        type    : 'validDate[.ui.createShift.form,start,' + recurring + ']',
-        prompt  : 'Invalid start Date'
-      }
-    ];
-    rules.startDay.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter start day'
-      }
-    ];
-    rules.startYear.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter a start year'
-      }
-    ];
-
-    rules.endMonth.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter an end month'
-      },
-      {
-        type    : 'validDate[.ui.createShift.form,end,' + recurring + ']',
-        prompt  : 'Invalid end date'
-      },
-      {
-        type    : 'startDateBeforeEndDate[.ui.createShift.form,' + recurring + ']',
-        prompt  : 'Start date is after end date'
-      }
-    ];
-    rules.endDay.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter an end day'
-      }
-    ];
-    rules.endYear.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter an end year'
-      }
-    ];
+    rules = rulesGenerator(components, selector, recurring);
+    $form.form(rules, settings);
   }
 
-  createShiftForm.form('setting', 'onFailure', function(){
+  updateRules();
+
+  $form.form('setting', 'onFailure', function(){
     $.fancybox.update();
   });
 
-  createShiftForm.form('setting', 'onSuccess', function(){
+  $form.form('setting', 'onSuccess', function(){
     $.fancybox.update();
   });
 
 
-  $('.createShift.form .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
+  $(selector + ' .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
     recurring = true;
     updateRules();
-    var $recurring = $('.ui.createShift.form .recurring');
+    var $recurring = $(selector + ' .recurring');
     $recurring.removeClass('hidden');
     $.fancybox.update();
   });
 
-  $('.createShift.form .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
+  $(selector + ' .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
     recurring = false;
     updateRules();
-    var $recurring = $('.ui.createShift.form .recurring');
+    var $recurring = $(selector + ' .recurring');
     $recurring.addClass('hidden');
     $.fancybox.update();
   });
 
-  $('#createShiftPrevious').on('click', function(){
-    if (lastSMonth != "" && lastSDay   != "" && lastSYear  != "" && lastEMonth != "" && lastEDay   != "" && lastEYear  != "") {
-      startMonthDropdown.dropdown('set value', lastSMonth);
-      startMonthDropdown.dropdown('set selected', lastSMonth);
-
-      startDayDropdown.dropdown('set value', lastSDay);
-      startDayDropdown.dropdown('set selected', lastSDay);
-
-      startYearDropdown.dropdown('set value', lastSYear);
-      startYearDropdown.dropdown('set selected', lastSYear);
-
-
-      endMonthDropdown.dropdown('set value', lastEMonth);
-      endMonthDropdown.dropdown('set selected', lastEMonth);
-
-      endDayDropdown.dropdown('set value', lastEDay);
-      endDayDropdown.dropdown('set selected', lastEDay);
-
-      endYearDropdown.dropdown('set value', lastEYear);
-      endYearDropdown.dropdown('set selected', lastEYear);
+  $(selector + ' .lastButton').on('click', function(){
+    if (lastSDate != "" && lastEDate != "") {
+      $startDate.val(lastSDate);
+      $endDate.val(lastEDate);
     }
   });
 
-  $('.createShift.form .submit.button').on('click', function() {
-    createShiftForm.form('validate form');
-    var validForm = !createShiftForm.hasClass('error');
+  $(selector + ' .submit.button').on('click', function() {
+    $form.form('validate form');
+    var validForm = !$form.hasClass('error');
     $.fancybox.update();
 
     if (validForm) {
-      var employee = $('.createShift.form .employeeList .active').attr('employeeId');
+      var employee = $(selector + ' .employeeList .active').attr('employeeId');
 
-      var startHour     = startHourDropdown.dropdown('get value');
-      var startMinute   = startMinuteDropdown.dropdown('get value');
-      var startMeridian = startMeridianDropdown.dropdown('get value');
-
-      var endHour     = endHourDropdown.dropdown('get value');
-      var endMinute   = endMinuteDropdown.dropdown('get value');
-      var endMeridian = endMeridianDropdown.dropdown('get value');
-
-      var startMonth = startMonthDropdown.dropdown('get value');
-      var startDay   = startDayDropdown.dropdown('get value');
-      var startYear  = startYearDropdown.dropdown('get value');
-
-      var endMonth   = endMonthDropdown.dropdown('get value');
-      var endDay     = endDayDropdown.dropdown('get value');
-      var endYear    = endYearDropdown.dropdown('get value');
-
-      var startTime = Time(startHour, startMinute, startMeridian).totalMinutes;
-      var endTime   = Time(endHour, endMinute, endMeridian).totalMinutes;
-      var trading = false;
-
-      var position = $('.createShift.form .positionList .active').attr('positionId');
-      var date = $('.day').attr('date');
+      var startTime = (new Time($startTime.val())).totalMinutes;
+      var endTime   = (new Time($endTime.val())).totalMinutes;
+      var position  = $(selector + ' .positionList .active').attr('positionId');
+      var date      = $('#currentDate').attr('date');
 
       date = new Date(date);
 
       var data = {
         assignee  : employee,
-        claimant  : null,
         position  : position,
         startTime : startTime,
         endTime   : endTime,
-        date      : date,
-        trading   : trading
+        date      : date
       }
+
+      console.log(startTime);
 
       var success = function(result, status, xhr) {
         $('.ui.error.message').html('');
-        createShiftForm.removeClass('loading');
+        $form.removeClass('loading');
         $('.fancybox-close').trigger('click');
         var shift = result.shift;
-        $('.createShift.form .dropdown').dropdown('restore defaults');
-        //TODO: Interact with Michael's calendar
-        window.location.reload();
+        shift.date = new Date(shift.date);
+        $(selector + ' .dropdown').dropdown('restore defaults');
+        console.log(shift);
+        schedule.shift_add_update(shift);
       };
 
       var failure = function(xhr, status, err) {
+        console.log(status, err);
         $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
         $.fancybox.update();
-        createShiftForm.removeClass('loading');
+        $form.removeClass('loading');
       };
 
-      createShiftForm.addClass('loading');
+      $form.addClass('loading');
 
       if (recurring) {
-        lastSMonth = startMonth;
-        lastSDay   = startDay;
-        lastSYear  = startYear;
-        lastEMonth = endMonth;
-        lastEDay   = endDay;
-        lastEYear  = endYear;
+        lastSDate = $startDate.val();
+        lastEDate = $endDate.val();
 
-        var startDate = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay));
-        var endDate = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay));
+        var startDate = new Date($startDate.val());
+        var endDate = new Date($endDate.val());
 
-        (startDate,endDate);
-        (startYear, startMonth, startDay);
-        (endYear, endMonth, endDay);
-        console.log(startDate, endDate);
         client_shifts_create(data, startDate, endDate, success, failure);
       } else {
         client_shifts_create (data, null, null, success, failure);

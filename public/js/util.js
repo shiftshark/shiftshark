@@ -6,6 +6,17 @@ var Time = function (hour, minute, meridian) {
     this.meridian;
     this.formatted;
 
+    if (typeof(hour) == 'string' && (hour.indexOf('am') > -1 || hour.indexOf('pm') > -1)) {
+        var reg   = new RegExp('[\:\\s]');
+        var time = hour;
+        time = time.split(reg);
+
+        hour     = parseInt(time[0]);
+        minute   = parseInt(time[1]);
+        meridian = time[2].toLowerCase();
+        console.log(hour,minute,meridian);
+    }
+
     if (minute === undefined || meridian == undefined) {
         minute                = hour;
         this.totalMinutes     = minute;
