@@ -62,6 +62,14 @@ td.label-day {
   font-weight: bold;
 }
 
+td.block-avail {
+  background-color: teal;
+}
+
+table.avail-table-employee {
+  border-right: none !important;
+}
+
 /* Calendar */
 .calendar {
   border-collapse: collapse;
@@ -137,8 +145,13 @@ td.time-block[quarter='3'], td.label-time {
   border-right-width: 1px;
 }
 
-.top-square {
+.top-square, .top-square-left {
   border-left: none !important;
+  border-top: none !important;
+}
+
+.top-square-right {
+  border-right: none !important;
   border-top: none !important;
 }
 

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <title>Timetable Test</title>
     <!-- Timetable CSS -->
-    <link rel="stylesheet" href="/stylesheets/timetable.css">
+    <link rel="stylesheet" href="/stylesheets/tables.css">
   </head>
   <body>
     <!-- Requirements -->
@@ -106,24 +106,38 @@
           endTime: 17 * 60,
           trading: true
         });
+        t1.shift_add_update ({
+          _id: "s7",
+          assignee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          claimant: null,
+          date: new Date(2014, 11, 22),
+          position: "p1",
+          startTime: 17 * 60,
+          endTime: 17.5 * 60,
+          trading: true
+        });
 
         // remove shifts
         setTimeout(function () {
-        t1.shift_add_update ({ // beyong left and right boundaries
-          _id: "s6",
-          assignee: {
-            _id: "e2",
-            firstName: "Employee",
-            lastName: "Two"
-          },
-          date: new Date(2014, 11, 22),
-          claimant: null,
-          position: "p1",
-          startTime: 7.5 * 60,
-          endTime: 19.25 * 60,
-          trading: false
-        });
-          // t1.shift_remove("s1");
+          t1.shift_add_update ({ // beyong left and right boundaries
+            _id: "s6",
+            assignee: {
+              _id: "e2",
+              firstName: "Employee",
+              lastName: "Two"
+            },
+            date: new Date(2014, 11, 22),
+            claimant: null,
+            position: "p1",
+            startTime: 7.5 * 60,
+            endTime: 19.25 * 60,
+            trading: false
+          });
+          t1.shift_remove("s1");
         },1000);
         // setTimeout(function () {
         //   t1.shift_remove("s6");

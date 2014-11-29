@@ -1,0 +1,69 @@
+<!-- Author: aandre@mit.edu -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Availability Test</title>
+    <!-- Timetable CSS -->
+    <link rel="stylesheet" href="/stylesheets/tables.css">
+  </head>
+  <body>
+    <!-- Requirements -->
+    <script src="/lib/jquery-2.1.1.min.js"></script>
+    <script src="/lib/seedrandom.js"></script>
+    <script src="/lib/moment.js"></script>
+    <script src="/js/tables/timetable.js"></script>
+    <!-- Availability JS -->
+    <script src="/js/tables/availability.js"></script>
+    <!-- Manual Test -->
+    <script>
+      $(document).ready(function () {
+        availEmployee = AvailabilityEmployeeTable();
+
+        $('#test-table-employee').append(availEmployee);
+
+        availEmployee.avail_add_update({
+          _id: "a1",
+          employee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          day: 0,
+          startTime: 4 * 60,
+          endTime: 6 * 60
+        });
+
+        availEmployee.avail_add_update({
+          _id: "a2",
+          employee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          day: 3,
+          startTime: 5 * 60,
+          endTime: 6 * 60
+        });
+
+        setTimeout(function () {
+          availEmployee.avail_add_update({
+          _id: "a1",
+          employee: {
+            _id: "e1",
+            firstName: "Employee",
+            lastName: "One"
+          },
+          day: 3,
+          startTime: 10 * 60,
+          endTime: 11.2 * 60
+        });
+        },2000);
+      });
+    </script>
+    <div id="test-table-employee"></div>
+    <hr>
+    <div id="test-table-employer"></div>
+  </body>
+</html>

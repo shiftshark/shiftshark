@@ -161,8 +161,8 @@ function init_cal_dates(table, start_date, end_date) {
     var row = create_elem('tr');
     row.attr('date', iter_date.toDateString());
 
-    // day label on left
-    var label = create_elem('td').addClass('label-day');
+    // date label on left
+    var label = create_elem('td').addClass('label-date');
     var momentdate = moment(iter_date);
     var datestring = momentdate.format("dddd") + "<br>" + momentdate.format("MMM Do, YYYY");
     row.append(label.html(datestring));
