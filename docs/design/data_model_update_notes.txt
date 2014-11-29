@@ -1,0 +1,3 @@
+Updated Data Model and Data Design to address the concern about Offered Shifts on GitHub; while Offered shifts don't have extra relations not in the data model, Not Offered shifts do -- only shifts that are not offered have a claimant -- so the claimant relation was moved to the Not Offered subset of Shift.
+
+Since a Shift can only be Offered or Not Offered, it is italicized in the data model (to represent that the union of its disjoint subsets is the set itself).
