@@ -159,10 +159,15 @@ label.colon {
 }
 
 .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_default, .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div.xdsoft_current {
-    background: #333 !important;
-    box-shadow: #333 0 1px 3px 0 inset !important;
+    background : #333 !important;
+    box-shadow : #333 0 1px 3px 0 inset !important;
 }
 
 .xdsoft_datetimepicker .xdsoft_calendar td:hover, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div:hover {
-    background:#5C6166 !important;
+    background : #5C6166 !important;
+}
+
+.block-shift:hover {
+    background-color : #5C6166 !important;
+    color: white !important; 
 }
