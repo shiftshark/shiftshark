@@ -47,6 +47,12 @@
         <script src='/js/admin/modifyDelete.js'></script>
         <script src='/js/admin/assignOffered.js'></script>
         <script src='/js/admin/claimShift.js'></script>
+        <style>
+            .block-shift{
+                cursor: pointer;
+                cursor: hand;
+            }
+        </style>
     </head>
 
     <body>
@@ -86,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <div id="schedule">
+        <div id="schedule" style="margin-left:1em;">
         </div>
         <div id='profileSettings' class='modalContent'>
             <%= include modals/profileSettings.ejs %>

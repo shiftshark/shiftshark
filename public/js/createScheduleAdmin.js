@@ -1,7 +1,7 @@
 $(document).ready(function() {
   // get the current date and create a timetable from that
   var curDate = $('#currentDate').attr('date');
-  var schedule = Timetable(new Date(curDate));
+  schedule = Timetable(new Date(curDate));
   // add the schedule to the page 
   $('#schedule').append(schedule);
 
@@ -54,7 +54,6 @@ $(document).ready(function() {
         editRadio.checkbox('enable');
     }
 
-    // populate the appropriate fields in the form
     // get clicked shift
     var shiftId   = $this.attr('shiftid');
     var series    = client_shifts_get_one(shiftId).data;
@@ -64,11 +63,13 @@ $(document).ready(function() {
     var startDate = new Date(series.startDate);
     var endDate   = new Date(series.endDate);
 
+    // populate the appropriate fields in the form
     $('#modifyShift .startDate .datePicker').val(formatDate(startDate));
     $('#modifyShift .endDate .datePicker').val(formatDate(endDate));
     $('#modifyShift .startTime .timePicker').val(startTime.formatted);
     $('#modifyShift .endTime .timePicker').val(endTime.formatted);
 
+    // open the modal via emulated click
     $('#modifyShiftTrigger').trigger('click');
     $this.addClass('active');
   });
