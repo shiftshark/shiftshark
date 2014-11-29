@@ -212,6 +212,33 @@ function date_equals (a, b) {
 }
 
 /**
+ * Function: time_string
+ *
+ * Converts hour into readble time string.
+ *
+ * Parameters:
+ *   hour - Number: [0,23] hour of day
+ *
+ * Returns: (String) time string (ex. '1:00 pm')
+ */
+function time_string (hour) {
+  var timestring = "";
+  // hour
+  if (hour % 12 === 0) {
+    timestring = (hour === 0) ? 'Midnight' : 'Noon';
+  } else {
+    timestring = String(hour % 12) + ":00";
+    // meridian
+    if (hour < 12)
+      timestring += " am";
+    else
+      timestring += " pm";
+  }
+
+  return timestring;
+}
+
+/**
  * Function: create_elem
  *
  * Creates a jQuery DOM element.
@@ -373,17 +400,8 @@ function init_table (table) {
   table.append(header);
 
   for (var h = 0; h < 24; h++) {
-    var timestring = "";
-    // hour
-    if (h % 12 == 0)
-      timestring = "12:00";
-    else
-      timestring = String(h % 12) + ":00";
-    // meridian
-    if (h < 12)
-      timestring += " am";
-    else
-      timestring += " pm";
+    var timestring = time_string(h);
+
     // time heading
     var heading = create_elem('td');
     heading.attr('colspan', '4');
@@ -411,7 +429,9 @@ function position_new_create (table, position) {
   row.append(label);
 
   // create 15-minute block
-  row_blocks_create(row);
+  row_blocks_create(row, function (block) {
+    block.attr('position', position._id);
+  });
 
   // append to timetable
   table.append(row);
@@ -428,7 +448,9 @@ function position_row_add (table, positionID) {
   // create row and 15-minute blocks
   var row = create_elem('tr');
   row.attr('positionID', positionID);
-  row_blocks_create(row);
+  row_blocks_create(row, function (block) {
+    block.attr('position', positionID);
+  });
 
   // insert after last row in position
   var last = table.find('tr[positionID=' + positionID + ']').last();
@@ -454,12 +476,16 @@ function position_row_subtract (table, position_row) {
   label.insertBefore(first_block);
 }
 
-function row_blocks_create (row) {
+function row_blocks_create (row, cell_callback) {
   // create 15-minute blocks
   for (var h = 0; h < 24; h++) {
     for (var m = 0; m < 4; m++) {
       var block = create_elem('td').addClass('time-block block-empty');
-      block.attr({hour: h, quarter: m});
+      block.attr({hour: (h % 24), quarter: m});
+
+      if (cell_callback !== undefined)
+        cell_callback(block);
+
       row.append(block);
     }
   }
@@ -531,6 +557,7 @@ function shift_insert (table, shift) {
   var shiftBlock = row.find('.time-block[hour=' + block.start.hour + '][quarter=' + block.start.quarter + ']').first();
   shiftBlock.attr('colspan', block.numQuarters);
   shiftBlock.attr('shiftID', shift._id);
+  shiftBlock.attr('position', shift.position);
   shiftBlock.attr('date', shift.date.toDateString());
   shiftBlock.removeClass('block-empty').addClass('block-shift');
   for (i = 1; i < block.numQuarters; i++) {
@@ -578,6 +605,7 @@ function shift_delete (table, shiftID) {
     var block = create_elem('td').addClass('time-block block-empty');
     block.attr({hour: hour, quarter: quarter});
     block.insertAfter(last_block);
+    block.attr('position', shiftBlock.attr('position'));
     last_block = block;
 
     quarter += 1;
