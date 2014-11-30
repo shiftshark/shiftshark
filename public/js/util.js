@@ -14,7 +14,6 @@ var Time = function (hour, minute, meridian) {
         hour     = parseInt(time[0]);
         minute   = parseInt(time[1]);
         meridian = time[2].toLowerCase();
-        console.log(hour,minute,meridian);
     }
 
     if (minute === undefined || meridian == undefined) {

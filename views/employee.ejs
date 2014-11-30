@@ -2,57 +2,64 @@
 <html>
     <head>
         <title>ShiftShark</title>
-        <link rel='shortcut icon' href='/images/favicon.ico'>
-        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
-        <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
-        <link rel='stylesheet' href='stylesheets/style.css' />
-        <link rel='stylesheet' href='stylesheets/main.css' />
+        <!-- JQuery -->
         <script src='/lib/jquery-2.1.1.min.js'></script>
+        <!-- Date / Time Picker -->
+        <script src='/lib/jquery.datetimepicker.js'></script>
+        <link rel="stylesheet" href="/lib/jquery.datetimepicker.css">
+        <!-- Moment -->
+        <script src="/lib/moment.js"></script>
+        <!-- FancyBox -->
+        <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
         <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
+        <!-- Semantic -->
+        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
         <script src='/lib/semantic.min.js'></script>
+        <!-- Ajax Helpers -->
         <script src='/client/client_avails.js'></script>
         <script src='/client/client_basic.js'></script>
         <script src='/client/client_positions.js'></script>
         <script src='/client/client_shifts.js'></script>
         <script src='/client/client_users.js'></script>
+        <!-- Overall CSS -->
+        <link rel='stylesheet' href='stylesheets/style.css' />
+        <!-- Main Page CSS -->
+        <link rel='stylesheet' href='stylesheets/main.css' />
+        <!-- Timetable CSS -->
+        <link rel="stylesheet" href="/stylesheets/tables.css">
+        <!-- Timetable JS -->
+        <script src="/js/tables/timetable.js"></script>
+        <script src="/js/tables/calendar.js"></script>
+        <!-- Util files -->
         <script src='/js/util.js'></script>
-        <script src='/js/employee.js'></script>
         <script src='/js/validationUtil.js'></script>
-        <script src='/js/employee/claimShift.js'></script>
+        <script src="/lib/seedrandom.js"></script>
+        <!-- Main JS files -->
+        <script src='/js/employee/createSchedule.js'></script>
+        <script src='/js/employee.js'></script>
         <script src='/js/employee/tradeShift.js'></script>
-        <link rel='stylesheet' href='/stylesheets/schedule.css' />
-        <script src='/js/scheduleUI.js'></script>
+        <script src='/js/employee/claimShift.js'></script>
     </head>
     <body>
+        <div id='curUser' userId='<%= req.user._id %>' />
         <%= include util/navbar.ejs %>
         <div class='ui adminOptions menu'>
             <div class="left item wrap dateNavWrapper">
                 <i class="left arrow icon dateNavigation"></i>
-                <div class="wrap"><%= dateToCheck.toDateString() %></div>
+                <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
                 <i class="right arrow icon dateNavigation"></i>
             </div>
-            <div class='hidden right item'>
-                <div class="item wrap">
-                    <a href='#claimShift' class='ui inverted black fancybox button'>
-                        Claim Shift
-                    </a>
-                </div>
-                <div class="item wrap">
-                    <a href='#tradeShift' class='ui inverted black fancybox button'>
-                        Trade Shift
-                    </a>
-                </div>
-            </div>
         </div>
-        <%= include schedule.ejs %>
-        <div class="fleft" style="margin-top:10px;">
-            <%= include legend.ejs %>
+        <div id="schedule" style="margin-left:1em;">
         </div>
+        
+        <a class="hidden fancybox" id="claimShiftTrigger" href="#claimShift"></a>
         <div id='claimShift' class='modalContent'>
-            <%= include modals/employee/claimShift.ejs %>
+            <%= include modals/claimShift.ejs %>
         </div>
+        <a class="hidden fancybox" id="tradeShiftTrigger" href="#tradeShift"></a>
         <div id='tradeShift' class='modalContent'>
-            <%= include modals/employee/tradeShift.ejs %>
+            <%= include modals/tradeShift.ejs %>
         </div>
     </body>
 </html>

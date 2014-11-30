@@ -144,7 +144,7 @@ $(document).ready(function() {
     // closes fancybox when the user hits cancel
     $('.cancel.button').on('click', function() {
         $('.fancybox-close').trigger('click');
-    })
+    });
 
     // logs the user out when they click on the logout button
     $('#logout').on('click', function() {

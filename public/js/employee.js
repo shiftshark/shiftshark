@@ -31,20 +31,32 @@ $(document).ready(function() {
     });
 
     $('.fancybox').fancybox({
-        maxWidth    : 700,
-        minWidth    : 700,
+        maxWidth    : 500,
+        minWidth    : 500,
         fitToView   : false,
         autoHeight  : true,
         autoResize  : true,
-        scrolling   : 'no'
+        scrolling   : 'no',
+        afterClose  : function() {
+            $('#schedule .active').removeClass('active');
+        }
     });
 
-    //$('.ui.checkbox').checkbox();
+    $('.datePicker').datetimepicker({
+        timepicker : false,
+        format     : 'm/d/Y'
+    });
+
+    $('.timePicker').datetimepicker({
+        datepicker : false,
+        step       : 15,
+        scrollTime : true,
+        format     : 'h:i a'
+    });
+
+    // instantiate the semantic checkboxes and dropdowns
+    $('.ui.checkbox').checkbox();
     $('.ui.dropdown').dropdown();
-
-    $('.cancel.button').on('click', function() {
-        $('.fancybox-close').trigger('click');
-    });
 
     $('#logout').on('click', function() {
         var failure = function(xhr, status, err) {
@@ -56,6 +68,11 @@ $(document).ready(function() {
         };
 
         client_logout(success,failure)
+    });
+
+    // closes fancybox when the user hits cancel
+    $('.cancel.button').on('click', function() {
+        $('.fancybox-close').trigger('click');
     });
 
     $('.dateNavigation').on('click', function() {

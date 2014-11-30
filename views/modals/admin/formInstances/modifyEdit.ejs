@@ -1,12 +1,7 @@
 <div class='ui modify edit form'>
     <div class="ui error message"></div>
-    
-    <%= include ../../../util/formModules/setTime.ejs %>
+    <% var submit = "Edit"; %>
+    <%= include ../../../util/formModules/setDate.ejs %>
 
-    <div class='ui formButtons menu'>
-        <div class='right item'>
-            <div class='ui red cancel button'>Cancel</div>
-            <div class='ui black submit button'>Edit</div>
-        </div>
-    </div>
+    <%= include ../../../util/formModules/cancelSubmit.ejs %>
 </div>

@@ -1,243 +1,112 @@
 $(document).ready(function() {
-  var deleteShiftForm = $('.ui.modify.delete.form');
-  var recurring = false;
-
-  var startMonthDropdown = $('.modify.delete.form [name="start-month"]').parent();
-  var startDayDropdown   = $('.modify.delete.form [name="start-day"]').parent();
-  var startYearDropdown  = $('.modify.delete.form [name="start-year"]').parent();
-
-  var endMonthDropdown   = $('.modify.delete.form [name="end-month"]').parent();
-  var endDayDropdown     = $('.modify.delete.form [name="end-day"]').parent();
-  var endYearDropdown    = $('.modify.delete.form [name="end-year"]').parent();
-
-
-  // form validation rules
-  var rules = {
-    startMonth: {
-      identifier  : 'start-month',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter a start month'
-        },
-        {
-          type    : 'validDate[.ui.modify.delete.form, start, false]',
-          prompt  : 'Invalid start date'
-        },
-        {
-          type    : 'startDateBeforeEndDate[.ui.modify.delete.form, false]',
-          prompt  : 'Start date is after end date'
-        }
-      ]
-    },
-    startDay: {
-      identifier  : 'start-day',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter a start eay'
-        }
-      ]
-    },
-    startYear: {
-      identifier  : 'start-year',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter a start year'
-        }
-      ]
-    },
-    endMonth: {
-      identifier  : 'end-month',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter an end month'
-        },
-        {
-          type    : 'validDate[.ui.modify.delete.form, end, false]',
-          prompt  : 'Invalid end date'
-        }
-      ]
-    },
-    endDay: {
-      identifier  : 'end-day',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter an end day'
-        }
-      ]
-    },
-    endYear: {
-      identifier  : 'end-year',
-      rules : [
-        {
-          type    : 'emptyRecurring[false]',
-          prompt  : 'Please enter an end year'
-        }
-      ]
-    }
-  };
+  var selector         = '.ui.modify.delete.form';
+  var $form            = $(selector);
+  var recurring        = false;
+  var $startDate       = $(selector + ' .startDate .datePicker');
+  var $endDate         = $(selector + ' .endDate .datePicker');
+  var components       = ['startDate', 'endDate'];
+  var rules;
 
   var settings = {
     inline  : false
   };
 
-  deleteShiftForm.form(rules, settings);
-
+  // generate a set of rules and apply them tot he form
   var updateRules = function () {
-    rules.startMonth.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter an start month'
-      },
-      {
-        type    : 'validDate[.ui.modify.delete.form,start,' + recurring + ']',
-        prompt  : 'Invalid start Date'
-      }
-    ];
-    rules.startDay.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter start day'
-      }
-    ];
-    rules.startYear.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter a start year'
-      }
-    ];
-
-    rules.endMonth.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter an end month'
-      },
-      {
-        type    : 'validDate[.ui.modify.delete.form,end,' + recurring + ']',
-        prompt  : 'Invalid end date'
-      },
-      {
-        type    : 'startDateBeforeEndDate[.ui.modify.delete.form,' + recurring + ']',
-        prompt  : 'Start date is after end date'
-      }
-    ];
-    rules.endDay.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter an end day'
-      }
-    ];
-    rules.endYear.rules = [
-      {
-        type    : 'emptyRecurring[' + recurring + ']',
-        prompt  : 'Please enter an end year'
-      }
-    ];
+    rules = rulesGenerator(components, selector, recurring);
+    $form.form(rules, settings);
   }
 
-  deleteShiftForm.form('setting', 'onFailure', function(){
+  // instantiate the rules
+  updateRules();
+
+  // reisize the fancybox on failure or success
+  $form.form('setting', 'onFailure', function(){
     $.fancybox.update();
   });
 
-  deleteShiftForm.form('setting', 'onSuccess', function(){
+  $form.form('setting', 'onSuccess', function(){
     $.fancybox.update();
   });
 
-
-  $('.modify.delete.form .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
+  // if the toggle is set to true set recurring to true, update the rules, and show the recurring content
+  $(selector + ' .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
     recurring = true;
     updateRules();
-    var $recurring = $('.modify.delete.form .recurring');
+    var $recurring = $(selector + ' .recurring');
     $recurring.removeClass('hidden');
     $.fancybox.update();
   });
 
-  $('.modify.delete.form .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
+  // if the toggle is set to true set recurring to false, update the rules, and hide the recurring content
+  $(selector + ' .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
     recurring = false;
     updateRules();
-    var $recurring = $('.modify.delete.form .recurring');
+    var $recurring = $(selector + ' .recurring');
     $recurring.addClass('hidden');
     $.fancybox.update();
   });
 
-  $('#deleteShiftPrevious').on('click', function(){
-    if (lastSMonth != "" && lastSDay   != "" && lastSYear  != "" && lastEMonth != "" && lastEDay   != "" && lastEYear  != "") {
-      startMonthDropdown.dropdown('set value', lastSMonth);
-      startMonthDropdown.dropdown('set selected', lastSMonth);
-
-      startDayDropdown.dropdown('set value', lastSDay);
-      startDayDropdown.dropdown('set selected', lastSDay);
-
-      startYearDropdown.dropdown('set value', lastSYear);
-      startYearDropdown.dropdown('set selected', lastSYear);
-
-
-      endMonthDropdown.dropdown('set value', lastEMonth);
-      endMonthDropdown.dropdown('set selected', lastEMonth);
-
-      endDayDropdown.dropdown('set value', lastEDay);
-      endDayDropdown.dropdown('set selected', lastEDay);
-
-      endYearDropdown.dropdown('set value', lastEYear);
-      endYearDropdown.dropdown('set selected', lastEYear);
-    }
-  });
-
-  $('.modify.delete.form .submit.button').on('click', function() {
-    deleteShiftForm.form('validate form');
-    var isValid = !deleteShiftForm.hasClass('error');
+  // submit on submit button pressed
+  $(selector + ' .submit.button').on('click', function() {
+    $form.form('validate form');
+    var validForm = !$form.hasClass('error');
     $.fancybox.update();
 
-    if (isValid) {
-      var shiftId    = $('.scheduleWrapper .active').parent().attr('shift');
-      var startMonth = startMonthDropdown.dropdown('get value');
-      var startDay   = startDayDropdown.dropdown('get value');
-      var startYear  = startYearDropdown.dropdown('get value');
+    // if valid, submit
+    if (validForm) {
+      // get the shiftId
+      var shiftId = $('#schedule .active').attr('shiftid');
 
-      var endMonth   = endMonthDropdown.dropdown('get value');
-      var endDay     = endDayDropdown.dropdown('get value');
-      var endYear    = endYearDropdown.dropdown('get value');
-
+      // if success, update the schedule
       var success = function(result, status, xhr) {
+        // clear the error message
         $('.ui.error.message').html('');
-        deleteShiftForm.removeClass('loading');
+        // remove the loading animation
+        $form.removeClass('loading');
+        // close the fancybox
         $('.fancybox-close').trigger('click');
-        var shift = result.shift;
-        $('.modify.delete.form .dropdown').dropdown('restore defaults');
-        //TODO: Interact with Michael's calendar
-        window.location.reload();
+
+        // get the shift and set the date as a date object
+        console.log(result);
+        var i;
+        for (i = 0; i < result.shiftIds.length; i++) {
+          var shiftId = result.shiftIds[i];
+          // update the schedule
+          schedule.shift_remove(shiftId);
+        }
+
+        bindScheduleListeners();
       };
 
+      // do show error on failure
       var failure = function(xhr, status, err) {
+        // show an error message
         $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        // resize fancybox
         $.fancybox.update();
-        deleteShiftForm.removeClass('loading');
+        // removing loading animation
+        $form.removeClass('loading');
       };
 
-      var position = $('.scheduleWrapper .active').parent().attr('position');
-      deleteShiftForm.addClass('loading');
-      if (recurring) {
-        lastSMonth = startMonth;
-        lastSDay   = startDay;
-        lastSYear  = startYear;
-        lastEMonth = endMonth;
-        lastEDay   = endDay;
-        lastEYear  = endYear;
+      // add a loading animation
+      $form.addClass('loading');
 
-        var startDate = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay));
-        var endDate = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay));
+      // if recurring then submit with start and end dates
+      if (recurring) {
+        // parse the start and end dates
+        var startDate = new Date($startDate.val());
+        var endDate = new Date($endDate.val());
 
         var query = {
           startDate : startDate,
           endDate   : endDate
         };
 
+        // submit to server
         client_shifts_remove(shiftId, query, success, failure);
       } else {
+        // submit not recurring to server
         client_shifts_remove(shiftId, null, success, failure);
       }
     }

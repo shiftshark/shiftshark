@@ -128,6 +128,7 @@ $.fn.form.settings.rules.startDateBeforeEndDate = function (value, vars) {
   var selector  = params[0].trim();
   var recurring = params[1].trim();
 
+  // parse recurring
   recurring = recurring == "true" || recurring == true ? true : false;
 
   var $startDate = $(selector + ' .startDate .datePicker');
@@ -135,10 +136,12 @@ $.fn.form.settings.rules.startDateBeforeEndDate = function (value, vars) {
   var startDate  = $startDate.val();
   var endDate    = $endDate.val();
 
+  // if not recurring or not valid date, ignore this test
   if (!recurring || !validDate(startDate, recurring) || !validDate(endDate, recurring)) {
     return true;
   }
 
+  // split amongst the slashes
   startDate = startDate.split('/');
   endDate   = endDate.split('/');
 
@@ -149,11 +152,11 @@ $.fn.form.settings.rules.startDateBeforeEndDate = function (value, vars) {
   endDay     = parseInt(endDate[1]);
   endYear    = parseInt(endDate[2]);
 
+  // Month is zero indexed
   var startDate = new Date(startYear, startMonth - 1, startDay);
   var endDate = new Date(endYear, endMonth - 1, endDay);
 
-  console.log(startDate, endDate);
-
+  // if start date is after end date, then return failure
   if (startDate > endDate) {
     $endDate.parent().parent().addClass('error');
     return false;
@@ -164,6 +167,7 @@ $.fn.form.settings.rules.startDateBeforeEndDate = function (value, vars) {
   }
 };
 
+// returns true if not recurring, else it checks if value is empty
 $.fn.form.settings.rules.emptyRecurring = function(value, recurring) {
   recurring = recurring == "true" || recurring == true ? true : false;
 
@@ -174,6 +178,7 @@ $.fn.form.settings.rules.emptyRecurring = function(value, recurring) {
   return true;
 };
 
+// returns true if entire shift is selected, else it checks if value is empty
 $.fn.form.settings.rules.emptyEntireShift = function(value, entireShift) {
   entireShift = entireShift == "true" || entireShift == true ? true : false;
 
@@ -184,6 +189,7 @@ $.fn.form.settings.rules.emptyEntireShift = function(value, entireShift) {
   return true;
 };
 
+// generates a set of validation rules based on a list of component names
 rulesGenerator = function(components, selector, recurring) {
   if (recurring === undefined) {
     recurring = false;
@@ -226,6 +232,36 @@ rulesGenerator = function(components, selector, recurring) {
       ]
     },
     endTime: {
+      identifier  : 'end-time',
+      rules : [
+        {
+          type    : 'empty',
+          prompt  : 'Please enter an end time'
+        },
+        {
+          type    : 'validTime',
+          prompt  : 'Not a valid end time'
+        }
+      ]
+    },
+    startTimeEntire: {
+      identifier  : 'start-time',
+      rules : [
+        {
+          type    : 'empty',
+          prompt  : 'Please enter a start time'
+        },
+        {
+          type    : 'validTime',
+          prompt  : 'Not a valid start time'
+        },
+        {
+          type    : 'startTimeBeforeEnd[' + selector + ']',
+          prompt  : 'Start time is before or same as end time'
+        }
+      ]
+    },
+    endTimeEntire: {
       identifier  : 'end-time',
       rules : [
         {

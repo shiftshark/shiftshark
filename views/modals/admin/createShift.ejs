@@ -4,7 +4,9 @@
     <div class="ui error message"></div>
     <% var selectPosition = "Position";
     var selectEmployee = "Assign to";
-    var submit = "Create"; %>
+    var submit = "Create";
+    var toggleOff = "Once";
+    var toggleOn = "Recurring" %>
 
     <%= include ../../util/formModules/selectPosition.ejs %>
 
@@ -12,7 +14,7 @@
 
     <%= include ../../util/formModules/setTime.ejs %>
 
-    <%= include ../../util/formModules/recurringToggle.ejs %>
+    <%= include ../../util/formModules/toggle.ejs %>
 
     <div class='recurring hidden'>
         <div class='fields' style='padding-bottom:10px;'>

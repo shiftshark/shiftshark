@@ -1,146 +1,93 @@
 $(document).ready(function() {
-  var editShiftForm = $('.ui.modify.edit.form');
-
-  var startMonthDropdown = $('.ui.modify.edit.form [name="start-month"]').parent();
-  var startDayDropdown   = $('.ui.modify.edit.form [name="start-day"]').parent();
-  var startYearDropdown  = $('.ui.modify.edit.form [name="start-year"]').parent();
-
-  var endMonthDropdown   = $('.ui.modify.edit.form [name="end-month"]').parent();
-  var endDayDropdown     = $('.ui.modify.edit.form [name="end-day"]').parent();
-  var endYearDropdown    = $('.ui.modify.edit.form [name="end-year"]').parent();
-
-
-  // form validation rules
-  var rules = {
-    startMonth: {
-      identifier  : 'start-month',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter a start month'
-        },
-        {
-          type    : 'validDate[.ui.ui.modify.edit.form, start, true]',
-          prompt  : 'Invalid start date'
-        }
-      ]
-    },
-    startDay: {
-      identifier  : 'start-day',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter a start eay'
-        }
-      ]
-    },
-    startYear: {
-      identifier  : 'start-year',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter a start year'
-        }
-      ]
-    },
-    endMonth: {
-      identifier  : 'end-month',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter an end month'
-        },
-        {
-          type    : 'validDate[.ui.ui.modify.edit.form, end, true]',
-          prompt  : 'Invalid end date'
-        },
-        {
-          type    : 'startDateBeforeEndDate[.ui.ui.modify.edit.form, true]',
-          prompt  : 'Start date is after end date'
-        }
-      ]
-    },
-    endDay: {
-      identifier  : 'end-day',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter an end day'
-        }
-      ]
-    },
-    endYear: {
-      identifier  : 'end-year',
-      rules : [
-        {
-          type    : 'empty',
-          prompt  : 'Please enter an end year'
-        }
-      ]
-    }
-  };
+  var selector         = '.ui.modify.edit.form';
+  var $form            = $(selector);
+  var recurring        = true;
+  var $startDate       = $(selector + ' .startDate .datePicker');
+  var $endDate         = $(selector + ' .endDate .datePicker');
+  var components       = ['startDate', 'endDate'];
+  var rules;
 
   var settings = {
     inline  : false
   };
 
-  editShiftForm.form(rules, settings);
+  // generate a set of rules and apply them tot he form
+  var updateRules = function () {
+    rules = rulesGenerator(components, selector, recurring);
+    $form.form(rules, settings);
+  }
 
-  editShiftForm.form('setting', 'onFailure', function(){
+  // instantiate the rules
+  updateRules();
+
+  // reisize the fancybox on failure or success
+  $form.form('setting', 'onFailure', function(){
     $.fancybox.update();
   });
 
-  editShiftForm.form('setting', 'onSuccess', function(){
+  $form.form('setting', 'onSuccess', function(){
     $.fancybox.update();
   });
 
-
-  $('.ui.modify.edit.form .submit.button').on('click', function() {
-    editShiftForm.form('validate form');
-    var isValid = !editShiftForm.hasClass('error');
+  // submit on submit button pressed
+  $(selector + ' .submit.button').on('click', function() {
+    $form.form('validate form');
+    var validForm = !$form.hasClass('error');
     $.fancybox.update();
 
-    if (isValid) {
-      var startMonth = startMonthDropdown.dropdown('get value');
-      var startDay   = startDayDropdown.dropdown('get value');
-      var startYear  = startYearDropdown.dropdown('get value');
+    // if valid, submit
+    if (validForm) {
+      var date      = $('#currentDate').attr('date');
 
-      var endMonth   = endMonthDropdown.dropdown('get value');
-      var endDay     = endDayDropdown.dropdown('get value');
-      var endYear    = endYearDropdown.dropdown('get value');
-
-      var shiftId = $('.scheduleWrapper .active').parent().attr('shift');
-      var adjustStart = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay));
-      var adjustEnd = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay));
-      //TODO: find out if it was traded beforehand
-      var trade = false;
+      // selected day's date
+      date = new Date(date);
+      // parse the start and end dates
+      var startDate = new Date($startDate.val());
+      var endDate = new Date($endDate.val());
+      // get the shiftId
+      var shiftId = $('#schedule .active').attr('shiftid');
 
       var query = {
-        adjustStart:adjustStart,
-        adjustEnd:adjustEnd,
-        trade:trade
+        adjustStart : startDate,
+        adjustEnd   : endDate
       }
 
-      var shift = {
-      }
-
+      // if success, update the schedule
       var success = function(result, status, xhr) {
+        // clear the error message
         $('.ui.error.message').html('');
-        editShiftForm.removeClass('loading');
+        // remove the loading animation
+        $form.removeClass('loading');
+        // close the fancybox
         $('.fancybox-close').trigger('click');
-        var shift = result.shift;
-        $('.ui.modify.edit.form .dropdown').dropdown('restore defaults');
-        //TODO: Interact with Michael's calendar
-        window.location.reload();
+
+        // get the shift and set the date as a date object
+        var i;
+        var shift;
+        for (i = 0; shift = result.shifts[i]; i++) {
+          shift.date = new Date(shift.date);
+          // update the schedule
+          schedule.shift_add_update(shift);
+        }
+
+        bindScheduleListeners();
       };
 
+      // do show error on failure
       var failure = function(xhr, status, err) {
+        // show an error message
         $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        // resize fancybox
         $.fancybox.update();
-        editShiftForm.removeClass('loading');
+        // removing loading animation
+        $form.removeClass('loading');
       };
 
-      client_shifts_change (shiftId, query, shift, success, failure);
+      // add a loading animation
+      $form.addClass('loading');
+
+      // submit to server
+      client_shifts_change (shiftId, query, null, success, failure);
     }
   });
 });

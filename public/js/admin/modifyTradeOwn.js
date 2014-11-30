@@ -1,173 +1,110 @@
 $(document).ready(function() {
-  var tradeOwnShiftForm = $('.ui.modify.tradeOwn.form');
-  var entireShift = true;
-
-  var employeeDropdown = $('.ui.modify.tradeOwn.form [name="select-employee"]').parent();
-
-  var startHourDropdown     = $('.ui.modify.tradeOwn.form [name="start-hour"]').parent();
-  var startMinuteDropdown   = $('.ui.modify.tradeOwn.form [name="start-minute"]').parent();
-  var startMeridianDropdown = $('.ui.modify.tradeOwn.form [name="start-meridian"]').parent();
-
-  var endHourDropdown     = $('.ui.modify.tradeOwn.form [name="end-hour"]').parent();
-  var endMinuteDropdown   = $('.ui.modify.tradeOwn.form [name="end-minute"]').parent();
-  var endMeridianDropdown = $('.ui.modify.tradeOwn.form [name="end-meridian"]').parent();
-
-  $('.ui.modify.tradeOwn.form .meridian').dropdown('set value', 'am');
-  $('.ui.modify.tradeOwn.form .meridian').dropdown('set selected', 'AM');
-
+  var selector         = '.ui.modify.tradeOwn.form';
+  var $form            = $(selector);
+  var entireShift      = false;
+  var $startTime       = $(selector + ' .startTime .timePicker');
+  var $endTime         = $(selector + ' .endTime .timePicker');
+  var components       = [];
   var rules;
+
   var settings = {
     inline  : false
   };
 
+  // generate a set of rules and apply them tot he form
   var updateRules = function () {
-    // form validation rules
-    rules = {
-      startHour: {
-        identifier  : 'start-hour',
-        rules : [
-          {
-            type    : 'emptyEntireShift[' + entireShift + ']',
-            prompt  : 'Please enter a start hour'
-          },
-          {
-            type    : 'startTimeBeforeEnd[.ui.modify.tradeOwn.form]',
-            prompt  : 'Start time is before or same as end time'
-          }
-        ]
-      },
-      startMinue: {
-        identifier  : 'start-minute',
-        rules : [
-          {
-            type    : 'emptyEntireShift[' + entireShift + ']',
-            prompt  : 'Please enter a start minute'
-          }
-        ]
-      },
-      startMeridian: {
-        identifier  : 'start-meridian'
-      },
-      endHour: {
-        identifier  : 'end-hour',
-        rules : [
-          {
-            type    : 'emptyEntireShift[' + entireShift + ']',
-            prompt  : 'Please enter an end hour'
-          }
-        ]
-      },
-      endMinute: {
-        identifier  : 'end-minute',
-        rules : [
-          {
-            type    : 'emptyEntireShift[' + entireShift + ']',
-            prompt  : 'Please enter an end minute'
-          }
-        ]
-      },
-      endMeridian: {
-        identifier  : 'end-meridian'
-      }
-    };
-
-    tradeOwnShiftForm.form(rules, settings);
+    rules = rulesGenerator(components, selector, entireShift);
+    $form.form(rules, settings);
   }
 
+  // instantiate the rules
   updateRules();
 
-  tradeOwnShiftForm.form('setting', 'onFailure', function(){
+  // reisize the fancybox on failure or success
+  $form.form('setting', 'onFailure', function(){
     $.fancybox.update();
   });
 
-  tradeOwnShiftForm.form('setting', 'onSuccess', function(){
+  $form.form('setting', 'onSuccess', function(){
     $.fancybox.update();
   });
 
-
-  // $('.ui.modify.tradeOwn.form .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
-  //   entireShift = true;
-  //   updateRules();
-  //   var $entireShift = $('.ui.modify.tradeOwn.form .entireShift');
-  //   $entireShift.addClass('hidden');
-  //   $.fancybox.update();
-  // });
-
-  // $('.ui.modify.tradeOwn.form .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
-  //   entireShift = false;
-  //   updateRules();
-  //   var $entireShift = $('.ui.modify.tradeOwn.form .entireShift');
-  //   $entireShift.removeClass('hidden');
-  //   $.fancybox.update();
-  // });
-
-  $('#createShiftPrevious').on('click', function(){
-    if (lastSMonth != "" && lastSDay   != "" && lastSYear  != "" && lastEMonth != "" && lastEDay   != "" && lastEYear  != "") {
-      startMonthDropdown.dropdown('set value', lastSMonth);
-      startMonthDropdown.dropdown('set selected', lastSMonth);
-
-      startDayDropdown.dropdown('set value', lastSDay);
-      startDayDropdown.dropdown('set selected', lastSDay);
-
-      startYearDropdown.dropdown('set value', lastSYear);
-      startYearDropdown.dropdown('set selected', lastSYear);
-
-
-      endMonthDropdown.dropdown('set value', lastEMonth);
-      endMonthDropdown.dropdown('set selected', lastEMonth);
-
-      endDayDropdown.dropdown('set value', lastEDay);
-      endDayDropdown.dropdown('set selected', lastEDay);
-
-      endYearDropdown.dropdown('set value', lastEYear);
-      endYearDropdown.dropdown('set selected', lastEYear);
-    }
+  // if the toggle is set to true set entireShift to true, update the rules, and show the entireShift content
+  $(selector + ' .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
+    entireShift = true;
+    updateRules();
+    var $entireShift = $(selector + ' .entireShift');
+    $entireShift.removeClass('hidden');
+    $.fancybox.update();
   });
 
-  $('.ui.modify.tradeOwn.form .submit.button').on('click', function() {
-    tradeOwnShiftForm.form('validate form');
-    var isValid = !tradeOwnShiftForm.hasClass('error');
+  // if the toggle is set to true set entireShift to false, update the rules, and hide the entireShift content
+  $(selector + ' .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
+    entireShift = false;
+    updateRules();
+    var $entireShift = $(selector + ' .entireShift');
+    $entireShift.addClass('hidden');
+    $.fancybox.update();
+  });
+
+  // submit on submit button pressed
+  $(selector + ' .submit.button').on('click', function() {
+    $form.form('validate form');
+    var validForm = !$form.hasClass('error');
     $.fancybox.update();
 
-    if (isValid) {
-      var employee = startHourDropdown.dropdown('get value');
+    // if valid, submit
+    if (validForm) {
+      // get start and end times
+      var startTime = (new Time($startTime.val())).totalMinutes;
+      var endTime   = (new Time($endTime.val())).totalMinutes;
+      // get the shiftId
+      var shiftId = $('#schedule .active').attr('shiftid');
 
-      var startHour     = startHourDropdown.dropdown('get value');
-      var startMinute   = startMinuteDropdown.dropdown('get value');
-      var startMeridian = startMeridianDropdown.dropdown('get value');
-
-      var endHour     = endHourDropdown.dropdown('get value');
-      var endMinute   = endMinuteDropdown.dropdown('get value');
-      var endMeridian = endMeridianDropdown.dropdown('get value');
-
-      var shiftId    = $('.scheduleWrapper .active').parent().attr('shift');
       var query = {
         trade : 'offer'
       }
-
+      // if success, update the schedule
       var success = function(result, status, xhr) {
-        ("success");
+        // clear the error message
         $('.ui.error.message').html('');
-        $('.ui.modify.tradeOwn.form').removeClass('error');
-        tradeOwnShiftForm.removeClass('loading');
+        // remove the loading animation
+        $form.removeClass('loading');
+        // close the fancybox
         $('.fancybox-close').trigger('click');
-        $('.ui.modify.tradeOwn.form .dropdown').dropdown('restore defaults');
-        //TODO: Interact with Michael's calendar
-        window.location.reload();
+
+        // get the shift and set the date as a date object
+        var i;
+        var shift;
+        for (i = 0; shift = result.shifts[i]; i++) {
+          shift.date = new Date(shift.date);
+          // update the schedule
+          schedule.shift_add_update(shift);
+        }
+        bindScheduleListeners();
       };
 
+      // do show error on failure
       var failure = function(xhr, status, err) {
-        $('.ui.modify.tradeOwn.form').removeClass('success');
-        $('.ui.modify.tradeOwn.form').addClass('error');
-        $('.ui.error.message').html('<ul class="list"><li>You are unauthorized to do this.</li></ul>');
+        console.log(status,err);
+        // show an error message
+        $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        // resize fancybox
         $.fancybox.update();
-        tradeOwnShiftForm.removeClass('loading');
+        // removing loading animation
+        $form.removeClass('loading');
       };
 
+      // add a loading animation
+      $form.addClass('loading');
+
+      // if entireShift then submit with start and end dates
       if (entireShift) {
+        // submit to server
         client_shifts_change(shiftId, query, null, success, failure);
       } else {
-
+        // submit not entireShift to server
+        client_shifts_change(shiftId, query, null, success, failure);
       }
     }
   });
