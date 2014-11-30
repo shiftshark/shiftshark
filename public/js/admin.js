@@ -113,8 +113,9 @@ $(document).ready(function() {
 
         if (roleName.length != 0) {
             var position = client_positions_create({name:roleName}).data.position;
-            console.log(position);
             schedule.position_add_update(position);
+            $('.positionList').append('<div class="item" positionid="'+position._id+'">'+position.name+'</div>')
+            $('.ui.dropdown').dropdown();
             bindScheduleListeners();
         }
 
