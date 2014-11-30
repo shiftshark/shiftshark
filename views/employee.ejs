@@ -45,9 +45,11 @@
         <%= include util/navbar.ejs %>
         <div class='ui adminOptions menu'>
             <div class="left item wrap dateNavWrapper">
+                <i class="left double angle icon weekNavigation"></i>
                 <i class="left arrow icon dateNavigation"></i>
                 <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
                 <i class="right arrow icon dateNavigation"></i>
+                <i class="right double angle icon weekNavigation"></i>
             </div>
         </div>
         <div id="schedule" style="margin-left:1em;">

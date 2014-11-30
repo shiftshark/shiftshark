@@ -141,7 +141,7 @@ label.colon {
     cursor: hand !important;
 }
 
-.dateNavigation {
+.dateNavigation, .weekNavigation {
     cursor: pointer !important;
     cursor: hand !important;
 }
@@ -167,12 +167,12 @@ label.colon {
     background : #5C6166 !important;
 }
 
-.block-shift.trading:hover, .owned:hover, .block-empty:hover {
+.block-shift.trading:hover, .owned:hover {
     background-color : #5C6166 !important;
     color: white !important; 
 }
 
-.block-shift.trading, .owned, .block-empty {
+.block-shift.trading, .owned {
     cursor: pointer;
     cursor: hand;
 }
