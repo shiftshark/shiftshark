@@ -115,6 +115,7 @@ $(document).ready(function() {
             var position = client_positions_create({name:roleName}).data.position;
             console.log(position);
             schedule.position_add_update(position);
+            bindScheduleListeners();
         }
 
         $('#roleButton .input').children().animate({height:'29px',width:'93px'}, function() {
