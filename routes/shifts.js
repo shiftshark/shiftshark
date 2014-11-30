@@ -150,10 +150,11 @@ router.post('/', function(req, res) {
         var millisecsInWeek = 7 * millisecsInDay;
 
         var allShifts = [];
-        for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+        for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7) ) {
           shiftTemplate.date = currentDate;
           allShifts.push(new Shift(shiftTemplate));
         }
+        console.log('exit');
         Shift.create(allShifts, function(err) {
           if (err) {
             return res.status(500).end();
@@ -321,7 +322,7 @@ router.get('/:id', function(req, res) {
               startDate = new Date(Math.abs(- startDate.getDay() + specifiedDay + 7) * millisecsInDay + startDate.getTime());
             }
 
-            for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+            for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7) ) {
               shiftTemplate.date = currentDate;
               allShifts.push(new Shift(shiftTemplate));
             }
@@ -334,7 +335,7 @@ router.get('/:id', function(req, res) {
             startDate.setHours(0,0,0,0);
             endDate.setHours(0,0,0,0);
 
-            for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getTime() + millisecsInWeek)) {
+            for (var currentDate = startDate; currentDate.getTime() <= endDate.getTime(); currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7)) {
               shiftTemplate.date = currentDate
               allShifts.push(new Shift(shiftTemplate));
             }
