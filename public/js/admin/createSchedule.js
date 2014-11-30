@@ -53,6 +53,48 @@ function bindScheduleListeners() {
     $('#modifyShiftTrigger').trigger('click');
     $this.addClass('active');
   });
+
+  // opens create shift when clicking on an empty box
+  $('.block-empty').not('.trading').on('click', function() {
+    $this = $(this);
+    // get the hours and the minutes
+    var hour = parseInt($this.attr('hour'));
+    var mins = parseInt($this.attr('quarter')) * 15;
+    var position = $this.attr('position');
+    // parse the time
+    var time = moment(hour + " " + mins, "H m").format("hh:mm a");
+
+    // set the start time value
+    $('#createShift .startTime .timePicker').val(time);
+
+    // get the position list
+    var $positionList = $('#createShift .positionList div');
+
+    // iterate through all positions
+    for (var i = 0; i < $positionList.length; i++) {
+      var $position = $($positionList[i]);
+      var positionId = $position.attr('positionid');
+
+      // make sure it is not selected
+      $position.removeClass('active');
+
+      // check if the position id matches what we clicked on
+      if (positionId == position) {
+        // get the position name
+        var positionName = $position.html();
+        // make it selected
+        $position.addClass('active');
+
+        // select the position and set the value
+        $('#createShift [name="select-position"]').parent().dropdown('set value', positionName.toLowerCase());    
+        $('#createShift [name="select-position"]').parent().dropdown('set selected', positionName);
+      }
+    }
+
+    // open the modal via emulated click
+    $('#createShiftTrigger').trigger('click');
+    $this.addClass('active');
+  });
 }
 
 $(document).ready(function() {

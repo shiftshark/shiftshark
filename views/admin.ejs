@@ -56,6 +56,15 @@
                 background-color : #5C6166 !important;
                 color: white !important; 
             }
+            .block-empty:hover {
+                background-color : #5C6166 !important;
+                color: white !important; 
+            }
+
+            .block-empty {
+                cursor: pointer;
+                cursor: hand;
+            }
         </style>
     </head>
 
@@ -104,6 +113,7 @@
         <div id='employeeSettings' class='modalContent'>
             <%= include modals/admin/employeeSettings.ejs %>
         </div>
+        <a class="hidden fancybox" id="createShiftTrigger" href="#createShift"></a>
         <div id='createShift' class='modalContent'>
             <%= include modals/admin/createShift.ejs %>
         </div>

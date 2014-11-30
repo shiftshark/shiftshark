@@ -167,12 +167,12 @@ label.colon {
     background : #5C6166 !important;
 }
 
-.block-shift.trading:hover, .owned:hover {
+.block-shift.trading:hover, .owned:hover, .block-empty:hover {
     background-color : #5C6166 !important;
     color: white !important; 
 }
 
-.block-shift.trading, .owned {
+.block-shift.trading, .owned, .block-empty {
     cursor: pointer;
     cursor: hand;
 }
