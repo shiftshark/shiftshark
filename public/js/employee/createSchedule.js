@@ -1,5 +1,7 @@
 function bindScheduleListeners() {
   var fillInInfo = function($this){
+    $this.addClass('active');
+
     // get clicked shift
     var shiftId   = $this.attr('shiftid');
     var series    = client_shifts_get_one(shiftId).data;
@@ -8,12 +10,18 @@ function bindScheduleListeners() {
     var endTime   = new Time(shift.endTime);
     var startDate = new Date(series.startDate);
     var endDate   = new Date(series.endDate);
+    var shiftId   = $('#schedule .active').attr('shiftid');
+    var series    = client_shifts_get_one(shiftId);
+    var startTime = (new Time(series.data.shift.startTime)).formatted;
+    var endTime   = (new Time(series.data.shift.endTime)).formatted;
+    var ownerName = getOwnerFromShift(series.data.shift);
 
     // populate the appropriate fields in the form
-    $('#claimShift .startDate .datePicker, #tradeShift .startDate .datePicker').val(formatDate(startDate));
-    $('#claimShift .endDate .datePicker, #tradeShift .endDate .datePicker').val(formatDate(endDate));
-    $('#claimShift .startTime .timePicker, #tradeShift .startTime .timePicker').val(startTime.formatted);
-    $('#claimShift .endTime .timePicker, #tradeShift .endTime .timePicker').val(endTime.formatted);
+    $('#modifyShift .startDate .datePicker, #assignOffered .startDate .datePicker').val(formatDate(startDate));
+    $('#modifyShift .endDate .datePicker, #assignOffered .endDate .datePicker').val(formatDate(endDate));
+    $('#modifyShift .startTime .timePicker, #assignOffered .startTime .timePicker').val(startTime.formatted);
+    $('#modifyShift .endTime .timePicker, #assignOffered .endTime .timePicker').val(endTime.formatted);
+    $('.ownerIndicator').html('You have selected ' + ownerName + ' shift from ' + startTime + ' to ' + endTime + '.');
   }
 
   var $shifts = $('#schedule .block-shift');
@@ -36,7 +44,6 @@ function bindScheduleListeners() {
     fillInInfo($this);
 
     $('#claimShiftTrigger').trigger('click');
-    $this.addClass('active');
   });
 
   // open the trading shift modal
@@ -52,14 +59,13 @@ function bindScheduleListeners() {
 
     // open the modal via emulated click
     $('#tradeShiftTrigger').trigger('click');
-    $this.addClass('active');
   });
 }
 
 $(document).ready(function() {
   // get the current date and create a timetable from that
   var curDate = $('#currentDate').attr('date');
-  schedule = Timetable(new Date(curDate));
+  schedule = Calendar(new Date(curDate), new Date(curDate));
   // add the schedule to the page 
   $('#schedule').append(schedule);
 

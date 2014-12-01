@@ -68,7 +68,6 @@ $(document).ready(function() {
         $('.fancybox-close').trigger('click');
 
         // get the shift and set the date as a date object
-        console.log(result);
         var i;
         for (i = 0; i < result.shiftIds.length; i++) {
           var shiftId = result.shiftIds[i];

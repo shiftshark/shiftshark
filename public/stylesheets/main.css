@@ -150,7 +150,7 @@ label.colon {
     overflow-x: hidden !important;
 }
 
-.ownerIndicator {
+.ownerIndicator, .shiftInfo {
     padding-bottom: 10px;
 }
 

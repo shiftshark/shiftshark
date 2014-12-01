@@ -68,3 +68,11 @@ var formatDate = function(date) {
 
     return month + "/" + day + "/" + year;
 }
+
+var getOwnerFromShift = function (shift) {
+    if (shift.claimant != null) {
+        return shift.claimant.firstName + ' ' + shift.claimant.lastName
+    } else {        
+        return shift.assignee.firstName + ' ' + shift.assignee.lastName
+    }
+}

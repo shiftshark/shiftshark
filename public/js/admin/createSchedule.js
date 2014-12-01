@@ -1,5 +1,22 @@
+// find the correct date and set an info reminder
+function createShiftInfo() {
+  var date = $('#schedule .active').attr('date');
+  
+  if (!date) {
+    date = $('#currentDate').attr('date');
+  }
+
+  date = new Date(date);
+
+  var html = 'A shift is being created for ' + date.toDateString() + '.';
+  $('.shiftInfo').html(html);
+}
+
+// binds all the listeners to the schedule again
 function bindScheduleListeners() {
   var fillInInfo = function($this){
+    $this.addClass('active');
+
     // get clicked shift
     var shiftId   = $this.attr('shiftid');
     var series    = client_shifts_get_one(shiftId).data;
@@ -8,12 +25,18 @@ function bindScheduleListeners() {
     var endTime   = new Time(shift.endTime);
     var startDate = new Date(series.startDate);
     var endDate   = new Date(series.endDate);
+    var shiftId   = $('#schedule .active').attr('shiftid');
+    var series    = client_shifts_get_one(shiftId);
+    var startTime = (new Time(series.data.shift.startTime)).formatted;
+    var endTime   = (new Time(series.data.shift.endTime)).formatted;
+    var ownerName = getOwnerFromShift(series.data.shift);
 
     // populate the appropriate fields in the form
     $('#modifyShift .startDate .datePicker, #assignOffered .startDate .datePicker').val(formatDate(startDate));
     $('#modifyShift .endDate .datePicker, #assignOffered .endDate .datePicker').val(formatDate(endDate));
     $('#modifyShift .startTime .timePicker, #assignOffered .startTime .timePicker').val(startTime.formatted);
     $('#modifyShift .endTime .timePicker, #assignOffered .endTime .timePicker').val(endTime.formatted);
+    $('.ownerIndicator').html('You have selected ' + ownerName + ' shift from ' + startTime + ' to ' + endTime + '.');
   }
 
   // open the trading modal
@@ -23,16 +46,16 @@ function bindScheduleListeners() {
     fillInInfo($this);
 
     $('#assignOfferedTrigger').trigger('click');
-    $this.addClass('active');
   });
 
   // open the modify shift modal
   $('.block-shift').not('.trading').on('click', function() {
     $this = $(this);
-    var claimant = $this.attr('claimant');
-    var assignee = $this.attr('assignee');
-    var owner = claimant ? claimant : assignee;
-    var curUser = $('#curUser').attr('userId');
+
+    var claimant   = $this.attr('claimant');
+    var assignee   = $this.attr('assignee');
+    var owner      = claimant ? claimant : assignee;
+    var curUser    = $('#curUser').attr('userId');
     var tradeRadio = $('.modify .tradeOwn.field');
 
     // checks if shift belongs to user and shows appropriate radio buttons
@@ -51,11 +74,12 @@ function bindScheduleListeners() {
 
     // open the modal via emulated click
     $('#modifyShiftTrigger').trigger('click');
-    $this.addClass('active');
   });
 
   // opens create shift when clicking on an empty box
   $('.block-empty').not('.trading').on('click', function() {
+    createShiftInfo();
+
     $this = $(this);
     // get the hours and the minutes
     var hour = parseInt($this.attr('hour'));
@@ -100,7 +124,7 @@ function bindScheduleListeners() {
 $(document).ready(function() {
   // get the current date and create a timetable from that
   var curDate = $('#currentDate').attr('date');
-  schedule = Timetable(new Date(curDate));
+  schedule = Calendar(new Date(curDate), new Date(curDate));
   // add the schedule to the page 
   $('#schedule').append(schedule);
 

@@ -37,10 +37,6 @@ $(document).ready(function() {
 
     // if valid, submit
     if (validForm) {
-      var date      = $('#currentDate').attr('date');
-
-      // selected day's date
-      date = new Date(date);
       // parse the start and end dates
       var startDate = new Date($startDate.val());
       var endDate = new Date($endDate.val());
