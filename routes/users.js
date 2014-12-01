@@ -159,7 +159,7 @@ router.get('/employees/', function(req, res) {
   // check permissions
   if (! req.user.employer) return res.status(401).end();
 
-  Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
+  Employee.find({ schedule: req.user.schedule }, 'firstName lastName username employer', function(err, employees) {
     if (err) return res.status(500).end();
     return res.json({ employees: employees });
   });
@@ -187,7 +187,7 @@ router.get('/:id', function(req, res) {
     return res.status(401).end();
   }
 
-  Employee.findOne({ _id: String(req.params.id), schedule: req.user.schedule }, 'firstName lastName username', function(err, employee) {
+  Employee.findOne({ _id: String(req.params.id), schedule: req.user.schedule }, 'firstName lastName username employer', function(err, employee) {
     if (err) {
       return res.status(500).end();
     } else {
@@ -218,12 +218,10 @@ router.put('/employers/:id', function(req, res) {
     return res.status(401).end();
   } else {
     var admin;
-    if (req.query.admin === '1' || req.query.admin === 'true') {
-      admin = true;
-    } else if (req.query.admin === '0' || req.query.admin === 'false') {
+    if (req.query.admin === '0' || req.query.admin === 'false') {
       admin = false;
     } else {
-      return res.status(400).end();
+      admin = true;
     }
     Employee.findByIdAndUpdate(req.params.id, { employer: admin }, function(err, employee) {
       if (err) {

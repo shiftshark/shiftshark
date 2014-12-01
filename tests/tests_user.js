@@ -3,7 +3,7 @@
  * Author: aandre@mit.edu
  */
 
-test('User - Empoyee Account Creation', function () {
+test('User - Employee Account Creation', function () {
   // Create Test Employer Account if DNE
   client_signup_employer({
     first_name: "Employer",
@@ -60,8 +60,16 @@ test('User - Empoyee Account Creation', function () {
   client_logout();
 });
 
-
 test('User - Login/Logout', function () {
   ok(test_employer_login(), "Account Login - /login");
   ok(client_logout().success, "Account Logout - /logout");
 });
+
+test('User - Give Admin Privileges', function() {
+  test_employer_login();
+  var employees = client_employee_get_all().data.employees;
+  client_employee_change_admin(employees[1]._id, true);
+  var isAdmin = client_employee_get_one(employees[1]._id).data.employee.employer;
+  ok(isAdmin);
+});
+

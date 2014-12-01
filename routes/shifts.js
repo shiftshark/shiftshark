@@ -154,7 +154,6 @@ router.post('/', function(req, res) {
           shiftTemplate.date = currentDate;
           allShifts.push(new Shift(shiftTemplate));
         }
-        console.log('exit');
         Shift.create(allShifts, function(err) {
           if (err) {
             return res.status(500).end();
