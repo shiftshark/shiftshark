@@ -16,7 +16,7 @@ $(document).ready(function() {
     rules = rulesGenerator(components, selector, entireShift);
     $form.form(rules, settings);
   }
-
+ 
   // instantiate the rules
   updateRules();
 
