@@ -196,4 +196,47 @@ router.get('/:id', function(req, res) {
   });
 });
 
+ /**
+ * PUT /users/employers/:id
+ *
+ * Description: Assigns or removes administrative privileges for specified employee.
+ *
+ * Path Params:
+ *   id - EmployeeID
+ *
+ * Query Params:
+ *   admin - Boolean (default: 1)
+ *
+ * Permissions: Employers only.
+ *
+ * Response: status code (200 success, 500 failure)
+ *
+ */
+
+router.put('/employers/:id', function(req, res) {
+  if (! req.user.employer) {
+    return res.status(401).end();
+  } else {
+    var admin;
+    if (req.query.admin === '1' || req.query.admin === 'true') {
+      admin = true;
+    } else if (req.query.admin === '0' || req.query.admin === 'false') {
+      admin = false;
+    } else {
+      return res.status(400).end();
+    }
+    Employee.findByIdAndUpdate(req.params.id, { employer: admin }, function(err, employee) {
+      if (err) {
+        return res.status(500).end();
+      } else {
+        // success
+        return res.status(200).end();
+      }
+    });
+  }
+});
+
+
+
+
 module.exports = router;
