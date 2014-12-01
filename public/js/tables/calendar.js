@@ -44,8 +44,8 @@ function Calendar (date_start, date_end) {
    * Returns: (Boolean) successful insertion
    */
   table.shift_add_update = function (shift) {
+    if (dates[shift.date.toDateString()] === undefined) return false;
     var timetable = dates[shift.date.toDateString()].table;
-    if (timetable === undefined) return false;
 
     return timetable.shift_add_update(shift);
   };
