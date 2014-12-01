@@ -26,7 +26,7 @@ var Position = require('../models/position');
  *
  * Description: Retrieves specified availibilities.
  *
- * Permissions:
+ * Permissions: 
  *   * Employer can retrieve any employee's availibility.
  *   * Employee can retrieve own availability.
  *
@@ -42,9 +42,11 @@ var Position = require('../models/position');
 
 router.get('/', function(req, res) {
   var filters = {};
+
   if (req.query.day) {
     filters.day = req.query.day;
   }
+
   if (req.user.employer) {
     if (req.query.employee) {
       filters.employee = req.query.employee;
@@ -52,6 +54,7 @@ router.get('/', function(req, res) {
   } else {
     filters.employee = req.user._id;
   }
+
   Avail.find(filters).populate('employee').exec(function(err, avails) {
     if (err) {
       return req.status(500).end();
@@ -66,9 +69,7 @@ router.get('/', function(req, res) {
  *
  * Description: Create a new availability object.
  *
- * Permissions:
- *   * An employer can create availability for any employee.
- *   * An employee can create availability for themselves.
+ * Permissions: Only employee can modify own availability.
  *
  * Notes:
  *   * startTime < endTime
@@ -86,16 +87,16 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
   // check permissions
-  if (req.user.employer || String(req.user._id) === String(req.body.avail.employee)) {
+  if (String(req.user._id) === String(req.body.avail.employee)) {
     var fields = req.body.avail;
-    fields.schedule = req.user.employee.schedule;
+    fields.schedule = req.user.schedule;
     // find conflicting availability objects
-    Avail.find({ employee: req.user._id, day: fields.day,
-      "$and": [{ endTime: { "$gte": fields.startTime } }, { startTime: { "$lte": fields.endTime } }] },
+    Avail.find({ employee: fields.employee, day: fields.day,
+      $and: [{ endTime: { "$gte": fields.startTime } }, { startTime: { "$lte": fields.endTime } }] },
       function(err, avails) {
         if (err) {
           return res.status(500).end();
-        } else if (avails) {
+        } else if (avails.length) {
           // conflicts found, don't create
           return res.status(400).end();
         } else {
@@ -142,6 +143,9 @@ router.get('/:id', function(req, res) {
         res.json({ avail: avail });
       }
     });
+  } else {
+    // permission denied
+    res.status(401).end();
   }
 });
 
@@ -171,21 +175,23 @@ router.get('/:id', function(req, res) {
  */
 
 router.put('/:id', function(req, res) {
+  var newStart = req.body.avail.startTime;
+  var newEnd = req.body.avail.endTime;
   Avail.findById(req.params.id, function(err, avail) {
     if (err) {
       return res.status(500).end();
     } else {
       if (String(req.user._id) === String(avail.employee)) {
-        Avail.find({ employee: req.user._id, day: avail.day,
-          "$and": [{ endTime: { "$gte": req.body.startTime || (avail.startTime + 1) } }, { startTime: { "$lte": req.body.endTime || (avail.endTime - 1) } }] },
+        Avail.find({ employee: avail.employee, day: avail.day, _id: { "$ne": avail._id },
+          $and: [{ endTime: { "$gte": newStart } }, { startTime: { "$lte": newEnd } }] },
           function(err, avails) {
             if (err) {
               return res.status(500).end();
-            } else if (avails) {
+            } else if (avails.length) {
               // conflicts found, don't create
               return res.status(400).end();
             } else {
-              avail.update(req.query, function(err, _avail) {
+              Avail.findByIdAndUpdate(avail._id, { startTime: newStart, endTime: newEnd }, function(err, _avail) {
                 if (err) {
                   return res.status(500).end();
                 } else {

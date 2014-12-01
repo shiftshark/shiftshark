@@ -51,7 +51,7 @@ function client_avails_get_all (query, callback_success, callback_error) {
  *
  * Returns: Only returns when used synchronously; see definition for ajax_call(...).
  */
-function client_avails_get_all (id, callback_success, callback_error) {
+function client_avails_get_one (id, callback_success, callback_error) {
   return ajax_call('GET', '/avails/' + String(id), null, callback_success, callback_error);
 }
 
@@ -69,7 +69,7 @@ function client_avails_get_all (id, callback_success, callback_error) {
  * Returns: Only returns when used synchronously; see definition for ajax_call(...).
  */
 function client_avails_change (id, data, callback_success, callback_error) {
-  return ajax_call('PUT', '/avails/' + String(id), null, callback_success, callback_error);
+  return ajax_call('PUT', '/avails/' + String(id), data, callback_success, callback_error);
 }
 
 /**
