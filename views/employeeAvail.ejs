@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ShiftShark</title>
+        <link rel='shortcut icon' href='/images/favicon.ico'>
+        <!-- JQuery -->
+        <script src='/lib/jquery-2.1.1.min.js'></script>
+        <!-- Date / Time Picker -->
+        <script src='/lib/jquery.datetimepicker.js'></script>
+        <link rel="stylesheet" href="/lib/jquery.datetimepicker.css">
+        <!-- Moment -->
+        <script src="/lib/moment.js"></script>
+        <!-- FancyBox -->
+        <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
+        <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
+        <!-- Semantic -->
+        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
+        <script src='/lib/semantic.min.js'></script>
+        <!-- Ajax Helpers -->
+        <script src='/client/client_basic.js'></script>
+        <script src='/client/client_avails.js'></script>
+        <script src='/client/client_users.js'></script>
+        <!-- Overall CSS -->
+        <link rel='stylesheet' href='stylesheets/style.css' />
+        <!-- Main Page CSS -->
+        <link rel='stylesheet' href='stylesheets/main.css' />
+        <!-- Timetable CSS -->
+        <link rel="stylesheet" href="/stylesheets/tables.css">
+        <!-- Timetable JS -->
+        <script src="/js/tables/timetable.js"></script>
+        <script src="/js/tables/availability.js"></script>
+        <!-- Util files -->
+        <script src='/js/util.js'></script>
+        <script src='/js/validationUtil.js'></script>
+        <script src='/lib/seedrandom.js'></script>
+        <!-- Main JS files -->
+        <script src='/js/employee/createAvailSchedule.js'></script>
+        <script src='/js/employee/availability.js'></script>
+        <script src='/js/avail/create.js'></script>
+        <script src='/js/avail/delete.js'></script>
+        <style type="text/css">
+            .block-empty:hover {
+                background-color : #5C6166 !important;
+                color: white !important; 
+            }
+
+            .block-empty {
+                cursor: pointer;
+                cursor: hand;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='curUser' userId='<%= req.user._id %>' />
+        <%= include util/navbar.ejs %>
+        <div class='ui adminOptions menu'>
+        </div>
+        <div id="schedule" style="margin-left:1em;margin-top:1em;">
+        </div>
+        <a class="hidden fancybox" id="createTrigger" href="#create"></a>
+        <div id='create' class='modalContent'>
+            <%= include modals/avails/createAvail.ejs %>
+        </div>
+        <a class="hidden fancybox" id="deleteTrigger" href="#delete"></a>
+        <div id='delete' class='modalContent'>
+            <%= include modals/avails/deleteAvail.ejs %>
+        </div>
+    </body>
+</html>

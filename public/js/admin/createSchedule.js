@@ -63,11 +63,6 @@ function bindScheduleListeners() {
         tradeRadio.removeClass('hidden');
     } else {
         tradeRadio.removeClass('hidden');
-        tradeRadio.addClass('hidden');
-        var editRadio = $('.modify.action [value="edit"]').parent();
-        var deleteRadio = $('.modify.action [value="delete"]').parent();
-        deleteRadio.checkbox('enable');
-        editRadio.checkbox('enable');
     }
 
     fillInInfo($this);

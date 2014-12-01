@@ -135,18 +135,17 @@ router.post('/', function(req, res) {
  */
 
 router.get('/:id', function(req, res) {
-  if (req.user.employer || String(req.user._id) === String(req.params.id)) {
-    Avail.findById(req.params.id).populate('employee').exec(function(err, avail) {
-      if (err) {
-        return res.status(500).end();
-      } else {
+  Avail.findById(req.params.id).populate('employee').exec(function(err, avail) {
+    if (err) {
+      return res.status(500).end();
+    } else {
+      if (req.user.employer || String(avail.employee._id) === String(req.user._id)) {
         res.json({ avail: avail });
+      } else {
+        return res.status(401).end();
       }
-    });
-  } else {
-    // permission denied
-    res.status(401).end();
-  }
+    }
+  });
 });
 
  /**

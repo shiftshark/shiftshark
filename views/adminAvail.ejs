@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ShiftShark</title>
+        <link rel='shortcut icon' href='/images/favicon.ico'>
+        <!-- JQuery -->
+        <script src='/lib/jquery-2.1.1.min.js'></script>
+        <!-- Date / Time Picker -->
+        <script src='/lib/jquery.datetimepicker.js'></script>
+        <link rel="stylesheet" href="/lib/jquery.datetimepicker.css">
+        <!-- Moment -->
+        <script src="/lib/moment.js"></script>
+        <!-- FancyBox -->
+        <link rel='stylesheet' type='text/css' href='lib/jquery.fancybox.css?v=2.1.5' media='screen' />
+        <script type='text/javascript' src='lib/jquery.fancybox.pack.js?v=2.1.5'></script>
+        <!-- Semantic -->
+        <link rel='stylesheet' href='stylesheets/semantic.min.css' />
+        <script src='/lib/semantic.min.js'></script>
+        <!-- Ajax Helpers -->
+        <script src='/client/client_basic.js'></script>
+        <script src='/client/client_avails.js'></script>
+        <script src='/client/client_users.js'></script>
+        <!-- Overall CSS -->
+        <link rel='stylesheet' href='stylesheets/style.css' />
+        <!-- Main Page CSS -->
+        <link rel='stylesheet' href='stylesheets/main.css' />
+        <!-- Timetable CSS -->
+        <link rel="stylesheet" href="/stylesheets/tables.css">
+        <!-- Timetable JS -->
+        <script src="/js/tables/timetable.js"></script>
+        <script src="/js/tables/availability.js"></script>
+        <!-- Util files -->
+        <script src='/js/util.js'></script>
+        <script src='/js/validationUtil.js'></script>
+        <script src='/lib/seedrandom.js'></script>
+        <!-- Main JS files -->
+        <script src='/js/admin/createAvailSchedule.js'></script>
+        <script src='/js/admin/availability.js'></script>
+    </head>
+    <% weekdayName = ['Monday',
+        'Tuesday', 'Wednesday',
+        'Thursday', 'Friday',
+        'Saturday', 'Sunday'] %>
+    <body>
+        <div id='weekday' weekday='<%= weekday %>' weekdayName='<%= weekdayName[weekday] %>' />
+        <%= include util/navbar.ejs %>
+        <div class='ui adminOptions menu'>
+            <div class="left item wrap dateNavWrapper">
+                <i class="left angle icon dateNavigation"></i>
+                <div class="wrap"><%= weekdayName[weekday] %></div>
+                <i class="right angle icon dateNavigation"></i>
+            </div>
+        </div>
+        <div id="schedule" style="margin-left:1em;">
+        </div>
+    </body>
+</html>

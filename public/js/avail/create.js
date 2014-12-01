@@ -1,19 +1,20 @@
 $(document).ready(function() {
-  var selector         = '.ui.modify.tradeOwn.form';
+  var selector         = '.ui.create.form';
   var $form            = $(selector);
-  var entireShift      = false;
+  var recurring        = false;
   var $startTime       = $(selector + ' .startTime .timePicker');
   var $endTime         = $(selector + ' .endTime .timePicker');
-  var components       = [];
+  var components       = ['startTime', 'endTime'];
   var rules;
-
+  var date = $('#schedule .active').attr('date');
+  
   var settings = {
     inline  : false
   };
 
   // generate a set of rules and apply them tot he form
   var updateRules = function () {
-    rules = rulesGenerator(components, selector, entireShift);
+    rules = rulesGenerator(components, selector, recurring);
     $form.form(rules, settings);
   }
 
@@ -29,24 +30,6 @@ $(document).ready(function() {
     $.fancybox.update();
   });
 
-  // if the toggle is set to true set entireShift to true, update the rules, and show the entireShift content
-  $(selector + ' .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
-    entireShift = true;
-    updateRules();
-    var $entireShift = $(selector + ' .entireShift');
-    $entireShift.removeClass('hidden');
-    $.fancybox.update();
-  });
-
-  // if the toggle is set to true set entireShift to false, update the rules, and hide the entireShift content
-  $(selector + ' .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
-    entireShift = false;
-    updateRules();
-    var $entireShift = $(selector + ' .entireShift');
-    $entireShift.addClass('hidden');
-    $.fancybox.update();
-  });
-
   // submit on submit button pressed
   $(selector + ' .submit.button').on('click', function() {
     $form.form('validate form');
@@ -55,33 +38,35 @@ $(document).ready(function() {
 
     // if valid, submit
     if (validForm) {
-      // get start and end times
+      var employee  = $('#curUser').attr('userid');
       var startTime = (new Time($startTime.val())).totalMinutes;
-      var endTime   = (new Time($endTime.val())).totalMinutes;
-      // get the shiftId
-      var shiftId = $('#schedule .active').attr('shiftid');
+      var endTime   = (new Time($endTime.val())).totalMinutes - 1;
+      console.log(endTime);
+      var day       = parseInt($('#schedule .active').attr('day'));
 
-      var query = {
-        trade : 'offer'
-      }
+      var data = { avail: {
+        employee  : employee,
+        day       : day,
+        startTime : startTime,
+        endTime   : endTime
+      } };
+
       // if success, update the schedule
       var success = function(result, status, xhr) {
         // clear the error message
         $('.ui.error.message').html('');
         // remove the loading animation
-        $form.removeClass('error');
         $form.removeClass('loading');
+        $form.removeClass('error');
         // close the fancybox
         $('.fancybox-close').trigger('click');
 
         // get the shift and set the date as a date object
-        var i;
-        var shift;
-        for (i = 0; shift = result.shifts[i]; i++) {
-          shift.date = new Date(shift.date);
-          // update the schedule
-          schedule.shift_add_update(shift);
-        }
+        var avail  = result.avail;
+
+        // update the schedule
+        console.log(schedule);
+        schedule.avail_add_update(avail);
         bindScheduleListeners();
       };
 
@@ -99,14 +84,8 @@ $(document).ready(function() {
       // add a loading animation
       $form.addClass('loading');
 
-      // if entireShift then submit with start and end dates
-      if (entireShift) {
-        // submit to server
-        client_shifts_change(shiftId, query, null, success, failure);
-      } else {
-        // submit not entireShift to server
-        client_shifts_change(shiftId, query, null, success, failure);
-      }
+      // submit to server
+      client_avails_create(data, success, failure);
     }
   });
 });

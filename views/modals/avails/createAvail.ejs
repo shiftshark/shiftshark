@@ -1,0 +1,11 @@
+<div class='centered-text ctitle' style='padding-bottom:10px;'>Create Availability</div>
+<div class='createInfo centered-text'></div>
+
+<form class='ui create form' onsubmit="return false;">
+    <div class="ui error message"></div>
+    <% var submit = "Create"; %>
+
+    <%= include ../../util/formModules/setTime.ejs %>
+
+    <%= include ../../util/formModules/cancelSubmit.ejs %>
+</form>

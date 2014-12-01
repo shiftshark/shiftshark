@@ -150,7 +150,7 @@ label.colon {
     overflow-x: hidden !important;
 }
 
-.ownerIndicator, .shiftInfo {
+.ownerIndicator, .shiftInfo, .createInfo, .deleteInfo {
     padding-bottom: 10px;
 }
 
@@ -167,12 +167,12 @@ label.colon {
     background : #5C6166 !important;
 }
 
-.block-shift.trading:hover, .owned:hover {
+.block-shift.trading:hover, .owned:hover, .block-avail:hover {
     background-color : #5C6166 !important;
     color: white !important; 
 }
 
-.block-shift.trading, .owned {
+.block-shift.trading, .owned, .block-avail {
     cursor: pointer;
     cursor: hand;
 }
