@@ -14,6 +14,13 @@ table.timetable {
   height: auto;
 }
 
+td.block-empty::after {
+  /* Force auto height on empty cells. */
+  content: "easter_egg";
+  font-size: 0;
+  visibility: hidden;
+}
+
 .header-row {
   height: auto !important;
 }
@@ -29,6 +36,7 @@ table.timetable {
 td.block-empty {
   min-width: 12px;
 }
+
 
 td.block-shift {
   min-width: 86px;

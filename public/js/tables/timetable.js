@@ -457,11 +457,18 @@ function position_row_add (table, positionID) {
     block.attr('date', table.date.toDateString());
   });
 
-  // insert after last row in position
-  var last = table.find('tr[positionID=' + positionID + ']').last();
-  row.insertAfter(last);
+  // insert before last (blank) row in position
+  var rows = table.find('tr[positionID=' + positionID + ']');
+  if (rows.length === 1) { // label row only
+    row.insertAfter(rows.last());
+    return rows.first();
+  }
+  else { // other existing rows
+    row.insertBefore(rows.last());
+    return row;
+  }
 
-  return row;
+
 }
 
 // remove row from existing position
@@ -529,7 +536,7 @@ function shift_row_locate (table, block, shift) {
   // attmept to find existing row to accomodate blocks
   var rows = table.find('tr[positionID=' + shift.position + ']');
 
-  for (var i = 0; i < rows.length; i++) {
+  for (var i = 0; i < rows.length - 1; i++) { // last row empty
     var row = $(rows[i]);
     var quarter = row.find('.time-block[hour=' + block.start.hour + '][quarter=' + block.start.quarter + ']').first();
 
