@@ -28,7 +28,7 @@ function Timetable (table_date) {
   table.addClass('timetable');
   init_table(table);  // construct header
 
-  var date = table_date;
+  table.date = table_date;
 
   // adjust displayed start/end times
   var time_start = 8, time_end = 18;
@@ -56,7 +56,7 @@ function Timetable (table_date) {
     var shiftID = shift._id;
 
     // ignore wrong date
-    if (!date_equals(shift.date, date))
+    if (!date_equals(shift.date, table.date))
       return false; // failure
 
     // if already exists, remove before re-creating
@@ -434,6 +434,7 @@ function position_new_create (table, position) {
   // create 15-minute block
   row_blocks_create(row, function (block) {
     block.attr('position', position._id);
+    block.attr('date', table.date.toDateString());
   });
 
   // append to timetable
@@ -453,6 +454,7 @@ function position_row_add (table, positionID) {
   row.attr('positionID', positionID);
   row_blocks_create(row, function (block) {
     block.attr('position', positionID);
+    block.attr('date', table.date.toDateString());
   });
 
   // insert after last row in position
@@ -609,6 +611,7 @@ function shift_delete (table, shiftID) {
     block.attr({hour: hour, quarter: quarter});
     block.insertAfter(last_block);
     block.attr('position', shiftBlock.attr('position'));
+    block.attr('date', table.date.toDateString());
     last_block = block;
 
     quarter += 1;
