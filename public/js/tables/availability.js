@@ -132,7 +132,7 @@ function AvailabilityAdminTable (table_day) {
     var availID = avail._id;
 
     // ignore wrong day
-    if (avail.day !== day)
+    if (avail.day != day)
       return false;
 
     // if already exists, remove before re-creating
