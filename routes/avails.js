@@ -34,10 +34,6 @@ var Position = require('../models/position');
  *   * employee - Employee identifier
  *   * day - weekday that employees are available [0,6]
  *
- * Notes:
- *   * availibilites lasting over period between startTime and endTime may
- *     include those starting/ending outside of this period
- *
  * Response: {
  *   avails: Avail[]
  * }
@@ -45,7 +41,18 @@ var Position = require('../models/position');
  */
 
 router.get('/', function(req, res) {
-  Avail.find(req.query).populate('employee').exec(function(err, avails) {
+  var filters = {};
+  if (req.query.day) {
+    filters.day = req.query.day;
+  }
+  if (req.user.employer) {
+    if (req.query.employee) {
+      filters.employee = req.query.employee;
+    }
+  } else {
+    filters.employee = req.user._id;
+  }
+  Avail.find(filters).populate('employee').exec(function(err, avails) {
     if (err) {
       return req.status(500).end();
     } else {
