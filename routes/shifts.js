@@ -99,7 +99,8 @@ router.get('/', function(req, res) {
  *   * shift.claimant: (optional) must not have conflicting shift
  *   * shift.startTime must occur before shift.endTime
  *   * startDate and endDate: multiple Shifts will be created on same weekday within date range
- *   * startDate <= shift.date; endDate >= shift.date
+ *   * startDate <= endDate
+ *   * weekday of shift.date will be used if shift.date is not between startDate and endDate
  *   * assignee and claimant fields are populated in returned objects
  *   * response.shift contains the shift specified in the request body only, even if other shifts were created
  *
@@ -162,6 +163,7 @@ router.post('/', function(req, res) {
               var shift = arguments[i];
               var foundOne = false;
               if (Math.abs(new Date(shift.date).getTime() - specifiedDate.getTime()) < millisecsInDay) {
+                foundOne = true;
                 Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
                   if (err) {
                     return res.status(500).end();

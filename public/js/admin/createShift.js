@@ -39,6 +39,7 @@ $(document).ready(function() {
 
   // if the toggle is set to true set recurring to true, update the rules, and show the recurring content
   $(selector + ' .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
+    $('.shiftInfo').html('A shift is being created for <b>' + moment(date).format('dddd') + '</b>.');
     recurring = true;
     updateRules();
     var $recurring = $(selector + ' .recurring');
@@ -48,6 +49,7 @@ $(document).ready(function() {
 
   // if the toggle is set to true set recurring to false, update the rules, and hide the recurring content
   $(selector + ' .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
+    $('.shiftInfo').html('A shift is being created for <b>' + (new Date(date)).toDateString() + '</b>.');
     recurring = false;
     updateRules();
     var $recurring = $(selector + ' .recurring');
