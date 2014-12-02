@@ -160,6 +160,7 @@ router.post('/', function(req, res) {
           } else {
             for(var i = 1; i < arguments.length; i++) {
               var shift = arguments[i];
+              var foundOne = false;
               if (Math.abs(new Date(shift.date).getTime() - specifiedDate.getTime()) < millisecsInDay) {
                 Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
                   if (err) {
@@ -169,6 +170,9 @@ router.post('/', function(req, res) {
                   }
                 });
               }
+            }
+            if (!foundOne) {
+              return res.json({ shift: null });
             }
           }
         });
@@ -364,7 +368,7 @@ router.get('/:id', function(req, res) {
   } else if (req.query.trade) {
     Shift.findById(req.params.id, function(err, shift) {
       if (req.query.trade == "offer") {
-        if ((String(shift.assignee) === String(req.user._id) && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
+        if (((String(shift.assignee) === String(req.user._id) || req.user.employer) && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
           doc = { trading: true };
           shift.trading = true;
           shift.claimant = null;
