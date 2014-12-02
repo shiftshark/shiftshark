@@ -47,7 +47,7 @@ function bindScheduleListeners() {
 $(document).ready(function() {
   schedule = AvailabilityEmployeeTable();
   $('#schedule').append(schedule);
-  var curUser = $('curUser').attr('userId');
+  var curUser = $('#curUser').attr('userid');
   var avails = client_avails_get_all({employee:curUser}).data.avails;
 
   for (var i = 0; i < avails.length; i++) {
