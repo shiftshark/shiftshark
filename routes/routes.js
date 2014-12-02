@@ -62,7 +62,7 @@ router.get('/signup', function(req, res) {
 router.get('/availability', function(req, res) {
   if (req.user === undefined || req.user === null) {
     // unauthorized
-    res.render('auth', {formType:'login'});
+    res.redirect('/');  //don't want to open the app on the availability screen
   } else if (req.user.employer === true) {
     var weekday = req.query.weekday;
     var employeeView = req.query.employeeView || false;
@@ -75,10 +75,10 @@ router.get('/availability', function(req, res) {
       res.render('adminAvail', {req:req, isAdmin:true, weekday:weekday});
     }
     else{
-      res.render('employeeAvail', {req:req, isAdmin:false})
+      res.render('employeeAvail', {req:req, isAdmin:false, employer:true})
     }
   } else {
-    res.render('employeeAvail', {req:req, isAdmin:false});
+    res.render('employeeAvail', {req:req, isAdmin:false, employer:false});
   }
 });
 
