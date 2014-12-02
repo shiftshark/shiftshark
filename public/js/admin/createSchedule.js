@@ -119,7 +119,7 @@ function bindScheduleListeners() {
 $(document).ready(function() {
   // get the current date and create a timetable from that
   var curDate = $('#currentDate').attr('date');
-  schedule = Calendar(new Date(curDate), new Date(curDate));
+  schedule = Calendar(new Date(curDate), new Date(curDate)); //TODO: is calendar view? add to routes then end date => +7   //
   // add the schedule to the page 
   $('#schedule').append(schedule);
 
