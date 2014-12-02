@@ -46,6 +46,7 @@
         <script src='/js/admin/modifyDelete.js'></script>
         <script src='/js/admin/assignOffered.js'></script>
         <script src='/js/admin/claimShift.js'></script>
+        <script src='/js/admin/adminSettings.js'></script>
         <style>
             .block-shift{
                 cursor: pointer;
@@ -80,6 +81,11 @@
             </div>
             <div class='right item'>
                 <div class='item wrap'>
+                    <a href='#adminSettings' class='ui inverted black fancybox button'>
+                        Admin Settings
+                    </a>
+                </div>
+                <div class='item wrap'>
                     <a href='#employeeSettings' class='ui inverted black fancybox button'>
                         + Employee
                     </a>
@@ -93,16 +99,6 @@
                     <div class='ui inverted black button'>
                         + Position
                     </div>
-                </div>
-                <div class='hidden item wrap'>
-                    <a href='#modifyShift' class='ui inverted black fancybox button'>
-                        Modfiy Shift
-                    </a>
-                </div>
-                <div class='hidden item wrap'>
-                    <a href='#assignOffered' class='ui inverted black fancybox button'>
-                        Assign Offered
-                    </a>
                 </div>
             </div>
         </div>
@@ -125,6 +121,9 @@
         <a class="hidden fancybox" id="assignOfferedTrigger" href="#assignOffered"></a>
         <div id='assignOffered' class='modalContent'>
             <%= include modals/claimShift.ejs %>
+        </div>
+        <div id='adminSettings' class='modalContent'>
+            <%= include modals/admin/adminSettings.ejs %>
         </div>
     </body>
 </html>
