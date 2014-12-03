@@ -214,7 +214,9 @@ router.get('/:id', function(req, res) {
  */
 
 router.put('/employers/:id', function(req, res) {
-  if (! req.user.employer) {
+  // only a current employer can change privileges
+  // can't change your own privileges
+  if (! req.user.employer || String(req.params.id) === String(req.user._id)) {
     return res.status(401).end();
   } else {
     var admin;
