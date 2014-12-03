@@ -14,6 +14,7 @@ function createShiftInfo() {
 
 // binds all the listeners to the schedule again
 function bindScheduleListeners() {
+
   var fillInInfo = function($this){
     $this.addClass('active');
 
@@ -119,10 +120,10 @@ function bindScheduleListeners() {
 $(document).ready(function() {
   // get the current date and create a timetable from that
   var curDate = $('#currentDate').attr('date');
-  var weekDate = new Date(curDate);
-  weekDate.setDate(weekDate.getDate() + 6);
-
-  schedule = Calendar(new Date(curDate), new Date(weekDate)); //TODO: is calendar view? add to routes then end date => +7   //
+  dailyView = true;
+  
+  schedule = Calendar(new Date(curDate), new Date(curDate)); 
+  
   // add the schedule to the page 
   $('#schedule').append(schedule);
 
