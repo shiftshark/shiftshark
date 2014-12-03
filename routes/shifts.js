@@ -370,7 +370,7 @@ router.get('/:id', function(req, res) {
   } else if (req.query.trade) {
     Shift.findById(req.params.id, function(err, shift) {
       if (req.query.trade == "offer") {
-        if (((String(shift.assignee) === String(req.user._id) || req.user.employer) && !shift.claimant) || String(shift.claimant) === String(req.user._id) ) {
+        if ((String(shift.assignee) === String(req.user._id) && !shift.claimant) || String(shift.claimant) === String(req.user._id) || req.user.employer ) {
           doc = { trading: true };
           shift.trading = true;
           shift.claimant = null;
