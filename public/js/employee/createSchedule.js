@@ -65,7 +65,9 @@ function bindScheduleListeners() {
 $(document).ready(function() {
   // get the current date and create a timetable from that
   var curDate = $('#currentDate').attr('date');
+  dailyView = true;
   schedule = Calendar(new Date(curDate), new Date(curDate));
+  
   // add the schedule to the page 
   $('#schedule').append(schedule);
 
