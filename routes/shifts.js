@@ -159,9 +159,9 @@ router.post('/', function(req, res) {
           if (err) {
             return res.status(500).end();
           } else {
+            var foundOne = false;
             for(var i = 1; i < arguments.length; i++) {
               var shift = arguments[i];
-              var foundOne = false;
               if (Math.abs(new Date(shift.date).getTime() - specifiedDate.getTime()) < millisecsInDay) {
                 foundOne = true;
                 Shift.findOne(shift, fieldsToReturn).populate('assignee claimant', userFieldsToHide).exec(function(err, _shift) {
