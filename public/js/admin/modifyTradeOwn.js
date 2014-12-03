@@ -82,7 +82,6 @@ $(document).ready(function() {
           // update the schedule
           schedule.shift_add_update(shift);
         }
-        bindScheduleListeners();
       };
 
       // do show error on failure

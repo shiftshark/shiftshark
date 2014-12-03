@@ -79,7 +79,7 @@ $(document).ready(function() {
         $this = $(this);
 
         var isLeft = $this.hasClass('left');
-        var currentDate = $('.day').attr('date');
+        var currentDate = $('#currentDate').attr('date');
         currentDate = new Date(currentDate);
 
         if (isLeft) {

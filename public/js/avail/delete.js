@@ -55,7 +55,6 @@ $(document).ready(function() {
 
         // update the schedule
         schedule.avail_remove(availId);
-        bindScheduleListeners();
       };
 
       // do show error on failure

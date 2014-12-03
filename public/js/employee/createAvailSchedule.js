@@ -6,7 +6,7 @@ function bindScheduleListeners() {
     'Saturday', 'Sunday'];
 
   // open the modify shift modal
-  $('.block-avail').on('click', function() {
+  $(document).on('click', '.block-avail', function() {
     $this = $(this);
 
     var weekday = weekdayName[parseInt($this.attr('day'))];
@@ -22,7 +22,7 @@ function bindScheduleListeners() {
   });
 
   // opens create shift when clicking on an empty box
-  $('.block-empty').on('click', function() {
+  $(document).on('click', '.block-empty', function() {
     
     $this = $(this);
     // get the hours and the minutes

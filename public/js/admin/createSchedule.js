@@ -41,9 +41,8 @@ function bindScheduleListeners() {
   }
 
   // open the trading modal
-  $('.block-shift.trading').on('click', function() {
+  $(document).on('click', '.block-shift.trading', function() {
     $this = $(this);
-    $this.addClass('active');
     console.log($this);
 
     fillInInfo($this);
@@ -52,12 +51,11 @@ function bindScheduleListeners() {
   });
 
   // open the modify shift modal
-  $('.block-shift').not('.trading').on('click', function() {
+  $(document).on('click', '.block-shift', function() {
     $this = $(this);
-    if ($this.hasClass('trading') || $this.hasClass('block-empty')) {
+    if ($this.hasClass('trading')) {
       return;
     }
-    $this.addClass('active');
     console.log($this);
 
     var claimant   = $this.attr('claimant');
@@ -80,14 +78,9 @@ function bindScheduleListeners() {
   });
 
   // opens create shift when clicking on an empty box
-  $('.block-empty').not('.trading').on('click', function() {
+  $(document).on('click', '.block-empty', function() {
     createShiftInfo();
     $this = $(this);
-    if ($this.hasClass('trading') || $this.hasClass('block-shift')) {
-      console.log("ASdfasdfasdf");
-      return;
-    }
-    $this.addClass('active');
     console.log($this);
 
     // get the hours and the minutes

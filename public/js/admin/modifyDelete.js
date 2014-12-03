@@ -74,8 +74,6 @@ $(document).ready(function() {
           // update the schedule
           schedule.shift_remove(shiftId);
         }
-
-        bindScheduleListeners();
       };
 
       // do show error on failure

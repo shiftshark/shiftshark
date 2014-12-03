@@ -81,7 +81,8 @@ $(document).ready(function() {
           // update the schedule
           schedule.shift_add_update(shift);
         }
-        bindScheduleListeners();
+
+        findOwner();
       };
 
       // do show error on failure

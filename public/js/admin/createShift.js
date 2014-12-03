@@ -100,13 +100,13 @@ $(document).ready(function() {
 
         // get the shift and set the date as a date object
         var shift  = result.shift;
+        console.log(result);
         shift.date = new Date(shift.date);
 
         // restore dropdown defaults
         $(selector + ' .dropdown').dropdown('restore defaults');
         // update the schedule
         schedule.shift_add_update(shift);
-        bindScheduleListeners();
       };
 
       // do show error on failure

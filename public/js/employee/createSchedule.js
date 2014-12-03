@@ -1,4 +1,21 @@
+function findOwner() {
+  var $shifts = $('#schedule .block-shift');
+  for(var i = 0; i < $shifts.length; i++) {
+    var $shift = $($shifts[i]);
+    var curUser = $('#curUser').attr('userId');
+    var claimant = $shift.attr('claimant');
+    var assignee = $shift.attr('assignee');
+    var owner = claimant ? claimant : assignee;
+
+    if (owner == curUser) {
+      $shift.addClass('owned');
+    }
+  }
+}
+
 function bindScheduleListeners() {
+  findOwner();
+  
   var fillInInfo = function($this){
     $this.addClass('active');
 
@@ -24,21 +41,8 @@ function bindScheduleListeners() {
     $('.ownerIndicator').html('You have selected ' + ownerName + ' shift from ' + startTime + ' to ' + endTime + '.');
   }
 
-  var $shifts = $('#schedule .block-shift');
-  for(var i = 0; i < $shifts.length; i++) {
-    var $shift = $($shifts[i]);
-    var curUser = $('#curUser').attr('userId');
-    var claimant = $shift.attr('claimant');
-    var assignee = $shift.attr('assignee');
-    var owner = claimant ? claimant : assignee;
-
-    if (owner == curUser) {
-      $shift.addClass('owned');
-    }
-  }
-
   // open the claiming modal
-  $('.block-shift.trading').on('click', function() {
+  $(document).on('click', '.block-shift.trading', function() {
     $this = $(this);
 
     fillInInfo($this);
@@ -47,8 +51,11 @@ function bindScheduleListeners() {
   });
 
   // open the trading shift modal
-  $('.owned').not('.trading').on('click', function() {
+  $(document).on('click', '.owned', function() {
     $this = $(this);
+    if($this.hasClass('trading')) {
+      return;
+    }
     var claimant = $this.attr('claimant');
     var assignee = $this.attr('assignee');
     var owner = claimant ? claimant : assignee;

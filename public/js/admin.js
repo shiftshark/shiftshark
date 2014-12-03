@@ -116,7 +116,6 @@ $(document).ready(function() {
             schedule.position_add_update(position);
             $('.positionList').append('<div class="item" positionid="'+position._id+'">'+position.name+'</div>')
             $('.ui.dropdown').dropdown();
-            bindScheduleListeners();
         }
 
         $('#roleButton .input').children().animate({height:'29px',width:'93px'}, function() {

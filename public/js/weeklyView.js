@@ -37,5 +37,4 @@ function changeWeeklyView() {
     schedule.shift_add_update(shift);
   }
 
-  bindScheduleListeners();
 }

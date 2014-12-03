@@ -67,7 +67,6 @@ $(document).ready(function() {
         // update the schedule
         console.log(schedule);
         schedule.avail_add_update(avail);
-        bindScheduleListeners();
       };
 
       // do show error on failure
