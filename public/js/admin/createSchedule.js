@@ -43,6 +43,8 @@ function bindScheduleListeners() {
   // open the trading modal
   $('.block-shift.trading').on('click', function() {
     $this = $(this);
+    $this.addClass('active');
+    console.log($this);
 
     fillInInfo($this);
 
@@ -52,6 +54,11 @@ function bindScheduleListeners() {
   // open the modify shift modal
   $('.block-shift').not('.trading').on('click', function() {
     $this = $(this);
+    if ($this.hasClass('trading') || $this.hasClass('block-empty')) {
+      return;
+    }
+    $this.addClass('active');
+    console.log($this);
 
     var claimant   = $this.attr('claimant');
     var assignee   = $this.attr('assignee');
@@ -75,8 +82,14 @@ function bindScheduleListeners() {
   // opens create shift when clicking on an empty box
   $('.block-empty').not('.trading').on('click', function() {
     createShiftInfo();
-
     $this = $(this);
+    if ($this.hasClass('trading') || $this.hasClass('block-shift')) {
+      console.log("ASdfasdfasdf");
+      return;
+    }
+    $this.addClass('active');
+    console.log($this);
+
     // get the hours and the minutes
     var hour = parseInt($this.attr('hour'));
     var mins = parseInt($this.attr('quarter')) * 15;
@@ -113,7 +126,6 @@ function bindScheduleListeners() {
 
     // open the modal via emulated click
     $('#createShiftTrigger').trigger('click');
-    $this.addClass('active');
   });
 }
 
