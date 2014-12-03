@@ -45,14 +45,19 @@ function bindScheduleListeners() {
 }
 
 $(document).ready(function() {
+  // create the availability object
   schedule = AvailabilityEmployeeTable();
+  // add the schedule to the HTML
   $('#schedule').append(schedule);
+  // get the curent user and availabilities
   var curUser = $('#curUser').attr('userid');
   var avails = client_avails_get_all({employee:curUser}).data.avails;
 
+  // add the availabilities to the schedule
   for (var i = 0; i < avails.length; i++) {
     schedule.avail_add_update(avails[i]);
   }
 
+  // add listeners
   bindScheduleListeners();
 });
