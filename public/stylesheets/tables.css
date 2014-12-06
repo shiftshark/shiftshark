@@ -78,6 +78,18 @@ table.avail-table-employee {
   border-right: none !important;
 }
 
+tr.last-row {
+  height: 0px !important;
+  border: none;
+  padding: 0;
+}
+
+tr.last-row td {
+  height: 0px !important;
+  padding: 0;
+  border: none;
+}
+
 /* Calendar */
 .calendar {
   border-collapse: collapse;

@@ -25,7 +25,8 @@ function AvailabilityEmployeeTable () {
   var table = create_elem('table');
   table.addClass('timetable avail-table-employee');
   init_table(table);  // construct header and rows
-  init_day_rows(table);
+  init_day_rows(table); // row with day labels and blocks
+  init_placeholder_insert(table); // last row to maintain block spacing
 
   /**
    * Function: avail_add_update
@@ -115,6 +116,7 @@ function AvailabilityAdminTable (table_day) {
   var table = create_elem('table');
   table.addClass('timetable avail-table-admin');
   init_table(table);  // construct header and rows
+  init_placeholder_insert(table); // last row to maintain block spacing
 
   var day = table_day;
 
@@ -249,6 +251,16 @@ function init_day_rows (table) {
   }
 }
 
+function init_placeholder_insert (table) {
+  // last row is structural (maintains spacing, not displayed)
+  var last_row = create_elem('tr').addClass('last-row');
+  last_row.append(create_elem('td').addClass('label-employee').html(""));
+  row_blocks_create(last_row, function(block) {
+    block.removeClass('block-empty');
+  });
+  table.append(last_row);
+}
+
 // insert availability if possible
 function avail_insert(avail, row, block) {
 
@@ -333,7 +345,8 @@ function employee_row_locate_create (table, avail) {
   });
 
   // append to timetable
-  table.append(row);
+  var last_row = table.find('tr.last-row');
+  row.insertBefore(last_row);
 
   return row;
 }
