@@ -1,0 +1,12 @@
+<div class='ui hidden modify claim shift form'>
+    <div class="ui error message"></div>
+    <% var submit = "Claim";
+    var toggleOff = "Claim Part of Shift";
+    var toggleOn = "Claim Entire Shift" %>
+    <!-- <%= include ../../../util/formModules/toggle.ejs %> -->
+
+    <div class='entireShift hidden'>
+        <%= include ../../../util/formModules/setTime.ejs %>
+    </div>
+    <%= include ../../../util/formModules/cancelSubmit.ejs %>
+</div>

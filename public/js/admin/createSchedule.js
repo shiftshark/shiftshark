@@ -40,36 +40,67 @@ function bindScheduleListeners() {
     $('.ownerIndicator').html('You have selected ' + ownerName + ' shift from ' + startTime + ' to ' + endTime + '.');
   }
 
+  // clicking breaks if I force it to be enabled, so this is necessary
+  $(document).on('click', '.modify .edit.field', function() {
+    $('.modify .edit.field').checkbox('enable');
+  });
+
   // open the trading modal
+  // open the modify shift modal
   $(document).on('click', '.block-shift.trading', function() {
-    $this = $(this);
-    console.log($this);
+    var $this = $(this);
+    var claimant   = $this.attr('claimant');
+    var assignee   = $this.attr('assignee');
+    var owner      = claimant ? claimant : assignee;
+    var curUser    = $('#curUser').attr('userId');
+    var tradeRadio = $('.modify .tradeOwn.field');
+    var claimRadio = $('.modify .claim.field');
+    var editRadio  = $('.modify .edit.field');
+
+    // sets the previous actions for modify.js
+    previousModifyAction = 'edit';
+    // hide all other forms
+    $('.modify.form').not('.action').addClass('hidden');
+    // show only the edit shift form
+    $('.modify.edit.form').removeClass('hidden');
+    // make the radio checkbox clicked. This doesnt allow it to be selected again
+    editRadio.checkbox('enable');
+    // hide and show the appropriate radio buttons
+    tradeRadio.addClass('hidden');
+    claimRadio.removeClass('hidden');
 
     fillInInfo($this);
 
-    $('#assignOfferedTrigger').trigger('click');
+    // open the modal via emulated click
+    $('#modifyShiftTrigger').trigger('click');
   });
 
   // open the modify shift modal
   $(document).on('click', '.block-shift', function() {
-    $this = $(this);
+    var $this = $(this);
     if ($this.hasClass('trading')) {
       return;
     }
-    console.log($this);
 
     var claimant   = $this.attr('claimant');
     var assignee   = $this.attr('assignee');
     var owner      = claimant ? claimant : assignee;
     var curUser    = $('#curUser').attr('userId');
     var tradeRadio = $('.modify .tradeOwn.field');
+    var claimRadio = $('.modify .claim.field');
+    var editRadio  = $('.modify .edit.field');
 
-    // checks if shift belongs to user and shows appropriate radio buttons
-    if (owner == curUser) {
-        tradeRadio.removeClass('hidden');
-    } else {
-        tradeRadio.removeClass('hidden');
-    }
+    // sets the previous action for modify.js
+    previousModifyAction = 'edit';
+    // hide all other forms
+    $('.modify.form').not('.action').addClass('hidden');
+    // show only the edit shift form
+    $('.modify.edit.form').removeClass('hidden');
+    // make the radio checkbox clicked. This doesnt allow it to be selected again
+    editRadio.checkbox('enable');
+    // hide and show the appropriate radio buttons
+    tradeRadio.removeClass('hidden');
+    claimRadio.addClass('hidden');
 
     fillInInfo($this);
 
@@ -80,7 +111,7 @@ function bindScheduleListeners() {
   // opens create shift when clicking on an empty box
   $(document).on('click', '.block-empty', function() {
     createShiftInfo();
-    $this = $(this);
+    var $this = $(this);
     console.log($this);
 
     // get the hours and the minutes
@@ -153,5 +184,6 @@ $(document).ready(function() {
     schedule.shift_add_update(shift);
   }
 
+  previousModifyAction = 'edit'
   bindScheduleListeners();
 });

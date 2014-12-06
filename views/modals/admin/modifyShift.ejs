@@ -3,16 +3,16 @@
 <div class='forceCenter ui form modify action' style='margin-top:5px;'>
     <div class='inline fields wrap'>
         <div class='field'>Action:</div>
-        <div class='field'>
+        <div class='edit field'>
             <div class='ui radio checkbox'>
                 <input type='radio' name='modify-action' value='edit' checked='checked'>
                 <label>Extend</label>
             </div>
         </div>
-        <div class='hidden trade field'>
+        <div class='hidden claim field'>
             <div class='ui radio checkbox'>
-                <input type='radio' name='modify-action' value='trade'>
-                <label>Trade</label>
+                <input type='radio' name='modify-action' value='claim'>
+                <label>Claim</label>
             </div>
         </div>
         <div class='tradeOwn field'>
@@ -32,7 +32,7 @@
 
 <%= include formInstances/modifyEdit.ejs %>
 
-<%= include formInstances/modifyTrade.ejs %>
+<%= include formInstances/modifyClaim.ejs %>
 
 <%= include formInstances/modifyTradeOwn.ejs %>
 
