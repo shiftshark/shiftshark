@@ -1,66 +1,87 @@
 $(document).ready(function() {
-  var assignOfferForm = $('.ui.assignOffered.form');
-
-  var employeeDropdown = $('.ui.assignOffered.form [name="select-employee"]').parent();
-
-  // form validation rules
-  var rules = {
-    selectEmployee : {
-      identifier  : 'select-employee',
-      rules: [
-        {
-          type  : 'empty',
-          prompt: 'Please select an employee'
-        }
-      ]
-    }
-  };
+  var selector         = '.ui.modify.assignOffered.form';
+  var $form            = $(selector);
+  var $employeeDropdown = $(selector + ' [name="select-employee"]').parent();
+  var recurring        = false;
+  var $startDate       = $(selector + ' .startDate .datePicker');
+  var $endDate         = $(selector + ' .endDate .datePicker');
+  var components       = ['employees'];
+  var rules;
 
   var settings = {
     inline  : false
   };
 
-  assignOfferForm.form(rules, settings);
+  // generate a set of rules and apply them tot he form
+  var updateRules = function () {
+    rules = rulesGenerator(components, selector, recurring);
+    $form.form(rules, settings);
+  }
 
-  assignOfferForm.form('setting', 'onFailure', function(){
+  // instantiate the rules
+  updateRules();
+
+  // reisize the fancybox on failure or success
+  $form.form('setting', 'onFailure', function(){
     $.fancybox.update();
   });
 
-  assignOfferForm.form('setting', 'onSuccess', function(){
+  $form.form('setting', 'onSuccess', function(){
     $.fancybox.update();
   });
 
-  $('.ui.assignOffered.form .submit.button').on('click', function() {
-    assignOfferForm.form('validate form');
-    var isValid = !assignOfferForm.hasClass('error');
+  // submit on submit button pressed
+  $(selector + ' .submit.button').on('click', function() {
+    $form.form('validate form');
+    var validForm = !$form.hasClass('error');
     $.fancybox.update();
 
-    if (isValid) {
-      var shiftId = $('.scheduleWrapper .active').parent().attr('shift');
-      var employee = $('.createShift.form .employeeList .active').attr('employeeId');
+    // if valid, submit
+    if (validForm) {
+      // parse the start and end dates
+      var employee  = $(selector + ' .employeeList .active').attr('employeeId');
+      // get the shiftId
+      var shiftId = $('#schedule .active').attr('shiftid');
 
-      var shift = {
+      var newShift = {
         claimant : employee,
-        trading  : false
+        trading   : false
       }
 
+      // if success, update the schedule
       var success = function(result, status, xhr) {
+        // clear the error message
         $('.ui.error.message').html('');
-        assignOfferForm.removeClass('loading');
+        // remove the loading animation
+        $form.removeClass('loading');
+        // close the fancybox
         $('.fancybox-close').trigger('click');
-        var shift = result.shift;
-        $('.ui.assignOffered.form .dropdown').dropdown('restore defaults');
-        //TODO: Interact with Michael's calendar
-        window.location.reload();
+
+        // get the shift and set the date as a date object
+        for (var i = 0; i < result.shifts.length; i++) {
+          var shift = result.shifts[i];
+          shift.date = new Date(shift.date);
+          // update the schedule
+          schedule.shift_add_update(shift);
+        }
       };
 
+      // do show error on failure
       var failure = function(xhr, status, err) {
-        $('.ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        // show an error message
+        $('.ui.error.message').html('<ul class="list"><li>' + err + '</li></ul>');
+        $form.addClass('error');
+        // resize fancybox
         $.fancybox.update();
-        assignOfferForm.removeClass('loading');
+        // removing loading animation
+        $form.removeClass('loading');
       };
-      assignOfferForm.addClass('loading');
-      client_shifts_change(shiftId,null,shift,success,failure);
+
+      // add a loading animation
+      $form.addClass('loading');
+
+      // submit to server
+      client_shifts_change (shiftId, null, newShift, success, failure);
     }
   });
 });
