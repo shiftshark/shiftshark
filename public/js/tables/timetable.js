@@ -427,6 +427,7 @@ function position_new_create (table, position) {
   // position name/label on left
   var label = create_elem('td');
   label.addClass('label-position');
+  label.attr('position', position._id);
   label.attr('rowspan', '1');
   label.html(position.name || "-");
   row.append(label);
