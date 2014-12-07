@@ -1,10 +1,11 @@
 <div class='ui form modifyPos edit'>
-    <label>Name:</label>
-    <div class='ui left labeled input field'>
-        <input type='text' class="posName" name='pos-name' placeholder='Name'>
-    </div>
+  <div class="ui error message"></div>
+  <label>Name:</label>
+  <div class='ui left labeled input field'>
+    <input type='text' class="posName" name='text' placeholder='Name'>
+  </div>
 
-    <% var submit = "Delete"; %>
+  <% var submit = "Save"; %>
 
-    <%= include ../../../util/formModules/cancelSubmit.ejs %>
+  <%= include ../../../util/formModules/cancelSubmit.ejs %>
 </div>
