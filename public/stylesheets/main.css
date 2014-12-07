@@ -228,12 +228,12 @@ label.colon {
     background : #5C6166 !important;
 }
 
-.block-shift.trading:hover, .owned:hover, .block-avail:hover {
+.block-shift.trading:hover, .owned:hover, .block-avail:hover, .label-position:hover {
     background-color : #5C6166 !important;
     color: white !important;
 }
 
-.block-shift.trading, .owned, .block-avail {
+.block-shift.trading, .owned, .block-avail, .label-position {
     cursor: pointer;
     cursor: hand;
 }

@@ -92,8 +92,8 @@ var weekOf = function (date) {
 }
 
 $(function(){
-    var $navToggle = $('nav .toggle.checkbox');
-    $navToggle.checkbox();
+    var $navToggle = $('nav .toggle.checkbox')
+    $('.ui.checkbox').checkbox();
 
     var employeeView = $navToggle.attr('employeeView');
     employeeView = employeeView === "true" ? true : false;
@@ -148,6 +148,7 @@ $(function(){
       autoHeight  : true,
       autoResize  : true,
       scrolling   : 'no',
+      openEffect  : 'none',
       afterClose  : function() {
         $('#schedule .active').removeClass('active');
       }
