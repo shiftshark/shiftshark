@@ -1,7 +1,7 @@
 // find the correct date and set an info reminder
 function createShiftInfo() {
   var date = $('#schedule .active').attr('date');
-  
+
   if (!date) {
     date = $('#currentDate').attr('date');
   }
@@ -143,7 +143,7 @@ function bindScheduleListeners() {
         $position.addClass('active');
 
         // select the position and set the value
-        $('#createShift [name="select-position"]').parent().dropdown('set value', positionName.toLowerCase());    
+        $('#createShift [name="select-position"]').parent().dropdown('set value', positionName.toLowerCase());
         $('#createShift [name="select-position"]').parent().dropdown('set selected', positionName);
       }
     }
@@ -157,10 +157,13 @@ $(document).ready(function() {
   // get the current date and create a timetable from that
   var curDate = $('#currentDate').attr('date');
   dailyView = true;
-  
-  schedule = Calendar(new Date(curDate), new Date(curDate)); 
-  
-  // add the schedule to the page 
+
+  var curWeek = weekOf(new Date(curDate));
+  $('#currentDate').html(moment(curWeek.start).format('ddd, ll') + "-<br>" +
+                         moment(curWeek.end).format('ddd, ll'));
+  schedule = Calendar(curWeek.start, curWeek.end);
+
+  // add the schedule to the page
   $('#schedule').append(schedule);
 
   // get all positions

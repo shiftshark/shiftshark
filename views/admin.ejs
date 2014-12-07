@@ -77,11 +77,9 @@
                 <div class="ui row middle algined">
 
                     <div class="column left algined eight wide wrap dateNavWrapper">
-                        <i class="left double angle icon weekNavigation"></i>
-                        <i class="left angle icon dateNavigation"></i>
-                        <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
-                        <i class="right angle icon dateNavigation"></i>
-                        <i class="right double angle icon weekNavigation"></i>
+                        <p class="weekNavigation"><i class="left angle icon"></i></p>
+                        <div class="wrap" id="currentDate" date="<%= dateToCheck %>"></div>
+                        <p class="weekNavigation"><i class="right angle icon"></i></p>
                     </div>
 
                     <div id='button-bar' class='column right aligned eight wide'>
@@ -110,11 +108,6 @@
                                 Availability
                             </div>
                         </a>
-                        <!--<div class='item wrap'>
-                            <a href='#weeklyView' onclick='changeWeeklyView()' class='ui inverted black button'>
-                                Weekly View
-                            </a>
-                        </div>-->
                     </div>
 
                 </div>

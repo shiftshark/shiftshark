@@ -171,6 +171,16 @@ label.colon {
 .dateNavigation, .weekNavigation {
     cursor: pointer !important;
     cursor: hand !important;
+    vertical-align: middle !important;
+    display: inline-block;
+}
+
+#currentDate {
+    text-align: center;
+    font-size: 14px !important;
+    vertical-align: middle !important;
+    display: inline-block;
+    width: auto;
 }
 
 .fancybox-inner {
@@ -180,11 +190,6 @@ label.colon {
 .ownerIndicator, .shiftInfo, .createInfo, .deleteInfo {
     padding-bottom: 10px;
 }
-
-/*.dateNavWrapper {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}*/
 
 .dateNavWrapper i, .dateNavWrapper div {
     font-size: 1.5em !important;

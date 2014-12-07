@@ -123,7 +123,7 @@ $(document).ready(function() {
             $that.removeClass('animating');
         });
 
-        
+
     }
 
     // submits the new role / position when the user hits enter
@@ -158,25 +158,6 @@ $(document).ready(function() {
         };
 
         client_logout(success,failure);
-    });
-
-    // date navigation
-    $('.dateNavigation').on('click', function() {
-        $this = $(this);
-
-        var isLeft = $this.hasClass('left');
-        var currentDate = $('#currentDate').attr('date');
-        currentDate = new Date(currentDate);
-
-        if (isLeft) {
-            var yesterday = currentDate;
-            yesterday.setDate(currentDate.getDate()-1);
-            window.location.replace("/?date=" + yesterday.toDateString());
-        } else {
-            var tomorrow = currentDate;
-            tomorrow.setDate(currentDate.getDate()+1);
-            window.location.replace("/?date=" + tomorrow.toDateString());
-        }
     });
 
     // week navigation

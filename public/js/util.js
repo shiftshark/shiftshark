@@ -72,7 +72,21 @@ var formatDate = function(date) {
 var getOwnerFromShift = function (shift) {
     if (shift.claimant != null) {
         return shift.claimant.firstName + ' ' + shift.claimant.lastName
-    } else {        
+    } else {
         return shift.assignee.firstName + ' ' + shift.assignee.lastName
     }
+}
+
+var weekOf = function (date) {
+    var day = (date.getDay() + 6) % 7; // week start adjustment
+
+    // startDate = Monday of week
+    var startDate = new Date(date.toDateString());
+    startDate.setDate(startDate.getDate() - day);
+
+    // endDate = first Sunday after startDate
+    var endDate = new Date(startDate.toDateString());
+    endDate.setDate(endDate.getDate() + 6);
+
+    return { start: startDate, end: endDate };
 }
