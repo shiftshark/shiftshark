@@ -1,5 +1,5 @@
 // find the correct date and set an info reminder
-function createShiftInfo() {
+function createShiftInfo($this) {
   var date = $('#schedule .active').attr('date');
 
   if (!date) {
@@ -45,7 +45,21 @@ function bindScheduleListeners() {
     $('.modify .edit.field').checkbox('enable');
   });
 
-  // open the trading modal
+  // open the moidfy position modal
+  $(document).on('click', '.label-position', function() {
+    $this = $(this);
+    $this.addClass('active');
+    // get the position
+    var posId = $this.attr('position');
+    var position = client_positions_get_one(posId).data.position;
+
+    // set the name
+    $('#modifyPosition .posName').val(position.name);
+
+    // open the modal via emulated click
+    $('#modifyPositionTrigger').trigger('click');
+  });
+
   // open the modify shift modal
   $(document).on('click', '.block-shift.trading', function() {
     var $this = $(this);
@@ -110,9 +124,9 @@ function bindScheduleListeners() {
 
   // opens create shift when clicking on an empty box
   $(document).on('click', '.block-empty', function() {
-    createShiftInfo();
     var $this = $(this);
-    console.log($this);
+    $this.addClass('active');
+    createShiftInfo();
 
     // get the hours and the minutes
     var hour = parseInt($this.attr('hour'));

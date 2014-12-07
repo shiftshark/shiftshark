@@ -1,0 +1,22 @@
+<div class='centered-text ctitle'>Modify Position</div>
+<div class='forceCenter ui form modifyPos action' style='margin-top:5px;'>
+    <div class='inline fields wrap'>
+        <div class='field'>Action:</div>
+        <div class='edit field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='modify-action' value='edit' checked='checked'>
+                <label>Edit</label>
+            </div>
+        </div>
+        <div class='field'>
+            <div class='ui radio checkbox'>
+                <input type='radio' name='modify-action' value='delete'>
+                <label>Delete</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%= include formInstances/modifyPosEdit.ejs %>
+
+<%= include formInstances/modifyPosDelete.ejs %>
