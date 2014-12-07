@@ -84,7 +84,7 @@ $(document).ready(function() {
       var failure = function(xhr, status, err) {
         addForm.removeClass('loading');
         addForm.removeClass('success');
-        $('.add.employee.form .ui.error.message').html('<ul class="list"><li>Validation error. Please log in again.</li></ul>');
+        $('.add.employee.form .ui.error.message').html('<ul class="list"><li>' + err + '</li></ul>');
         $.fancybox.update();
         addForm.addClass('error');
         (xhr,status,err);

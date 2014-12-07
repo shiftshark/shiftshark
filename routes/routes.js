@@ -12,7 +12,7 @@ var Availability = require('../models/availability');
 router.get('/', function(req, res) {
   if (req.user === undefined || req.user === null) {
     // unauthorized
-    res.render('auth', {formType:'login'});
+    res.render('auth', {formType:'login', employeeView:true});
   } else if (req.user.employer === true) {
     // employer
     Employee.find({ schedule: req.user.schedule }, 'firstName lastName username', function(err, employees) {
@@ -29,8 +29,7 @@ router.get('/', function(req, res) {
             if (req.query.date !== undefined && req.query.date !== null) {
               date = new Date(String(req.query.date));
             }
-            res.render('admin', {req:req, isAdmin:true, employees:employees, positions:positions, schedule:shifts, dateToCheck: date});
-            // res.render('employee', {req:req, isAdmin:false, positions:positions, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
+            res.render('admin', {req:req, isAdmin:true, employees:employees, positions:positions, schedule:shifts, dateToCheck: date, employeeView:false});
           });
       });
     });
@@ -47,11 +46,33 @@ router.get('/', function(req, res) {
           if (req.query.date !== undefined && req.query.date !== null) {
             date = new Date(String(req.query.date));
           }
-          res.render('employee', {req:req, isAdmin:false, positions:positions, schedule:shifts, dateToCheck: date});
-          // res.render('employee', {isAdmin:false, schedule:shifts, dateToCheck:Date("Mon Nov 18 2014")});
+          res.render('employee', {req:req, positions:positions, schedule:shifts, dateToCheck: date, employeeView:true});
         });
     });
   }
+});
+
+/* Employee View */
+router.get('/employee', function(req, res) {
+  if (req.user === undefined || req.user === null) {
+    // unauthorized
+    res.render('auth', {formType:'login', employeeView:true});
+  }
+
+  Shift.find({ schedule: req.user.schedule }, function(err, shifts) {
+    if (err) return res.status(500).end();
+    if (shifts == undefined || shifts == null) { shifts = []; }
+      Position.find({ schedule: req.user.schedule }, function(err, positions) {
+        if (err) return res.status(500).end();
+        if (positions == undefined || positions == null) { positions = []; }
+        // determine date
+        var date = new Date(); // today
+        if (req.query.date !== undefined && req.query.date !== null) {
+          date = new Date(String(req.query.date));
+        }
+        res.render('employee', {req:req, positions:positions, schedule:shifts, dateToCheck: date, employeeView:true});
+      });
+    });
 });
 
 /* Availability -- Employee or Admin View */
@@ -68,12 +89,12 @@ router.get('/availability', function(req, res) {
 
     // render admin or employee view
     if (adminView) {
-      res.render('adminAvail', {req:req, isAdmin:true, weekday:weekday});
+      res.render('adminAvail', {req:req, employeeView:!adminView, weekday:weekday});
     } else {
-      res.render('employeeAvail', {req:req, isAdmin:false, employer:true});
+      res.render('employeeAvail', {req:req, employeeView:!adminView, employer:true});
     }
   } else { // Employee Only
-    res.render('employeeAvail', {req:req, isAdmin:false, employer:false});
+    res.render('employeeAvail', {req:req, employeeView:true, employer:false});
   }
 });
 
@@ -82,7 +103,7 @@ router.get('/availability', function(req, res) {
 //////////
 
 router.get('/signup', function(req, res) {
-    res.render('auth', {formType:'employerSignup'});
+    res.render('auth', {formType:'employerSignup', employeeView:true});
 });
 
 router.post('/login', function(req, res, next) {

@@ -55,7 +55,6 @@ $(document).ready(function() {
     });
 
     // instantiate the semantic checkboxes and dropdowns
-    $('.ui.checkbox').checkbox();
     $('.ui.dropdown').dropdown();
 
     $('#logout').on('click', function() {

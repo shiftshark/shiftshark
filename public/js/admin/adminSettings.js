@@ -93,7 +93,6 @@ $(document).ready(function() {
       // add a loading animation
       $form.addClass('loading');
 
-      console.log(employee, self);
       if (employee == self) {
         // show an error message
         $('.ui.error.message').html('<ul class="list"><li>You cannot remove your own administrator privileges.</li></ul>');

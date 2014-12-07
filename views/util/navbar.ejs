@@ -6,7 +6,19 @@
         <div class='fright ntitle'>ShiftShark</div>
     </a>
     <div class='right item'>
-        <a class='left item tiny' id='logout'>LOGOUT</a>
-        <a class='right hidden fancybox item' href='#profileSettings' id='profile'>MY PROFILE</a>
+        <% if(req.user.employer) { %>
+        <div class="item" style="height:43px!important;margin-top:-23px;">
+            <p class='wrap'>Admin</p>
+            <div class='wrap'>
+                <div class='ui toggle checkbox' employeeView="<%= employeeView %>">
+                    <input class='wrap' type='checkbox'>
+                    <label></label>
+                </div>
+                
+            </div>
+            <p class='wrap' style='margin-left:-12px;'>Employee</p>
+        </div>
+        <% } %>
+        <a class='item' id='logout'>LOGOUT</a>
     </div>
 </nav>

@@ -90,3 +90,27 @@ var weekOf = function (date) {
 
     return { start: startDate, end: endDate };
 }
+
+$(function(){
+    var $navToggle = $('nav .toggle.checkbox')
+    $navToggle.checkbox();
+
+    var employeeView = $navToggle.attr('employeeView');
+    employeeView = employeeView === "true" ? true : false;
+    console.log(employeeView);
+
+    if (employeeView) {
+        $navToggle.checkbox('enable');
+    } else {
+        $navToggle.checkbox('disable');
+    }
+
+    $navToggle.checkbox('setting', 'onEnable', function() {
+        window.location.replace('/employee');
+    });
+
+    $navToggle.checkbox('setting', 'onDisable', function() {
+        window.location.replace('/');
+    });
+
+})

@@ -56,7 +56,11 @@
             <div id='curUser' userId='<%= req.user._id %>' />
             <div class='adminOptions'>
                 <div class='right'>
+                    <% if(req.user.employer) { %>
+                    <a href="/employee" class='wrap'>
+                    <% } else { %>
                     <a href="/" class='wrap'>
+                    <% } %>
                         <div class='ui left labeled icon inverted black tiny button'>
                             <i class="left arrow icon"></i>
                             Shifts

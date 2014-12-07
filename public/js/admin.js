@@ -72,7 +72,6 @@ $(document).ready(function() {
     });
 
     // instantiate the semantic checkboxes and dropdowns
-    $('.ui.checkbox').checkbox();
     $('.ui.dropdown').dropdown();
 
     // HTML to be put into the role button

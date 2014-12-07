@@ -179,14 +179,19 @@ label.colon {
     cursor: hand !important;
 }
 
-.dateNavWrapper, .weekNavigation {
+.dateNavWrapper {
     margin-top: 1em;
     margin-left: 1em;
+}
 
+.weekNavigation, .dateNavigation {
     cursor: pointer !important;
     cursor: hand !important;
-    vertical-align: middle !important;
     display: inline-block;
+}
+
+.weekNavigation {
+    vertical-align: middle !important;
 }
 
 #currentDate {
@@ -206,6 +211,7 @@ label.colon {
 }
 
 #schedule {
+    margin-top: 1em;
     overflow-x:auto;
 }
 
