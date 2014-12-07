@@ -54,17 +54,17 @@
         <%= include util/navbar.ejs %>
         <main>
             <div id='curUser' userId='<%= req.user._id %>' />
-            <div class='ui adminOptions menu'>
-                <div class='right item'>
+            <div class='adminOptions'>
+                <div class='right'>
                     <% if (employer) { %>
-                        <a href="/availability" class='item wrap'>
-                            <div class='ui inverted black button'>
+                        <a href="/availability" class='wrap'>
+                            <div class='ui inverted black tiny button'>
                                 View all Availabilities
                             </div>
                         </a>
                     <% } %>
-                    <a href="/" class='item wrap'>
-                      <div class='ui inverted black button'>
+                    <a href="/" class='wrap'>
+                      <div class='ui inverted black tiny button'>
                             Back to Shifts
                         </div>
                     </a>

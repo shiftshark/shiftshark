@@ -44,19 +44,20 @@
     <body>
         <%= include util/navbar.ejs %>
         <main>
-            <div id='weekday' weekday='<%= weekday %>' weekdayName='<%= weekdayName[weekday] %>' />
-            <div class='ui adminOptions menu'>
-                <div class="left item vcentered wrap dateNavWrapper">
-                    <i class="left angle icon dateNavigation"></i>
-                    <div class="wrap"><%= weekdayName[weekday] %></div>
-                    <i class="right angle icon dateNavigation"></i>
-                </div>
-                <div class='right item'>
-                    <a href="/availability?employeeView=true" class='item wrap'>
-                    <div class='ui inverted black button'>
+            <div id='weekday' weekday='<%= weekday %>' weekdayName='<%= weekdayName[weekday] %>'></div>
+            <div class='adminOptions'>
+                <div class='right'>
+                    <a href="/availability?employeeView=true" class=' wrap'>
+                    <div class='ui inverted black tiny button'>
                         Edit Your Availability
                     </div>
-                </a>
+                    </a>
+                </div>
+                <div class="left wrap dateNavWrapper">
+                        <i class="left angle icon dateNavigation"></i>
+                        <div class="wrap"><%= weekdayName[weekday] %></div>
+                        <i class="right angle icon dateNavigation"></i>
+                </div>
             </div>
             <div id="schedule" style="margin-left:1em;"></div>
         </main>

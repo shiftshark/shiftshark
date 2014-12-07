@@ -94,7 +94,7 @@ $(document).ready(function() {
             // store this jquery object
             $that = $(this);
             // animate the button into a new size
-            $(this).children().animate({height:'31px',width:'214px'}, function() {
+            $(this).children().animate({width:'214px'}, function() {
                 // replace the button with a textbox
                 $that.html(roleInput);
                 // set the focus to the textbox

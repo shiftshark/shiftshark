@@ -45,25 +45,20 @@
         <%= include util/navbar.ejs %>
         <main>
             <div id='curUser' userId='<%= req.user._id %>'></div>
-            <div class='ui adminOptions menu'>
-                <div class="left item wrap dateNavWrapper">
+            <div class='ui adminOptions'>
+                <div>
+                    <a href="/availability" class='wrap'>
+                        <div class='ui inverted black tiny button'>
+                            Edit Availability
+                        </div>
+                    </a>
+                </div>
+                <div class="column wrap dateNavWrapper">
                     <i class="left double angle icon weekNavigation"></i>
                     <i class="left angle icon dateNavigation"></i>
                     <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
                     <i class="right angle icon dateNavigation"></i>
                     <i class="right double angle icon weekNavigation"></i>
-                </div>
-                <div class='right item'>
-                    <a href="/availability" class='item wrap'>
-                        <div class='ui inverted black button'>
-                            Edit Availability
-                        </div>
-                    </a>
-                   <!-- <div class='item wrap'>
-                        <a href='#weeklyView' onclick='changeWeeklyView()' class='ui inverted black button'>
-                            Weekly View
-                        </a>
-                    </div>-->
                 </div>
             </div>
             <div id="schedule" style="margin-left:1em;"></div>
