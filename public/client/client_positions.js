@@ -79,6 +79,6 @@ function client_positions_change (id, position, callback_success, callback_error
  *
  * Returns: Only returns when used synchronously; see definition for ajax_call(...).
  */
-function client_positions_remove (id, position, callback_success, callback_error) {
+function client_positions_remove (id, callback_success, callback_error) {
   return ajax_call('DELETE', '/positions/' + String(id), null, callback_success, callback_error);
 }
