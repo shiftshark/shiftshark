@@ -1,10 +1,10 @@
 $(document).ready(function() {
-  var selector         = '.ui.modify.delete.form';
+  var selector         = '.ui.modifyPos.delete.form';
   var $form            = $(selector);
   var recurring        = false;
   var $startDate       = $(selector + ' .startDate .datePicker');
   var $endDate         = $(selector + ' .endDate .datePicker');
-  var components       = ['startDate', 'endDate'];
+  var components       = [];
   var rules;
 
   var settings = {
@@ -29,24 +29,6 @@ $(document).ready(function() {
     $.fancybox.update();
   });
 
-  // if the toggle is set to true set recurring to true, update the rules, and show the recurring content
-  $(selector + ' .checkbox.toggle').checkbox('setting', 'onEnable', function(evt) {
-    recurring = true;
-    updateRules();
-    var $recurring = $(selector + ' .recurring');
-    $recurring.removeClass('hidden');
-    $.fancybox.update();
-  });
-
-  // if the toggle is set to true set recurring to false, update the rules, and hide the recurring content
-  $(selector + ' .checkbox.toggle').checkbox('setting', 'onDisable', function(evt) {
-    recurring = false;
-    updateRules();
-    var $recurring = $(selector + ' .recurring');
-    $recurring.addClass('hidden');
-    $.fancybox.update();
-  });
-
   // submit on submit button pressed
   $(selector + ' .submit.button').on('click', function() {
     $form.form('validate form');
@@ -56,7 +38,7 @@ $(document).ready(function() {
     // if valid, submit
     if (validForm) {
       // get the shiftId
-      var shiftId = $('#schedule .active').attr('shiftid');
+      var posId   = $('#schedule .active').attr('position');
 
       // if success, update the schedule
       var success = function(result, status, xhr) {
@@ -67,12 +49,8 @@ $(document).ready(function() {
         // close the fancybox
         $('.fancybox-close').trigger('click');
 
-        // get the shift and set the date as a date object
-        var i;
-        for (i = 0; i < result.shiftIds.length; i++) {
-          var shiftId = result.shiftIds[i];
-          // update the schedule
-          schedule.shift_remove(shiftId);
+        //update schedule
+        schedule.position_remove(result.positionId);
         }
       };
 
@@ -80,7 +58,6 @@ $(document).ready(function() {
       var failure = function(xhr, status, err) {
         // show an error message
         $('.ui.error.message').html('<ul class="list"><li>' + err + '</li></ul>');
-        $form.addClass('error');
         // resize fancybox
         $.fancybox.update();
         // removing loading animation
@@ -90,23 +67,7 @@ $(document).ready(function() {
       // add a loading animation
       $form.addClass('loading');
 
-      // if recurring then submit with start and end dates
-      if (recurring) {
-        // parse the start and end dates
-        var startDate = new Date($startDate.val());
-        var endDate = new Date($endDate.val());
-
-        var query = {
-          startDate : startDate,
-          endDate   : endDate
-        };
-
-        // submit to server
-        client_shifts_remove(shiftId, query, success, failure);
-      } else {
-        // submit not recurring to server
-        client_shifts_remove(shiftId, null, success, failure);
-      }
-    }
+      // submit not recurring to server
+      client_positions_remove(posId, success, failure);
   });
 });

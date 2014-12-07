@@ -18,10 +18,6 @@
         <i class='mail icon'></i>
     </div>
     <p>The employee will receive an email containing the account password.</p>
-    <div class='ui formButtons menu'>
-        <div class='right item submitButtons'>
-            <div class='ui red cancel button'>Cancel</div>
-            <div class='ui black submit button'>Add</div>
-        </div>
-    </div>
+    <% var submit = "Add" %>
+    <%= include ../../util/formModules/cancelSubmit.ejs %>
 </div>

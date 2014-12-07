@@ -303,6 +303,15 @@ rulesGenerator = function(components, selector, recurring) {
           prompt  : 'Please enter a valid end date'
         }
       ]
+    },
+    text: {
+      identifier  : 'text',
+      rules : [
+        {
+          type    : 'empty',
+          prompt  : 'Text cannot be empty.'
+        }
+      ]
     }
   };
 
