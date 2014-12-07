@@ -41,7 +41,7 @@
         <style type="text/css">
             .block-empty:hover {
                 background-color : #5C6166 !important;
-                color: white !important; 
+                color: white !important;
             }
 
             .block-empty {
@@ -51,32 +51,33 @@
         </style>
     </head>
     <body>
-        <div id='curUser' userId='<%= req.user._id %>' />
         <%= include util/navbar.ejs %>
-        <div class='ui adminOptions menu'>
-            <div class='right item'>
-                <% if (employer) { %>
-                    <a href="/availability" class='item wrap'>
-                        <div class='ui inverted black button'>
-                            View all Availabilities
+        <main>
+            <div id='curUser' userId='<%= req.user._id %>' />
+            <div class='ui adminOptions menu'>
+                <div class='right item'>
+                    <% if (employer) { %>
+                        <a href="/availability" class='item wrap'>
+                            <div class='ui inverted black button'>
+                                View all Availabilities
+                            </div>
+                        </a>
+                    <% } %>
+                    <a href="/" class='item wrap'>
+                      <div class='ui inverted black button'>
+                            Back to Shifts
                         </div>
                     </a>
-                <% } %>
-                <a href="/" class='item wrap'>
-                  <div class='ui inverted black button'>
-                        Back to Shifts
-                    </div>
-                </a>
-        </div>
-        <div id="schedule" style="margin-left:1em;margin-top:1em;">
-        </div>
-        <a class="hidden fancybox" id="createTrigger" href="#create"></a>
-        <div id='create' class='modalContent'>
-            <%= include modals/avails/createAvail.ejs %>
-        </div>
-        <a class="hidden fancybox" id="deleteTrigger" href="#delete"></a>
-        <div id='delete' class='modalContent'>
-            <%= include modals/avails/deleteAvail.ejs %>
-        </div>
+            </div>
+            <div id="schedule" style="margin-left:1em;margin-top:1em;"></div>
+            <a class="hidden fancybox" id="createTrigger" href="#create"></a>
+            <div id='create' class='modalContent'>
+                <%= include modals/avails/createAvail.ejs %>
+            </div>
+            <a class="hidden fancybox" id="deleteTrigger" href="#delete"></a>
+            <div id='delete' class='modalContent'>
+                <%= include modals/avails/deleteAvail.ejs %>
+            </div>
+        </main>
     </body>
 </html>

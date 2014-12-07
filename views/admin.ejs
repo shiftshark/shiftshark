@@ -55,11 +55,11 @@
             }
             .block-shift:hover {
                 background-color : #5C6166 !important;
-                color: white !important; 
+                color: white !important;
             }
             .block-empty:hover {
                 background-color : #5C6166 !important;
-                color: white !important; 
+                color: white !important;
             }
 
             .block-empty {
@@ -70,67 +70,75 @@
     </head>
 
     <body>
-        <div id='curUser' userId='<%= req.user._id %>' />
         <%= include util/navbar.ejs %>
-        <div class='ui adminOptions menu'>
-            <div class="left item wrap vcentered dateNavWrapper">
-                <i class="left double angle icon weekNavigation"></i>
-                <i class="left angle icon dateNavigation"></i>
-                <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
-                <i class="right angle icon dateNavigation"></i>
-                <i class="right double angle icon weekNavigation"></i>
-            </div>
-            <div class='right item'>
-                <div class='item wrap'>
-                    <a href='#adminSettings' class='ui inverted black fancybox button'>
-                        Admin Settings
-                    </a>
-                </div>
-                <div class='item wrap'>
-                    <a href='#employeeSettings' class='ui inverted black fancybox button'>
-                        + Employee
-                    </a>
-                </div>
-                <div class='item wrap'>
-                    <a href='#createShift' onclick='createShiftInfo()' class='ui inverted black fancybox button'>
-                        Create Shift
-                    </a>
-                </div>
-                <div id='roleButton' class='item wrap'>
-                    <div class='ui inverted black button'>
-                        + Position
+        <main>
+            <div id='curUser' userId='<%= req.user._id %>'></div>
+            <div class='ui adminOptions grid'>
+                <div class="ui row middle algined">
+
+                    <div class="column left algined eight wide wrap dateNavWrapper">
+                        <i class="left double angle icon weekNavigation"></i>
+                        <i class="left angle icon dateNavigation"></i>
+                        <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
+                        <i class="right angle icon dateNavigation"></i>
+                        <i class="right double angle icon weekNavigation"></i>
                     </div>
-                </div>
-                <a href="/availability" class='item wrap'>
-                    <div class='ui inverted black button'>
-                        Availability
+
+                    <div id='button-bar' class='column right aligned eight wide'>
+                        <div class='item wrap'>
+                            <a href='#adminSettings' class='ui inverted black fancybox button'>
+                                Admin Settings
+                            </a>
+                        </div>
+                        <div class='item wrap'>
+                            <a href='#employeeSettings' class='ui inverted black fancybox button'>
+                                + Employee
+                            </a>
+                        </div>
+                        <div class='item wrap'>
+                            <a href='#createShift' onclick='createShiftInfo()' class='ui inverted black fancybox button'>
+                                Create Shift
+                            </a>
+                        </div>
+                        <div id='roleButton' class='item wrap'>
+                            <div class='ui inverted black button'>
+                                + Position
+                            </div>
+                        </div>
+                        <a href="/availability" class='item wrap'>
+                            <div class='ui inverted black button'>
+                                Availability
+                            </div>
+                        </a>
+                        <!--<div class='item wrap'>
+                            <a href='#weeklyView' onclick='changeWeeklyView()' class='ui inverted black button'>
+                                Weekly View
+                            </a>
+                        </div>-->
                     </div>
-                </a>
-                <!--<div class='item wrap'>
-                    <a href='#weeklyView' onclick='changeWeeklyView()' class='ui inverted black button'>
-                        Weekly View
-                    </a>
-                </div>-->
+
+                </div>
+
             </div>
-        </div>
-        <div id="schedule" style="margin-left:1em;">
-        </div>
-        <div id='profileSettings' class='modalContent'>
-            <%= include modals/profileSettings.ejs %>
-        </div>
-        <div id='employeeSettings' class='modalContent'>
-            <%= include modals/admin/employeeSettings.ejs %>
-        </div>
-        <a class="hidden fancybox" id="createShiftTrigger" href="#createShift"></a>
-        <div id='createShift' class='modalContent'>
-            <%= include modals/admin/createShift.ejs %>
-        </div>
-        <a class="hidden fancybox" id="modifyShiftTrigger" href="#modifyShift"></a>
-        <div id='modifyShift' class='modalContent'>
-            <%= include modals/admin/modifyShift.ejs %>
-        </div>
-        <div id='adminSettings' class='modalContent'>
-            <%= include modals/admin/adminSettings.ejs %>
-        </div>
+            <div id="schedule" style="margin-left:1em;">
+            </div>
+            <div id='profileSettings' class='modalContent'>
+                <%= include modals/profileSettings.ejs %>
+            </div>
+            <div id='employeeSettings' class='modalContent'>
+                <%= include modals/admin/employeeSettings.ejs %>
+            </div>
+            <a class="hidden fancybox" id="createShiftTrigger" href="#createShift"></a>
+            <div id='createShift' class='modalContent'>
+                <%= include modals/admin/createShift.ejs %>
+            </div>
+            <a class="hidden fancybox" id="modifyShiftTrigger" href="#modifyShift"></a>
+            <div id='modifyShift' class='modalContent'>
+                <%= include modals/admin/modifyShift.ejs %>
+            </div>
+            <div id='adminSettings' class='modalContent'>
+                <%= include modals/admin/adminSettings.ejs %>
+            </div>
+        </main>
     </body>
 </html>
