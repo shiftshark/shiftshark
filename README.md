@@ -1,4 +1,4 @@
-Project 4.2 -- MVP -- ShiftShark
+Project 4 -- ShiftShark
 ===
 ***6.170 Final Team Project***
 
@@ -10,9 +10,6 @@ The site is hosted online by OpenShift at http://shiftshark-aandre.rhcloud.com/
 To run the tests, visit `http://shiftshark-aandre.rhcloud.com/tests.html`.
 
 NOTE: The tests are not safe to be run concurrently! Only one TA should visit this URL at a time. The test may take several seconds to run.
-
-# Notes
-Daylight savings time causes display date issues when it comes to scheduling times across DST.
 
 # Attribution
 * `seedrandom.js` - JS tool by David Bau to create a randomization seed from a string.
