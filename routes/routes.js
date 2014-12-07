@@ -8,7 +8,7 @@ var Schedule = require('../models/schedule');
 var Shift = require('../models/shift');
 var Availability = require('../models/availability');
 
-/* GET home page. */
+/* Home Page -- (Dynamically) Login, Admin, or Employee */
 router.get('/', function(req, res) {
   if (req.user === undefined || req.user === null) {
     // unauthorized
@@ -54,30 +54,25 @@ router.get('/', function(req, res) {
   }
 });
 
-router.get('/signup', function(req, res) {
-    res.render('auth', {formType:'employerSignup'});
-});
-
-/* GET home page. */
+/* Availability -- Employee or Admin View */
 router.get('/availability', function(req, res) {
-  if (req.user === undefined || req.user === null) {
-    // unauthorized
-    res.redirect('/');  //don't want to open the app on the availability screen
-  } else if (req.user.employer === true) {
+  if (req.user === undefined || req.user === null) { // unauthorized
+    res.redirect('/');
+  } else if (req.user.employer === true) { // Employer Permissions
+    // parse params
     var weekday = req.query.weekday;
-    var employeeView = req.query.employeeView || false;
-
-    if (!weekday) {
+    var adminView = req.query.admin === '1' || req.query.admin === 'true';
+    if (!weekday || parseInt(weekday) < 0 || parseInt(weekday) > 6) {
       weekday = ((new Date()).getDay() + 6) % 7;
     }
-    
-    if (!employeeView){
+
+    // render admin or employee view
+    if (adminView) {
       res.render('adminAvail', {req:req, isAdmin:true, weekday:weekday});
+    } else {
+      res.render('employeeAvail', {req:req, isAdmin:false, employer:true});
     }
-    else{
-      res.render('employeeAvail', {req:req, isAdmin:false, employer:true})
-    }
-  } else {
+  } else { // Employee Only
     res.render('employeeAvail', {req:req, isAdmin:false, employer:false});
   }
 });
@@ -85,6 +80,10 @@ router.get('/availability', function(req, res) {
 //////////
 // AUTH //
 //////////
+
+router.get('/signup', function(req, res) {
+    res.render('auth', {formType:'employerSignup'});
+});
 
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {

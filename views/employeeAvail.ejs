@@ -56,16 +56,10 @@
             <div id='curUser' userId='<%= req.user._id %>' />
             <div class='adminOptions'>
                 <div class='right'>
-                    <% if (employer) { %>
-                        <a href="/availability" class='wrap'>
-                            <div class='ui inverted black tiny button'>
-                                View all Availabilities
-                            </div>
-                        </a>
-                    <% } %>
                     <a href="/" class='wrap'>
-                      <div class='ui inverted black tiny button'>
-                            Back to Shifts
+                        <div class='ui left labeled icon inverted black tiny button'>
+                            <i class="left arrow icon"></i>
+                            Shifts
                         </div>
                     </a>
             </div>

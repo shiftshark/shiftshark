@@ -30,20 +30,20 @@ $(document).ready(function() {
   });
 
   // date navigation
-    $('.dateNavigation').on('click', function() {
-      $this = $(this);
+  $('.dateNavigation').on('click', function() {
+    $this = $(this);
 
-      var isLeft = $this.hasClass('left');
-      var weekday = parseInt($('#weekday').attr('weekday'),10);
+    var isLeft = $this.hasClass('left');
+    var weekday = parseInt($('#weekday').attr('weekday'),10);
 
-      if (isLeft) {
-        var yesterday = (weekday + 6) % 7;
-        window.location.replace("/availability?weekday=" + yesterday);
-      } else {
-        var tomorrow = (weekday + 1) % 7;
-        window.location.replace("/availability?weekday=" + tomorrow);
-      }
-    });
+    if (isLeft) {
+      var yesterday = (weekday + 6) % 7;
+      window.location.replace("/availability?admin=true&weekday=" + yesterday);
+    } else {
+      var tomorrow = (weekday + 1) % 7;
+      window.location.replace("/availability?admin=true&weekday=" + tomorrow);
+    }
+  });
 
   // Instantiate the fancybox settings
   $('.fancybox').fancybox({
