@@ -154,7 +154,7 @@ function bindScheduleListeners() {
 }
 
 $(document).ready(function() {
-  // get the current date and create a timetable from that
+  // get the current date and create weekly calendar from that
   var curDate = $('#currentDate').attr('date');
   dailyView = true;
 

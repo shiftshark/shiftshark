@@ -54,11 +54,9 @@
                     </a>
                 </div>
                 <div class="column wrap dateNavWrapper">
-                    <i class="left double angle icon weekNavigation"></i>
-                    <i class="left angle icon dateNavigation"></i>
-                    <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
-                    <i class="right angle icon dateNavigation"></i>
-                    <i class="right double angle icon weekNavigation"></i>
+                    <p class="left weekNavigation"><i class="left angle icon"></i></p>
+                        <div class="wrap" id="currentDate" date="<%= dateToCheck %>"></div>
+                    <p class="right weekNavigation"><i class="right angle icon"></i></p>
                 </div>
             </div>
             <div id="schedule" style="margin-left:1em;"></div>

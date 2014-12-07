@@ -15,7 +15,7 @@ function findOwner() {
 
 function bindScheduleListeners() {
   findOwner();
-  
+
   var fillInInfo = function($this){
     $this.addClass('active');
 
@@ -70,12 +70,16 @@ function bindScheduleListeners() {
 }
 
 $(document).ready(function() {
-  // get the current date and create a timetable from that
+  // get the current date and create weekly calendar from that
   var curDate = $('#currentDate').attr('date');
   dailyView = true;
-  schedule = Calendar(new Date(curDate), new Date(curDate));
-  
-  // add the schedule to the page 
+
+  var curWeek = weekOf(new Date(curDate));
+  $('#currentDate').html(moment(curWeek.start).format('ddd, ll') + "-<br>" +
+                         moment(curWeek.end).format('ddd, ll'));
+  schedule = Calendar(curWeek.start, curWeek.end);
+
+  // add the schedule to the page
   $('#schedule').append(schedule);
 
   // get all positions
