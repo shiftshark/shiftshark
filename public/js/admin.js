@@ -1,19 +1,3 @@
-var getAllEmployees = function() {
-    var employees;
-    $.ajax({
-        url : '/users/employees/',
-        type: 'GET',
-        async: false,
-        contentType: "application/json",
-        data: JSON.stringify({}),
-        success: function (result, status, xhr) {
-            employees = result.employees;
-        }
-    });
-
-    return employees;
-};
-
 $(document).ready(function() {
     // instantiate the semantic checkboxes and dropdowns
     $('.ui.dropdown').dropdown();

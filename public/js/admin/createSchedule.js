@@ -159,6 +159,10 @@ function bindScheduleListeners() {
         // select the position and set the value
         $('#createShift [name="select-position"]').parent().dropdown('set value', positionName.toLowerCase());
         $('#createShift [name="select-position"]').parent().dropdown('set selected', positionName);
+        $('#createShift [name="select-position"]').parent().dropdown({
+          transition: 'fade',
+          duration: 50
+        });
       }
     }
 
