@@ -1,6 +1,10 @@
 $(document).ready(function() {
+  // init Weekday to Monday
+  $('#weekday').attr('weekday', 0);
+  $('#weekDisplay').html('Monday');
+
   // date navigation
-  $('.dateNavigation').on('click', function() {
+  $('.dayNavigation').on('click', function() {
     $this = $(this);
 
     var isLeft = $this.hasClass('left');
@@ -13,9 +17,26 @@ $(document).ready(function() {
     }
 
     $('#weekday').attr('weekday', weekday);
+    var date = new Date(1970, 1, 2 + weekday);
+    $('#weekday').html(moment(date).format('dddd'));
 
     // re-create schedule
     $('#schedule').html("");
     initSchedule();
+  });
+
+  $('#weekday').dropdown({
+    onChange: function (val) {
+      var weekday = parseInt(val, 10);
+      $('#weekday').attr('weekday', weekday);
+      var date = new Date(1970, 1, 2 + weekday);
+      $('#weekDisplay').html(moment(date).format('dddd'));
+
+      // re-create schedule
+      $('#schedule').html("");
+      initSchedule();
+    },
+    transition: 'fade',
+    duration: 50
   });
 });

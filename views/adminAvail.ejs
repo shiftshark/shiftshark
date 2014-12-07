@@ -37,15 +37,11 @@
         <script src='/js/admin/createAvailSchedule.js'></script>
         <script src='/js/admin/availability.js'></script>
     </head>
-    <% weekdayName = ['Monday',
-        'Tuesday', 'Wednesday',
-        'Thursday', 'Friday',
-        'Saturday', 'Sunday'] %>
     <body>
         <%= include util/navbar.ejs %>
         <main>
-            <div id='weekday' weekday='<%= weekday %>' weekdayName='<%= weekdayName[weekday] %>'></div>
             <div class='adminOptions'>
+                <!-- Button Bar -->
                 <div class='right'>
                     <a href="/" class='wrap'>
                         <div class='ui left labeled icon inverted black tiny button'>
@@ -54,10 +50,30 @@
                         </div>
                     </a>
                 </div>
+                <!-- Day Selection -->
                 <div class="left wrap dateNavWrapper">
-                        <i class="left angle icon dateNavigation"></i>
-                        <div class="wrap"><%= weekdayName[weekday] %></div>
-                        <i class="right angle icon dateNavigation"></i>
+                    <!-- Left Button -->
+                    <div class="ui icon button left dayNavigation black inverted">
+                        <i class="left angle icon"></i>
+                    </div>
+                    <!-- Date -->
+                      <div id="weekday" weekday="" class="ui dropdown button">
+                        <a id="weekDisplay"></a>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                          <div class="item" data-value="0">Monday</div>
+                          <div class="item" data-value="1">Tuesday</div>
+                          <div class="item" data-value="2">Wednesday</div>
+                          <div class="item" data-value="3">Thursday</div>
+                          <div class="item" data-value="4">Friday</div>
+                          <div class="item" data-value="5">Saturday</div>
+                          <div class="item" data-value="6">Sunday</div>
+                        </div>
+                      </div>
+                    <!-- Right Button -->
+                    <div class="ui icon button right dayNavigation black inverted">
+                        <i class="right angle icon"></i>
+                    </div>
                 </div>
             </div>
             <div id="schedule" style="margin-left:1em;"></div>

@@ -75,6 +75,7 @@
         <main>
             <div id='curUser' userId='<%= req.user._id %>'></div>
             <div class='ui adminOptions'>
+                <!-- Button Bar -->
                 <div class='fright'>
                     <div class='wrap'>
                         <a href='#adminSettings' class='ui left labeled icon inverted black fancybox tiny button'>
@@ -101,6 +102,7 @@
                         </div>
                     </a>
                 </div>
+                <!-- Date Chooser -->
                 <div class="wrap dateNavWrapper">
                     <div class="ui icon button left weekNavigation black inverted">
                         <i class="left angle icon"></i>
@@ -113,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <div id="schedule" style="margin-left:1em;">
+            <div id="schedule" class="employer-view">
             </div>
             <div id='profileSettings' class='modalContent'>
                 <%= include modals/profileSettings.ejs %>

@@ -31,13 +31,13 @@ nav {
 }
 
 main {
-    position: relative;
+    position: fixed;
+    top: 60px;
     bottom: 0;
-    padding-bottom: 20px;
+    padding-bottom: 1em;
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    top: 60px;
 }
 
 .formButtons, .adminOptions {
@@ -190,13 +190,13 @@ label.colon {
     height: 60px;
 }
 
-.weekNavigation, .dateNavigation {
+.weekNavigation, .dayNavigation {
     cursor: pointer !important;
     cursor: hand !important;
     display: inline-block;
 }
 
-.weekNavigation {
+.weekNavigation, .dayNavigation {
     vertical-align: middle !important;
 }
 
@@ -217,8 +217,8 @@ label.colon {
 }
 
 #schedule {
-    margin-top: 1em;
     overflow-x:auto;
+    margin: 1em;
 }
 
 .dateNavWrapper i, .dateNavWrapper div {
@@ -234,12 +234,12 @@ label.colon {
     background : #5C6166 !important;
 }
 
-.block-shift.trading:hover, .owned:hover, .employee-view .block-avail:hover, .label-position:hover {
+.block-shift.trading:hover, .owned:hover, .employee-view .block-avail:hover, .employer-view .label-position:hover {
     background-color : #5C6166 !important;
     color: white !important;
 }
 
-.block-shift.trading, .owned, .employee-view .block-avail, .label-position {
+.block-shift.trading, .owned, .employee-view .block-avail, .employer-view  .label-position {
     cursor: pointer;
     cursor: hand;
 }
