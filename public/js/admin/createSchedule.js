@@ -37,7 +37,7 @@ function bindScheduleListeners() {
     $('#modifyShift .endDate .datePicker, #assignOffered .endDate .datePicker').val(formatDate(endDate));
     $('#modifyShift .startTime .timePicker, #assignOffered .startTime .timePicker').val(startTime.formatted);
     $('#modifyShift .endTime .timePicker, #assignOffered .endTime .timePicker').val(endTime.formatted);
-    $('.ownerIndicator').html('You have selected ' + ownerName + ' shift from ' + startTime + ' to ' + endTime + '.');
+    $('.ownerIndicator').html('You have selected <b>' + ownerName + '</b>\'s shift from <b>' + startTime + '</b> to <b>' + endTime + '</b>.');
   }
 
   // clicking breaks if I force it to be enabled, so this is necessary
@@ -153,7 +153,7 @@ function bindScheduleListeners() {
   });
 }
 
-$(document).ready(function() {
+function initSchedule () {
   // get the current date and create weekly calendar from that
   var curDate = $('#currentDate').attr('date');
   dailyView = true;
@@ -186,7 +186,11 @@ $(document).ready(function() {
     shift.date = new Date(shift.date);
     schedule.shift_add_update(shift);
   }
+}
 
-  previousModifyAction = 'edit'
+$(document).ready(function() {
+  initSchedule();
+
+  previousModifyAction = 'edit';
   bindScheduleListeners();
 });

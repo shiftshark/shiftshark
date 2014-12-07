@@ -15,7 +15,7 @@ function bindScheduleListeners() {
     var startTime = (new Time(avail.startTime)).formatted;
     var endTime = (new Time(avail.endTime)).formatted;
 
-    $('.deleteInfo').html('You have selected ' + weekday + ' from ' + startTime + ' to ' + endTime + '.');
+    $('.deleteInfo').html('You have selected <b>' + weekday + '</b> from ' + '<b>' + startTime + '</b> to <b>' + endTime + '</b>.');
     // open the modal via emulated click
     $('#deleteTrigger').trigger('click');
     $this.addClass('active');
@@ -23,7 +23,7 @@ function bindScheduleListeners() {
 
   // opens create shift when clicking on an empty box
   $(document).on('click', '.block-empty', function() {
-    
+
     $this = $(this);
     // get the hours and the minutes
     var weekday = weekdayName[parseInt($this.attr('day'))];
@@ -36,7 +36,7 @@ function bindScheduleListeners() {
     // set the start time value
     $('#create .startTime .timePicker').val(time);
 
-    $('.createInfo').html('You have selected ' + weekday + '.');
+    $('.createInfo').html('You have selected <b>' + weekday + '</b>.');
 
     // open the modal via emulated click
     $('#createTrigger').trigger('click');

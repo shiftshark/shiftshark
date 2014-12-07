@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function initSchedule () {
   // get the weekday
   var weekday = $('#weekday').attr('weekday');
   // create an admin availability table for that day
@@ -12,4 +12,8 @@ $(document).ready(function() {
   for (var i = 0; i < avails.length; i++) {
     schedule.avail_add_update(avails[i]);
   }
+}
+
+$(document).ready(function() {
+  initSchedule();
 });
