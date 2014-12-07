@@ -65,8 +65,6 @@ $(document).ready(function() {
             $that.html(roleButton);
             $that.removeClass('animating');
         });
-
-
     }
 
     // submits the new role / position when the user hits enter
@@ -83,27 +81,5 @@ $(document).ready(function() {
         if (isText && !$that.hasClass('animating')) {
             submitAndDestroyRoleInput(evt);
         }
-    });
-
-    // week navigation
-    $('.weekNavigation').on('click', function() {
-        $this = $(this);
-
-        // adjust date
-        var isLeft = $this.hasClass('left');
-        var currentDate = $('#currentDate').attr('date');
-        currentDate = new Date(currentDate);
-
-        var date = currentDate;
-        if (isLeft) {
-            date.setDate(currentDate.getDate()-7);
-        } else {
-            date.setDate(currentDate.getDate()+7);
-        }
-        $('#currentDate').attr('date', date);
-
-        // re-create schedule
-        $('#schedule').html("");
-        initSchedule();
     });
 });

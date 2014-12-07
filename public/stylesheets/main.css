@@ -1,6 +1,6 @@
 html, body {
     height: 100%;
-    min-width: 700px;
+    min-width: 800px;
 }
 
 body {
@@ -26,7 +26,7 @@ nav {
     -moz-border-radius: 0 !important;
     position: fixed;
 
-    min-width: 700px;
+    min-width: 800px;
     height: 60px;
 }
 
@@ -186,6 +186,10 @@ label.colon {
     margin-left: 1em;
 }
 
+.date-button {
+    height: 60px;
+}
+
 .weekNavigation, .dateNavigation {
     cursor: pointer !important;
     cursor: hand !important;
@@ -218,7 +222,7 @@ label.colon {
 }
 
 .dateNavWrapper i, .dateNavWrapper div {
-    font-size: 1.5em !important;
+    /*font-size: 1.5em !important;*/
 }
 
 .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_default, .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div.xdsoft_current {

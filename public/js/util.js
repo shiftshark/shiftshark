@@ -156,7 +156,8 @@ $(function(){
 
     $('.datePicker').datetimepicker({
       timepicker : false,
-      format     : 'm/d/Y'
+      format     : 'm/d/Y',
+      dayOfWeekStart: 1
     });
 
     $('.timePicker').datetimepicker({
@@ -181,5 +182,41 @@ $(function(){
       };
 
       client_logout(success,failure);
+    });
+
+    // week navigation
+    $('.weekNavigation').on('click', function() {
+        $this = $(this);
+
+        // adjust date
+        var isLeft = $this.hasClass('left');
+        var currentDate = $('#currentDate').attr('date');
+        currentDate = new Date(currentDate);
+
+        var date = currentDate;
+        if (isLeft) {
+            date.setDate(currentDate.getDate()-7);
+        } else {
+            date.setDate(currentDate.getDate()+7);
+        }
+        $('#currentDate').attr('date', date);
+
+        // re-create schedule
+        $('#schedule').html("");
+        initSchedule();
+    });
+    $('#scheduleDateChooser').datetimepicker({
+      timepicker : false,
+      format     : 'Y m d',
+      closeOnDateSelect: true,
+      dayOfWeekStart: 1
+    });
+    $('#scheduleDateChooser').change(function () {
+        var date = (new Date($('#scheduleDateChooser').val())).toDateString();
+        $('#currentDate').attr('date', date);
+
+        // re-create schedule
+        $('#schedule').html("");
+        initSchedule();
     });
 })

@@ -39,7 +39,6 @@
         <script src='/js/employee.js'></script>
         <script src='/js/employee/tradeShift.js'></script>
         <script src='/js/employee/claimShift.js'></script>
-        <!--<script src='/js/weeklyView.js'></script>-->
     </head>
     <body>
         <%= include util/navbar.ejs %>
@@ -54,10 +53,16 @@
                         </div>
                     </a>
                 </div>
-                <div class="column wrap dateNavWrapper">
-                    <p class="left weekNavigation"><i class="left angle icon"></i></p>
+                <div class="wrap dateNavWrapper">
+                    <div class="ui icon button left weekNavigation black inverted">
+                        <i class="left angle icon"></i>
+                    </div>
+                    <div id="scheduleDateChooser" class="ui button">
                         <div class="wrap" id="currentDate" date="<%= dateToCheck %>"></div>
-                    <p class="right weekNavigation"><i class="right angle icon"></i></p>
+                    </div>
+                    <div class="ui icon button right weekNavigation black inverted">
+                        <i class="right angle icon"></i>
+                    </div>
                 </div>
             </div>
             <div id="schedule" style="margin-left:1em;"></div>
