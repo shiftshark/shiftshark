@@ -73,52 +73,46 @@
         <%= include util/navbar.ejs %>
         <main>
             <div id='curUser' userId='<%= req.user._id %>'></div>
-            <div class='ui adminOptions grid'>
-                <div class="ui row middle algined">
-
-                    <div class="column left algined eight wide wrap dateNavWrapper">
-                        <i class="left double angle icon weekNavigation"></i>
-                        <i class="left angle icon dateNavigation"></i>
-                        <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
-                        <i class="right angle icon dateNavigation"></i>
-                        <i class="right double angle icon weekNavigation"></i>
-                    </div>
-
-                    <div id='button-bar' class='column right aligned eight wide'>
-                        <div class='item wrap'>
-                            <a href='#adminSettings' class='ui inverted black fancybox button'>
-                                Admin Settings
-                            </a>
-                        </div>
-                        <div class='item wrap'>
-                            <a href='#employeeSettings' class='ui inverted black fancybox button'>
-                                + Employee
-                            </a>
-                        </div>
-                        <div class='item wrap'>
-                            <a href='#createShift' onclick='createShiftInfo()' class='ui inverted black fancybox button'>
-                                Create Shift
-                            </a>
-                        </div>
-                        <div id='roleButton' class='item wrap'>
-                            <div class='ui inverted black button'>
-                                + Position
-                            </div>
-                        </div>
-                        <a href="/availability" class='item wrap'>
-                            <div class='ui inverted black button'>
-                                Availability
-                            </div>
+            <div class='ui adminOptions'>
+                <div>
+                    <div class='wrap'>
+                        <a href='#adminSettings' class='ui inverted black fancybox tiny button'>
+                            Admin Settings
                         </a>
-                        <!--<div class='item wrap'>
-                            <a href='#weeklyView' onclick='changeWeeklyView()' class='ui inverted black button'>
-                                Weekly View
-                            </a>
-                        </div>-->
                     </div>
-
+                    <div class='wrap'>
+                        <a href='#employeeSettings' class='ui inverted black fancybox tiny button'>
+                            + Employee
+                        </a>
+                    </div>
+                    <div class='wrap'>
+                        <a href='#createShift' onclick='createShiftInfo()' class='ui inverted black fancybox tiny button'>
+                            Create Shift
+                        </a>
+                    </div>
+                    <div id='roleButton' class='wrap'>
+                        <div class='ui inverted black tiny button'>
+                            + Position
+                        </div>
+                    </div>
+                    <a href="/availability" class='wrap'>
+                        <div class='ui inverted black tiny button'>
+                            Availability
+                        </div>
+                    </a>
+                    <!--<div class='item wrap'>
+                        <a href='#weeklyView' onclick='changeWeeklyView()' class='ui inverted black tiny button'>
+                            Weekly View
+                        </a>
+                    </div>-->
                 </div>
-
+                <div class="column wrap dateNavWrapper">
+                    <i class="left double angle icon weekNavigation"></i>
+                    <i class="left angle icon dateNavigation"></i>
+                    <div class="wrap" id="currentDate" date="<%= dateToCheck %>"><%= dateToCheck.toDateString() %></div>
+                    <i class="right angle icon dateNavigation"></i>
+                    <i class="right double angle icon weekNavigation"></i>
+                </div>
             </div>
             <div id="schedule" style="margin-left:1em;">
             </div>
