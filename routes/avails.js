@@ -41,7 +41,9 @@ var Position = require('../models/position');
  */
 
 router.get('/', function(req, res) {
-  var filters = {};
+  var filters = {
+    schedule: req.user.schedule
+  };
 
   if (req.query.day) {
     filters.day = req.query.day;
