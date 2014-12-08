@@ -203,13 +203,6 @@ test('Shift - PUT /shifts/:id', function () {
 
   equal(extendEndBad.data.shifts.length, 0, "no shifts created on incorrect adjustEnd");
 
-  // offer a shift up for trade - should fail because Tim isn't signed in
-  var offerShiftFail = client_shifts_change(savedShift.data.shift._id, {
-    trade: "offer"
-  }, null);
-
-  equal(offerShiftFail.statusCode, 401, "prevent user from trading another's shift");
-
   // create a shift up for trade, and then claim it
   shift.trading = true;
   var tradingShift = client_shifts_create(shift, null, null);
