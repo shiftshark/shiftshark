@@ -244,42 +244,6 @@ router.get('/:id', function(req, res) {
 });
 
 /**
- * PUT /shifts/trade/:id
- *
- * Description: Offer or claim the specified shift.
- *
- * Permissions:
- *   * Employer will be able to offer or claim any shift, on behalf of any employee.
- *   * Any Employee will be able to claim any offered ('trading') shift.
- *   * Any Employee will be able to offer their own shift. 
- *
- * Path Params:
- *   id - Shift identifier
- *
- * Query Params:
- *   offer - boolean: offer the specified shift
- *   claim - EmployeeID: the new claimant for the specified shift
- *   after - [0, 1439]: the time on which to split the shift; perform the trading action on the section of the shift after this time
- *   before - [0, 1439]: the time on which to split the shift; perform the trading action on the section of the shift before this time
- *
- * Notes:
- *   * all fields immutable (ingored) except claimant, trading
- *   * after and before parameters only used for a partial trade - if not specified, then offer or claim the entire shift
- *   * both after and before cannot be specified - only one may be used
- *   * traded shift is removed from its series
- *   * response contains all shifts modified or created in the trade
- *
- * Response: {
- *   shifts: Shift[] 
- * }
- *
- */
-
-
-
-
-
-/**
  * PUT /shifts/:id
  *
  * Description: Modify specified shift or modify range over which shift series occurs.
