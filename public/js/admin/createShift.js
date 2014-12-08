@@ -9,11 +9,6 @@ $(document).ready(function() {
   var $endDate         = $(selector + ' .endDate .datePicker');
   var components       = ['positions', 'employees', 'startTime', 'endTime', 'startDate', 'endDate'];
   var rules;
-  var date = $('#schedule .active').attr('date');
-
-  if (!date) {
-    date = $('#currentDate').attr('date');
-  }
 
   var settings = {
     inline  : false
@@ -77,6 +72,8 @@ $(document).ready(function() {
       var startTime = (new Time($startTime.val())).totalMinutes;
       var endTime   = (new Time($endTime.val())).totalMinutes;
       var position  = $(selector + ' .positionList .active').attr('positionId');
+      var date = $('#schedule .active').attr('date');
+
 
       // selected day's date
       date = new Date(date);
