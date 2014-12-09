@@ -6,6 +6,12 @@ All documentation -- design, teamwork plan, and meeting minutes -- are located i
 
 The site is hosted online by OpenShift at http://shiftshark-aandre.rhcloud.com/
 
+***Test Accounts***
+
+* Employer: shiftshark@mit.edu / demoacct
+* Employee: jane@andreaboulian.edu / ridetasktermwait
+* Employee: brandon@andreaboulian.edu / northairshown
+
 # Automated Tests
 To run the tests, visit `http://shiftshark-aandre.rhcloud.com/tests.html`.
 
