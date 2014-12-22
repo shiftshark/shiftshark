@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
+var secrets = require('./secrets'); // passwords
 
 var session = require('express-session');
 var passport = require('passport');
@@ -73,7 +74,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-    secret: 'der Zeithai, ja?',
+    secret: secrets.session_secret,
     resave: true,
     saveUninitialized: true
 }));
@@ -90,7 +91,7 @@ var transporter = nodemailer.createTransport(smtpTransport({
     service: 'Gmail',
     auth: {
       user: 'noreplyshiftshark@gmail.com',
-      pass: 'fjfjfjfjsharkFj'
+      pass: secrets.mail_password
     }
 }));
 
